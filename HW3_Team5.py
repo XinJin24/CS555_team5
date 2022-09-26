@@ -105,7 +105,7 @@ with open("JiapingLi.ged") as file:
                 keyValue = re.sub('[^A-Za-z0-9]+', '', finalList[1])
                 individualDictionary[keyValue] = {'ID': keyValue, 'Name': '', 'Gender': '',
                                                             'Birthday': '', 'Age': '', 'Alive': 'True', 'Death': 'NA',
-                                                            'Child' : '', 'Spouse': ''}
+                                                            'Child' : 'NA', 'Spouse': 'NA'}
             else:
                 continue
         else:
