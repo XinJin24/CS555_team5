@@ -143,10 +143,6 @@ with open("JiapingLi.ged") as file:
 
 print("\n")
 print("Individual Dictionary:")
-print(individualDictionary)
-print("\n")
-
-#print out the individual in table view by using PrettyTable module
 individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 
 for key in individualDictionary:
@@ -161,6 +157,10 @@ for key in individualDictionary:
                 ,individualDictionary.get(key).get('Spouse')])
 print(individuals)
 
+
+print("\n")
+
+#print out the individual in table view by using PrettyTable module
 
 
 
@@ -193,8 +193,7 @@ with open("JiapingLi.ged") as file:
             familyDictionary[familyKeyValue] = {'ID': familyKeyValue, 'Marriage': '', 'Divorce': '',
                                                         'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
                                                         'Wife_Name': '', 'Children' : []}
-
-
+        
         elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'HUSB':
             husband_id = re.sub('[^A-Za-z0-9]+', '', finalList[2])
             familyDictionary[familyKeyValue]['Husband_ID'] = husband_id
@@ -208,9 +207,43 @@ with open("JiapingLi.ged") as file:
             child = re.sub('[^A-Za-z0-9]+', '', finalList[2])
             childrenList.append(child)
             familyDictionary[familyKeyValue]['Children'] = childrenList
-        elif finalList[0] == '2' and validTwoTag(finalList[1]) == 'Y' and finalList[1] == 'DATE':
-            # MARRIAGE DATE AND DIVORCE DATE ARE NOT PROPERLY POPULATING IN DICTIONARY...
-            continue
+        elif finalList[0] == '1' and finalList[1] == 'MARR':
+
+            # if married, move the cursor to the next line to fetch Married Date record
+            line1 = next(file)
+            cleanLine = line1.rstrip()
+            lineList = cleanLine.split(' ')
+            remainderString = ""
+            for item in lineList[2:]:
+                remainderString = remainderString + " " + item
+            remainderString = remainderString.strip()
+            finalList2 = lineList[0], lineList[1], remainderString
+            married_date = finalList2[2]
+            familyDictionary[familyKeyValue]['Marriage'] = married_date
+
+            # move the cursor to the next line to check if there is divorce record
+            line2 = next(file)
+            cleanLine = line2.rstrip()
+            lineList = cleanLine.split(' ')
+            remainderString = ""
+            for item in lineList[2:]:
+                remainderString = remainderString + " " + item
+            remainderString = remainderString.strip()
+            finalList2 = lineList[0], lineList[1], remainderString
+            if(finalList2[1]=="DIV"):
+                line3 = next(file)
+                print(line3)
+                cleanLine = line3.rstrip()
+                lineList = cleanLine.split(' ')
+                remainderString = ""
+                for item in lineList[2:]:
+                    remainderString = remainderString + " " + item
+                remainderString = remainderString.strip()
+                finalList2 = lineList[0], lineList[1], remainderString
+                divorce_date = finalList2[2]
+                familyDictionary[familyKeyValue]['Divorce'] = divorce_date
+            else:
+                line=line1
         else:
             continue
 
@@ -218,12 +251,7 @@ with open("JiapingLi.ged") as file:
 
 print("\n")
 print("Family Dictionary:")
-print(familyDictionary)
-print("\n")
-
 families.field_names=["ID","Married","Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
-
-
 for key in familyDictionary:
     families.add_row([familyDictionary.get(key).get('ID')
                 ,familyDictionary.get(key).get('Marriage')
@@ -234,6 +262,11 @@ for key in familyDictionary:
                 ,familyDictionary.get(key).get('Wife_Name')
                 ,familyDictionary.get(key).get('Children')])
 print(families)
+print("\n")
+
+
+
+
 
 # print(individualDictionary)
 #print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format('ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'))
