@@ -19,6 +19,7 @@ twoTagTuple = ('DATE')
 
 monthDictionary = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06',
                    'JUL': '07', 'AUG': '08', 'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
+fileName = "JiapingLi.ged"
 
 # function to calculate age in years
 def calculateAge(birthDate):
@@ -68,7 +69,7 @@ def twoPrefix(value, cleanLine):
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
 # Main method to open file - input file name below
-with open("Joseph_Marks_Family.ged") as file:
+with open(fileName) as file:
     # Instantiate a dictionary to capture individual attributes
     individualDictionary = {}
     keyValue = ''
@@ -138,7 +139,7 @@ print("Individual Dictionary:")
 print(individualDictionary)
 print("\n")
 
-with open("Joseph_Marks_Family.ged") as file:
+with open(fileName) as file:
     # Instantiate a dictionary to capture individual attributes
     familyDictionary = {}
     familyKeyValue = ''
@@ -194,18 +195,30 @@ print("\n")
 print("Family Dictionary:")
 print(familyDictionary)
 print("\n")
-# print(individualDictionary)
-#print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format('ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'))
-
-#for value in individualDictionary.items():
-#    print(value)
+print("Individual Dictionary:")
+print(individualDictionary)
 
 
-
-
+print("\nIndividual Table")
+#print column name
+print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format('ID', 'NAME', 'GENDER', 'BIRTHDAY', 'AGE', 'ALIVE', 'DEATH', 'CHILD', 'SPOUSE'))
 
 
 
+for key, value in individualDictionary.items():
+    ID, Name, Gender, Birthday, Age, Alive, Death, Child, Spouse = value.values()
+    print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format(ID, Name, Gender, Birthday, Age, Alive, Death, Child, Spouse))
+
+
+
+print("\nFamily Table")
+#print column name
+print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format('ID', 'MARRIAGE', 'DIVORCE', 'Husband_ID', 'Husband_Name', 'Wife_ID', 'Wife_Name', 'Children'))
+
+#
+for key, value in familyDictionary.items():
+    ID, Marriage, Divorce, Husband_ID, Husband_Name, Wife_ID, Wife_Name, Children = value.values()
+    print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format(ID, Marriage, Divorce, Husband_ID, Husband_Name, Wife_ID, Wife_Name, str(Children)))
 
 
 
