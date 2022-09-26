@@ -7,6 +7,7 @@ Purpose: Program to test GEDCOM data
 
 from datetime import date
 import re
+from prettytable import PrettyTable
 
 # Define appropriate valid tags for inputs with respective level numbers
 zeroTagTuple = ('INDI', 'FAM', 'HEAD', 'TRLR', 'NOTE')
@@ -19,6 +20,12 @@ twoTagTuple = ('DATE')
 
 monthDictionary = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06',
                    'JUL': '07', 'AUG': '08', 'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'}
+
+individuals = PrettyTable()
+families= PrettyTable()
+
+
+
 
 # function to calculate age in years
 def calculateAge(birthDate):
@@ -68,7 +75,7 @@ def twoPrefix(value, cleanLine):
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
 # Main method to open file - input file name below
-with open("Joseph_Marks_Family.ged") as file:
+with open("JiapingLi.ged") as file:
     # Instantiate a dictionary to capture individual attributes
     individualDictionary = {}
     keyValue = ''
@@ -89,6 +96,7 @@ with open("Joseph_Marks_Family.ged") as file:
         # create final list to be used as input
         finalList = lineList[0], lineList[1], remainderString
         # conditions to determine which calls based on level number
+        
 
         if finalList[0] == '0':
 
@@ -138,7 +146,25 @@ print("Individual Dictionary:")
 print(individualDictionary)
 print("\n")
 
-with open("Joseph_Marks_Family.ged") as file:
+#print out the individual in table view by using PrettyTable module
+individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
+
+for key in individualDictionary:
+    individuals.add_row([individualDictionary.get(key).get('ID')
+                ,individualDictionary.get(key).get('Name')
+                ,individualDictionary.get(key).get('Gender')
+                ,individualDictionary.get(key).get('Birthday')
+                ,individualDictionary.get(key).get('Age')
+                ,individualDictionary.get(key).get('Alive')
+                ,individualDictionary.get(key).get('Death')
+                ,individualDictionary.get(key).get('Child')
+                ,individualDictionary.get(key).get('Spouse')])
+print(individuals)
+
+
+
+
+with open("JiapingLi.ged") as file:
     # Instantiate a dictionary to capture individual attributes
     familyDictionary = {}
     familyKeyValue = ''
@@ -194,6 +220,21 @@ print("\n")
 print("Family Dictionary:")
 print(familyDictionary)
 print("\n")
+
+families.field_names=["ID","Married","Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
+
+
+for key in familyDictionary:
+    families.add_row([familyDictionary.get(key).get('ID')
+                ,familyDictionary.get(key).get('Marriage')
+                ,familyDictionary.get(key).get('Divorce')
+                ,familyDictionary.get(key).get('Husband_ID')
+                ,familyDictionary.get(key).get('Husband_Name')
+                ,familyDictionary.get(key).get('Wife_ID')
+                ,familyDictionary.get(key).get('Wife_Name')
+                ,familyDictionary.get(key).get('Children')])
+print(families)
+
 # print(individualDictionary)
 #print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format('ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'))
 
