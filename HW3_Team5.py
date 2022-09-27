@@ -75,7 +75,7 @@ def twoPrefix(value, cleanLine):
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
 # Main method to open file - input file name below
-with open("Joseph_Marks_Family.ged") as file:
+with open("MarksFamily.ged") as file:
     # Instantiate a dictionary to capture individual attributes
     individualDictionary = {}
     keyValue = ''
@@ -164,7 +164,7 @@ print("\n")
 
 
 
-with open("Joseph_Marks_Family.ged") as file:
+with open("MarksFamily.ged") as file:
     # Instantiate a dictionary to capture individual attributes
     familyDictionary = {}
     familyKeyValue = ''
