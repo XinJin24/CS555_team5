@@ -75,7 +75,7 @@ def twoPrefix(value, cleanLine):
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
 # Main method to open file - input file name below
-with open("JiapingLi.ged") as file:
+with open("Joseph_Marks_Family.ged") as file:
     # Instantiate a dictionary to capture individual attributes
     individualDictionary = {}
     keyValue = ''
@@ -96,7 +96,7 @@ with open("JiapingLi.ged") as file:
         # create final list to be used as input
         finalList = lineList[0], lineList[1], remainderString
         # conditions to determine which calls based on level number
-        
+
 
         if finalList[0] == '0':
 
@@ -142,7 +142,7 @@ with open("JiapingLi.ged") as file:
                 continue
 
 print("\n")
-print("Individual Dictionary:")
+print("Individuals:")
 individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 
 for key in individualDictionary:
@@ -164,7 +164,7 @@ print("\n")
 
 
 
-with open("JiapingLi.ged") as file:
+with open("Joseph_Marks_Family.ged") as file:
     # Instantiate a dictionary to capture individual attributes
     familyDictionary = {}
     familyKeyValue = ''
@@ -190,10 +190,10 @@ with open("JiapingLi.ged") as file:
         if finalList[0] == '0' and finalList[2] == 'FAM':
 
             familyKeyValue = re.sub('[^A-Za-z0-9]+', '', finalList[1])
-            familyDictionary[familyKeyValue] = {'ID': familyKeyValue, 'Marriage': '', 'Divorce': '',
+            familyDictionary[familyKeyValue] = {'ID': familyKeyValue, 'Marriage': '', 'Divorce': 'NA',
                                                         'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
                                                         'Wife_Name': '', 'Children' : []}
-        
+
         elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'HUSB':
             husband_id = re.sub('[^A-Za-z0-9]+', '', finalList[2])
             familyDictionary[familyKeyValue]['Husband_ID'] = husband_id
@@ -219,8 +219,12 @@ with open("JiapingLi.ged") as file:
             remainderString = remainderString.strip()
             finalList2 = lineList[0], lineList[1], remainderString
             married_date = finalList2[2]
-            familyDictionary[familyKeyValue]['Marriage'] = married_date
+            marriedUnformatted = married_date.split(' ')
+            marriageFormatted = marriedUnformatted[2] + '-' + monthDictionary[marriedUnformatted[1]] + '-' + \
+                               marriedUnformatted[0]
+            familyDictionary[familyKeyValue]['Marriage'] = marriageFormatted
 
+        elif finalList[0] == '1' and finalList[1] == 'DIV':
             # move the cursor to the next line to check if there is divorce record
             line2 = next(file)
             cleanLine = line2.rstrip()
@@ -230,27 +234,18 @@ with open("JiapingLi.ged") as file:
                 remainderString = remainderString + " " + item
             remainderString = remainderString.strip()
             finalList2 = lineList[0], lineList[1], remainderString
-            if(finalList2[1]=="DIV"):
-                line3 = next(file)
-                print(line3)
-                cleanLine = line3.rstrip()
-                lineList = cleanLine.split(' ')
-                remainderString = ""
-                for item in lineList[2:]:
-                    remainderString = remainderString + " " + item
-                remainderString = remainderString.strip()
-                finalList2 = lineList[0], lineList[1], remainderString
-                divorce_date = finalList2[2]
-                familyDictionary[familyKeyValue]['Divorce'] = divorce_date
-            else:
-                line=line1
+            divorceUnformatted = finalList2[2].split(' ')
+            divorceFormatted = divorceUnformatted[2] + '-' + monthDictionary[divorceUnformatted[1]] + '-' + \
+                                 divorceUnformatted[0]
+            familyDictionary[familyKeyValue]['Divorce'] = divorceFormatted
+
         else:
             continue
 
 
 
 print("\n")
-print("Family Dictionary:")
+print("Families:")
 families.field_names=["ID","Married","Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
 for key in familyDictionary:
     families.add_row([familyDictionary.get(key).get('ID')
@@ -263,26 +258,3 @@ for key in familyDictionary:
                 ,familyDictionary.get(key).get('Children')])
 print(families)
 print("\n")
-
-
-
-
-
-# print(individualDictionary)
-#print("{:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format('ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'))
-
-#for value in individualDictionary.items():
-#    print(value)
-
-
-
-
-
-
-
-
-
-
-
-
-
