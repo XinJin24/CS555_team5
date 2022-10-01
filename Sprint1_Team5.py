@@ -5,7 +5,7 @@ Stevens Institute of Technology
 Purpose: Sprint 1 Submission
 '''
 
-from datetime import date
+from datetime import date, datetime
 import re
 from prettytable import PrettyTable
 
@@ -23,9 +23,6 @@ monthDictionary = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '0
 
 individuals = PrettyTable()
 families= PrettyTable()
-
-
-
 
 # function to calculate age in years
 def calculateAge(birthDate):
@@ -73,6 +70,50 @@ def twoPrefix(value, cleanLine):
     # Always will be format <level_number> <tag> <arguments>
     print("--> " + cleanLine)
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
+
+# US03 - Birth Before Death - Birth should occur before death of an individual
+def birthBeforeDeath(ID_Number):
+    # Check to ensure individual is in the dicationy
+    if individualDictionary.get(ID_Number) == None:
+        return False
+    # If individual is alive, test not needed, therefore return true
+    if individualDictionary[ID_Number]['Alive'] == 'True':
+        return True
+    else:
+        # Capture birth and death from dictionary, use datetime function and compare dates
+        birthdayList = individualDictionary[ID_Number]['Birthday'].split('-')
+        deathDayList = individualDictionary[ID_Number]['Death'].split('-')
+        birthDay = datetime(int(birthdayList[0]), int(birthdayList[1]), int(birthdayList[2]))
+        deathDay = datetime(int(deathDayList[0]), int(deathDayList[1]), int(deathDayList[2]))
+        if deathDay > birthDay:
+            return True
+        # This scenario could potentially occur if baby is born on day of birth, so return true
+        elif deathDay == birthDay:
+            return True
+        # All else should return false as birth would be later than death
+        else:
+            return False
+
+def marriageBeforeDivorce(ID_Number):
+    # Check to ensure family is present in the dictionary
+    if familyDictionary.get(ID_Number) == None:
+        return False
+    # If there is no divorce, there is nothing to check, and will return true
+    if familyDictionary[ID_Number]['Divorce'] == 'NA':
+        return True
+    else:
+        marriageDayList = familyDictionary[ID_Number]['Marriage'].split('-')
+        divorceDayList = familyDictionary[ID_Number]['Divorce'].split('-')
+        marriageDay = datetime(int(marriageDayList[0]), int(marriageDayList[1]), int(marriageDayList[2]))
+        divorceDay = datetime(int(divorceDayList[0]), int(divorceDayList[1]), int(divorceDayList[2]))
+        if divorceDay > marriageDay:
+            return True
+        # This scenario could potentially occur if divorced on wedding day :)
+        elif divorceDay == marriageDay:
+            return True
+        # All else should return false as marriage would be later than divorce
+        else:
+            return False
 
 # Main method to open file - input file name below
 print("What file would you like to process?")
@@ -254,4 +295,3 @@ for key in familyDictionary:
                 ,familyDictionary.get(key).get('Wife_Name')
                 ,familyDictionary.get(key).get('Children')])
 print(families)
-print("\n")
