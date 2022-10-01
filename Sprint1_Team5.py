@@ -75,12 +75,14 @@ def twoPrefix(value, cleanLine):
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
 # Main method to open file - input file name below
-with open("MarksFamily.ged") as file:
+print("What file would you like to process?")
+inputFile = str(input())
+with open(inputFile, 'r') as input_file:
     # Instantiate a dictionary to capture individual attributes
     individualDictionary = {}
     keyValue = ''
     # Iterate through each line of file
-    for line in file:
+    for line in input_file:
         # read line and remove new line character at end
         cleanLine = line.rstrip()
         # create a list of each line, splitting on space
@@ -157,19 +159,14 @@ for key in individualDictionary:
                 ,individualDictionary.get(key).get('Spouse')])
 print(individuals)
 
-
 print("\n")
 
-#print out the individual in table view by using PrettyTable module
-
-
-
-with open("MarksFamily.ged") as file:
+with open(inputFile, 'r') as input_file:
     # Instantiate a dictionary to capture individual attributes
     familyDictionary = {}
     familyKeyValue = ''
     # Iterate through each line of file
-    for line in file:
+    for line in input_file:
         # read line and remove new line character at end
         cleanLine = line.rstrip()
         # create a list of each line, splitting on space
@@ -210,7 +207,7 @@ with open("MarksFamily.ged") as file:
         elif finalList[0] == '1' and finalList[1] == 'MARR':
 
             # if married, move the cursor to the next line to fetch Married Date record
-            line1 = next(file)
+            line1 = next(input_file)
             cleanLine = line1.rstrip()
             lineList = cleanLine.split(' ')
             remainderString = ""
@@ -226,7 +223,7 @@ with open("MarksFamily.ged") as file:
 
         elif finalList[0] == '1' and finalList[1] == 'DIV':
             # move the cursor to the next line to check if there is divorce record
-            line2 = next(file)
+            line2 = next(input_file)
             cleanLine = line2.rstrip()
             lineList = cleanLine.split(' ')
             remainderString = ""
