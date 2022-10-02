@@ -115,6 +115,39 @@ def marriageBeforeDivorce(ID_Number):
         else:
             return False
 
+# US07 - Less then 150 years old - Everyone's age should not be more than 150
+def ageLessThan150(ID_Number):
+    # Check to ensure individual is in the dictionary
+    if individualDictionary.get(ID_Number) == None:
+        return False
+    else:
+        #get the age
+        age=individualDictionary[ID_Number]['Age']
+        #if the person's age is greater than 150 return false
+        if(age>=150):
+            return False
+        else:
+            return True
+
+# US08 - Birth before marriage of parents - 
+def birthBeforeMarriageOfParents(ID_Number):
+    # get the person's birthday
+    birthdayList = individualDictionary[ID_Number]['Birthday'].split('-')
+    # get the person's parent's family ID
+    parentFamilyID=individualDictionary[ID_Number]['Child']
+    # get the person's parents' marriage date
+    parentMarriageDateList=familyDictionary[parentFamilyID]['Marriage'].split('-')
+    # parse the dates to python readable dates in order to make comparsion
+    marriageDay = datetime(int(parentMarriageDateList[0]), int(parentMarriageDateList[1]), int(parentMarriageDateList[2]))
+    birthDay = datetime(int(birthdayList[0]), int(birthdayList[1]), int(birthdayList[2]))
+    # if the person's birthday comes later or equals to his/her parents's marriage date, return true, otherwise, return false
+    if(marriageDay < birthDay):
+        return True
+    elif(marriageDay == birthDay):
+        return True
+    else:
+        return False
+
 # Main method to open file - input file name below
 print("What file would you like to process?")
 inputFile = str(input())
