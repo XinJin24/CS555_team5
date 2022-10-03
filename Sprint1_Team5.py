@@ -169,7 +169,8 @@ def ageLessThan150(ID_Number, Dictionary):
         #get the age
         age=Dictionary[ID_Number]['Age']
         #if the person's age is greater than 150 return false
-        if(age>=150):
+        if(age>=150 or age<0 or age%1!=0):
+            print("Error US07: " + ID_Number + ", " + age + " , age more than 150 years old or age invalid")
             return False
         else:
             return True
@@ -193,6 +194,8 @@ def birthBeforeMarriageOfParents(ID_Number, Dictionary):
     elif(marriageDay == birthDay):
         return True
     else:
+        print("Error US08: " + ID_Number + ", Birthday: " +birthDay  + ", Parents' marriage date: ,"+
+                                marriageDay, " Bithday before the marriage date of parents")
         return False
 
 # Main method to open file - input file name below
