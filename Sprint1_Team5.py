@@ -124,13 +124,13 @@ def marriageBeforeDivorce(ID_Number, Dictionary):
             return False
 
 # US07 - Less then 150 years old - Everyone's age should not be more than 150
-def ageLessThan150(ID_Number):
+def ageLessThan150(ID_Number, Dictionary):
     # Check to ensure individual is in the dictionary
-    if individualDictionary.get(ID_Number) == None:
+    if Dictionary.get(ID_Number) == None:
         return False
     else:
         #get the age
-        age=individualDictionary[ID_Number]['Age']
+        age=Dictionary[ID_Number]['Age']
         #if the person's age is greater than 150 return false
         if(age>=150):
             return False
@@ -138,11 +138,13 @@ def ageLessThan150(ID_Number):
             return True
 
 # US08 - Birth before marriage of parents - 
-def birthBeforeMarriageOfParents(ID_Number):
+def birthBeforeMarriageOfParents(ID_Number, Dictionary):
+    if Dictionary.get(ID_Number) == None:
+        return False
     # get the person's birthday
-    birthdayList = individualDictionary[ID_Number]['Birthday'].split('-')
+    birthdayList = Dictionary[ID_Number]['Birthday'].split('-')
     # get the person's parent's family ID
-    parentFamilyID=individualDictionary[ID_Number]['Child']
+    parentFamilyID=Dictionary[ID_Number]['Child']
     # get the person's parents' marriage date
     parentMarriageDateList=familyDictionary[parentFamilyID]['Marriage'].split('-')
     # parse the dates to python readable dates in order to make comparsion
