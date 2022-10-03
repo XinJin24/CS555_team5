@@ -72,17 +72,21 @@ def twoPrefix(value, cleanLine):
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
 # US03 - Birth Before Death - Birth should occur before death of an individual
-def birthBeforeDeath(ID_Number):
+def birthBeforeDeath(ID_Number, Dictionary):
     # Check to ensure individual is in the dicationy
-    if individualDictionary.get(ID_Number) == None:
+    if Dictionary.get(ID_Number) == None:
+        print("ERROR: INDIVIDUAL: US03: Individual does not exist in the dataset")
+        return None
+    if Dictionary[ID_Number]['Birthday'] == '':
+        print("ERROR: INDIVIDUAL: US03: Individual " + ID_Number + " does not have a birthdate")
         return False
     # If individual is alive, test not needed, therefore return true
-    if individualDictionary[ID_Number]['Alive'] == 'True':
+    if Dictionary[ID_Number]['Alive'] == 'True':
         return True
     else:
         # Capture birth and death from dictionary, use datetime function and compare dates
-        birthdayList = individualDictionary[ID_Number]['Birthday'].split('-')
-        deathDayList = individualDictionary[ID_Number]['Death'].split('-')
+        birthdayList = Dictionary[ID_Number]['Birthday'].split('-')
+        deathDayList = Dictionary[ID_Number]['Death'].split('-')
         birthDay = datetime(int(birthdayList[0]), int(birthdayList[1]), int(birthdayList[2]))
         deathDay = datetime(int(deathDayList[0]), int(deathDayList[1]), int(deathDayList[2]))
         if deathDay > birthDay:
@@ -92,18 +96,22 @@ def birthBeforeDeath(ID_Number):
             return True
         # All else should return false as birth would be later than death
         else:
+            print("ERROR: INDIVIDUAL: US03: Individual " + ID_Number + " " + "Birthday of " \
+                   + Dictionary[ID_Number]['Birthday'] + " is before their death of " + \
+                   Dictionary[ID_Number]['Death'] + ".")
             return False
 
-def marriageBeforeDivorce(ID_Number):
+# US04 - marriage before divorce - couple must be married before divorce can occur          
+def marriageBeforeDivorce(ID_Number, Dictionary):
     # Check to ensure family is present in the dictionary
-    if familyDictionary.get(ID_Number) == None:
+    if Dictionary.get(ID_Number) == None:
         return False
     # If there is no divorce, there is nothing to check, and will return true
-    if familyDictionary[ID_Number]['Divorce'] == 'NA':
+    if Dictionary[ID_Number]['Divorce'] == 'NA':
         return True
     else:
-        marriageDayList = familyDictionary[ID_Number]['Marriage'].split('-')
-        divorceDayList = familyDictionary[ID_Number]['Divorce'].split('-')
+        marriageDayList = Dictionary[ID_Number]['Marriage'].split('-')
+        divorceDayList = Dictionary[ID_Number]['Divorce'].split('-')
         marriageDay = datetime(int(marriageDayList[0]), int(marriageDayList[1]), int(marriageDayList[2]))
         divorceDay = datetime(int(divorceDayList[0]), int(divorceDayList[1]), int(divorceDayList[2]))
         if divorceDay > marriageDay:
