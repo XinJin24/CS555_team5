@@ -124,40 +124,73 @@ def marriageBeforeDivorce(ID_Number, Dictionary):
             return False
 
 
-#US05: - user story - 05 : Marriage before death -- recorded as error if not
-def us05_marriage_before_death(ind, fam):
-    for key in ind:
-        if (ind[key]['Spouse'] != 'NA'):
-            if (ind[key]['Death'] != 'NA'):
-                deathDate = ind[key]['Death']
-                famkey = ind[key]['Spouse']
-                marriageDate = fam[famkey]['Marriage']
-                if(marriageDate > deathDate):
-                    print("Error US05: " + key + ", " + fam + ": Marriage of " + ind[key]['Name'] + "occur after death")
-                    return False # False because marriage is occurring after death
+#function to get the gedcom dictionaries storing the data
+def getFamInd(filename):
+    return individualDictionary, familyDictionary
+
+#user story - 05 : Marriage before death -- recorded as error if not
+def us05_marriage_before_death(key, ind, fam):
+    if ind.get(key) == None:
+        return False #no person found
+    if (ind[key]['Spouse'] != 'NA'):
+        if (ind[key]['Death'] != 'NA'):
+            deathDate = ind[key]['Death']
+            famkey = ind[key]['Spouse']
+            marriageDate = fam[famkey]['Marriage']
+            if(marriageDate > deathDate):
+                print("Error US05: " + str(key) + ": Marriage of " + str(ind[key]['Name']) + "occur after death")
+                return False
+            else:
+                print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Marriage occurs before death  ")
+                return True
+
+        else:
+            print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
+            return True
+    else:
+        print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
+        return True
+
+
+#user story - 06 : Divorce before death -- recorded as error if not
+def us06_divorce_before_death(key,ind, fam):
+    if ind.get(key) == None:
+        return False #no person found
+    if (ind[key]['Spouse'] != 'NA'):
+        if (ind[key]['Death'] != 'NA'):
+            deathDate = ind[key]['Death']
+            famkey = ind[key]['Spouse']
+            if(fam[famkey]['Divorce'] != 'NA'):
+                divorceDate = fam[famkey]['Divorce']
+                if(divorceDate > deathDate):
+                    print("Error US06: " + str(key) +  ": Divorce of " + ind[key]['Name'] + "occur after death")
+                    return False
                 else:
-                    print("Marriage occurs before death")
-                    return True # True because marriage is occurring before death
+                    print("OK: " + str(key) + ": " + str(ind[key]['Name']) +  " Divorce occurs before death  ")
+                    return True
+            else:
+                print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Divorced ")
+                return True
+        else:
+            print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
+            return True
+    else:
+        print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
+        return True
 
-
-
-
-#US06:- user story - 06 : Divorce before death -- recorded as error if not
-def us06_divorce_before_death(ind, fam):
-    for key in ind:
-        if (ind[key]['Spouse'] != 'NA'):
-            if (ind[key]['Death'] != 'NA'):
-                deathDate = ind[key]['Death']
-                famkey = ind[key]['Spouse']
-                if(fam[famkey]['Divorce'] != 'NA'):
-                    divorceDate = fam[famkey]['Divorce']
-                    if(divorceDate > deathDate):
-                        print("Error US06: " + key + ", " + fam + ": Divorce of " + ind[key]['Name'] + "occur after death")
-                        return False # False because divorce is occurring after death
-                    else:
-                        print("Divorce occurs before death")
-                        return True # True because divorce is occurring before death
-
+#calling functions for user story on each person in the dataset.
+print("\n")
+print("User Story 05")
+print("\n")
+#user story 05
+for keym in individualDictionary:
+    us05_marriage_before_death(keym,individualDictionary, familyDictionary)
+print("\n")
+print("User Story 06")
+print("\n")
+#user story 06
+for keyd in individualDictionary:
+    us06_divorce_before_death(keyd,individualDictionary, familyDictionary)
 
 
 # US07 - Less then 150 years old - Everyone's age should not be more than 150
