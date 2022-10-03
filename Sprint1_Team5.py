@@ -123,6 +123,43 @@ def marriageBeforeDivorce(ID_Number, Dictionary):
         else:
             return False
 
+
+#US05: - user story - 05 : Marriage before death -- recorded as error if not
+def us05_marriage_before_death(ind, fam):
+    for key in ind:
+        if (ind[key]['Spouse'] != 'NA'):
+            if (ind[key]['Death'] != 'NA'):
+                deathDate = ind[key]['Death']
+                famkey = ind[key]['Spouse']
+                marriageDate = fam[famkey]['Marriage']
+                if(marriageDate > deathDate):
+                    print("Error US05: " + key + ", " + fam + ": Marriage of " + ind[key]['Name'] + "occur after death")
+                    return False # False because marriage is occurring after death
+                else:
+                    print("Marriage occurs before death")
+                    return True # True because marriage is occurring before death
+
+
+
+
+#US06:- user story - 06 : Divorce before death -- recorded as error if not
+def us06_divorce_before_death(ind, fam):
+    for key in ind:
+        if (ind[key]['Spouse'] != 'NA'):
+            if (ind[key]['Death'] != 'NA'):
+                deathDate = ind[key]['Death']
+                famkey = ind[key]['Spouse']
+                if(fam[famkey]['Divorce'] != 'NA'):
+                    divorceDate = fam[famkey]['Divorce']
+                    if(divorceDate > deathDate):
+                        print("Error US06: " + key + ", " + fam + ": Divorce of " + ind[key]['Name'] + "occur after death")
+                        return False # False because divorce is occurring after death
+                    else:
+                        print("Divorce occurs before death")
+                        return True # True because divorce is occurring before death
+
+
+
 # US07 - Less then 150 years old - Everyone's age should not be more than 150
 def ageLessThan150(ID_Number, Dictionary):
     # Check to ensure individual is in the dictionary
