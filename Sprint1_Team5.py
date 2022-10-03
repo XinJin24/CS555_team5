@@ -71,6 +71,57 @@ def twoPrefix(value, cleanLine):
     print("--> " + cleanLine)
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
+# US01 - Dates before current date - Dates (birth, marriage, divorce, death) should not be after the current date
+def userStory1(individuals, families):
+    curDate = str(date.today())
+    errorDateList = []
+    for key in individuals:
+        if (individuals[key]['Birthday'] > curDate):
+            print(key + ": Birthday is after the current date")
+            errorDateList.append(individuals[key]['Birthday'])
+        if (individuals[key]['Death'] != 'NA'):
+            if (individuals[key]['Death'] > curDate):
+                print(key + ": Death is after the current date")
+                errorDateList.append(individuals[key]['Death'])
+    for key in families:
+        if (families[key]['Marriage'] > curDate):
+            print(key + ": Marriage is after the current date")
+            errorDateList.append(families[key]['Marriage'])
+        if (families[key]['Divorce'] != 'NA'):
+            if (families[key]['Divorce'] > curDate):
+                print(key + ": Divorce is after the current date")
+                errorDateList.append(families[key]['Divorce'])
+    if (len(errorDateList) == 0):
+        print("Dates (birth, marriage, divorce, death) are not after the current date\n")
+        return True
+    else:
+        print(errorDateList)
+        print("Dates are after the current date\n")
+        return False
+
+# US02 - Birth before marriage - Birth should occur before marriage of an individual
+def userStory2(individuals, families):
+    errorList = []
+    for key in individuals:
+        if (individuals[key]['Spouse'] != 'NA'):
+            if (isinstance(individuals[key]['Spouse'], list)):
+                for fam in individuals[key]['Spouse']:
+                    if (individuals[key]['Birthday'] > families[fam]['Marriage']):
+                        errorList.append((key, fam))
+                        print(key + ", " + fam + ": Birth occur after marriage")
+            else:
+                if (individuals[key]['Birthday'] > families[individuals[key]['Spouse']]['Marriage']):
+                    errorList.append((key, individuals[key]['Spouse']))
+                    print(key + ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
+    if (len(errorList) == 0):
+        print("Birth occur before marriage\n")
+        return True
+    else:
+        print(errorList)
+        print("Birth occur after marriage\n")
+        return False
+
+
 # US03 - Birth Before Death - Birth should occur before death of an individual
 def birthBeforeDeath(ID_Number, Dictionary):
     # Check to ensure individual is in the dicationy
