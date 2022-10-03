@@ -101,16 +101,17 @@ def birthBeforeDeath(ID_Number, Dictionary):
                    Dictionary[ID_Number]['Death'] + ".")
             return False
 
-def marriageBeforeDivorce(ID_Number):
+# US04 - marriage before divorce - couple must be married before divorce can occur          
+def marriageBeforeDivorce(ID_Number, Dictionary):
     # Check to ensure family is present in the dictionary
-    if familyDictionary.get(ID_Number) == None:
+    if Dictionary.get(ID_Number) == None:
         return False
     # If there is no divorce, there is nothing to check, and will return true
-    if familyDictionary[ID_Number]['Divorce'] == 'NA':
+    if Dictionary[ID_Number]['Divorce'] == 'NA':
         return True
     else:
-        marriageDayList = familyDictionary[ID_Number]['Marriage'].split('-')
-        divorceDayList = familyDictionary[ID_Number]['Divorce'].split('-')
+        marriageDayList = Dictionary[ID_Number]['Marriage'].split('-')
+        divorceDayList = Dictionary[ID_Number]['Divorce'].split('-')
         marriageDay = datetime(int(marriageDayList[0]), int(marriageDayList[1]), int(marriageDayList[2]))
         divorceDay = datetime(int(divorceDayList[0]), int(divorceDayList[1]), int(divorceDayList[2]))
         if divorceDay > marriageDay:
