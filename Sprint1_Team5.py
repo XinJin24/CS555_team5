@@ -72,54 +72,42 @@ def twoPrefix(value, cleanLine):
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
 # US01 - Dates before current date - Dates (birth, marriage, divorce, death) should not be after the current date
-def userStory1(individuals, families):
+def userStory1(ID_Number,individuals, families):
     curDate = str(date.today())
-    errorDateList = []
-    for key in individuals:
+    if(individuals.get(ID_Number)!=None):
         if (individuals[key]['Birthday'] > curDate):
-            print(key + ": Birthday is after the current date")
-            errorDateList.append(individuals[key]['Birthday'])
+            print("ERROR US01: "+ ID_Number + ": Birthday is after the current date")
+            return False
         if (individuals[key]['Death'] != 'NA'):
             if (individuals[key]['Death'] > curDate):
-                print(key + ": Death is after the current date")
-                errorDateList.append(individuals[key]['Death'])
-    for key in families:
-        if (families[key]['Marriage'] > curDate):
-            print(key + ": Marriage is after the current date")
-            errorDateList.append(families[key]['Marriage'])
-        if (families[key]['Divorce'] != 'NA'):
-            if (families[key]['Divorce'] > curDate):
-                print(key + ": Divorce is after the current date")
-                errorDateList.append(families[key]['Divorce'])
-    if (len(errorDateList) == 0):
-        print("Dates (birth, marriage, divorce, death) are not after the current date\n")
+                print("ERROR US01: "+ ID_Number + ": Death is after the current date")
+                return False
         return True
     else:
-        print(errorDateList)
-        print("Dates are after the current date\n")
-        return False
+        if (families[key]['Marriage'] > curDate):
+            print("ERROR US01: "+ ID_Number + ": Marriage is after the current date")
+            return False
+        if (families[key]['Divorce'] != 'NA'):
+            if (families[key]['Divorce'] > curDate):
+                print("ERROR US01: "+ ID_Number + ": Divorce is after the current date")
+                return False
+        return True
 
 # US02 - Birth before marriage - Birth should occur before marriage of an individual
-def userStory2(individuals, families):
-    errorList = []
-    for key in individuals:
-        if (individuals[key]['Spouse'] != 'NA'):
+def userStory2(key, individuals, families):
+    if (individuals[key]['Spouse'] != 'NA'):
             if (isinstance(individuals[key]['Spouse'], list)):
                 for fam in individuals[key]['Spouse']:
                     if (individuals[key]['Birthday'] > families[fam]['Marriage']):
-                        errorList.append((key, fam))
-                        print(key + ", " + fam + ": Birth occur after marriage")
+                        print("ERROR US02: "+ key+ ", " + fam + ": Birth occur after marriage")
+                        return False
+                return True
             else:
                 if (individuals[key]['Birthday'] > families[individuals[key]['Spouse']]['Marriage']):
-                    errorList.append((key, individuals[key]['Spouse']))
-                    print(key + ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
-    if (len(errorList) == 0):
-        print("Birth occur before marriage\n")
-        return True
-    else:
-        print(errorList)
-        print("Birth occur after marriage\n")
-        return False
+                    print("ERROR US02: "+ key+ ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
+                    return False
+                return True
+    return True
 
 
 # US03 - Birth Before Death - Birth should occur before death of an individual
@@ -192,14 +180,14 @@ def us05_marriage_before_death(key, ind, fam):
                 print("Error US05: " + str(key) + ": Marriage of " + str(ind[key]['Name']) + "occur after death")
                 return False
             else:
-                print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Marriage occurs before death  ")
+                # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Marriage occurs before death  ")
                 return True
 
         else:
-            print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
+            # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
             return True
     else:
-        print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
+        # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
         return True
 
 
@@ -217,31 +205,17 @@ def us06_divorce_before_death(key,ind, fam):
                     print("Error US06: " + str(key) +  ": Divorce of " + ind[key]['Name'] + "occur after death")
                     return False
                 else:
-                    print("OK: " + str(key) + ": " + str(ind[key]['Name']) +  " Divorce occurs before death  ")
+                    # print("OK: " + str(key) + ": " + str(ind[key]['Name']) +  " Divorce occurs before death  ")
                     return True
             else:
-                print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Divorced ")
+                # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Divorced ")
                 return True
         else:
-            print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
+            # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
             return True
     else:
-        print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
+        # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
         return True
-
-#calling functions for user story on each person in the dataset.
-print("\n")
-print("User Story 05")
-print("\n")
-#user story 05
-for keym in individualDictionary:
-    us05_marriage_before_death(keym,individualDictionary, familyDictionary)
-print("\n")
-print("User Story 06")
-print("\n")
-#user story 06
-for keyd in individualDictionary:
-    us06_divorce_before_death(keyd,individualDictionary, familyDictionary)
 
 
 # US07 - Less then 150 years old - Everyone's age should not be more than 150
@@ -260,9 +234,11 @@ def ageLessThan150(ID_Number, Dictionary):
             return True
 
 # US08 - Birth before marriage of parents - 
-def birthBeforeMarriageOfParents(ID_Number, Dictionary):
+def birthBeforeMarriageOfParents(ID_Number, Dictionary,familyDictionary):
     if Dictionary.get(ID_Number) == None:
         return False
+    if Dictionary[ID_Number]['Child']== 'NA':
+        return True
     # get the person's birthday
     birthdayList = Dictionary[ID_Number]['Birthday'].split('-')
     # get the person's parent's family ID
@@ -351,24 +327,6 @@ with open(inputFile, 'r') as input_file:
             else:
                 continue
 
-print("\n")
-print("Individuals:")
-individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
-
-for key in individualDictionary:
-    individuals.add_row([individualDictionary.get(key).get('ID')
-                ,individualDictionary.get(key).get('Name')
-                ,individualDictionary.get(key).get('Gender')
-                ,individualDictionary.get(key).get('Birthday')
-                ,individualDictionary.get(key).get('Age')
-                ,individualDictionary.get(key).get('Alive')
-                ,individualDictionary.get(key).get('Death')
-                ,individualDictionary.get(key).get('Child')
-                ,individualDictionary.get(key).get('Spouse')])
-print(individuals)
-
-print("\n")
-
 with open(inputFile, 'r') as input_file:
     # Instantiate a dictionary to capture individual attributes
     familyDictionary = {}
@@ -447,18 +405,44 @@ with open(inputFile, 'r') as input_file:
         else:
             continue
 
+print("\n")
+print("Individuals:")
+individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
+for key in individualDictionary:
+    if(userStory1(key,individualDictionary,familyDictionary)
+    and userStory2(key,individualDictionary,familyDictionary)
+    and birthBeforeDeath(key,individualDictionary)
+    and us05_marriage_before_death(key,individualDictionary,familyDictionary)
+    and us06_divorce_before_death(key,individualDictionary,familyDictionary)
+    and ageLessThan150(key,individualDictionary)
+    and birthBeforeMarriageOfParents(key,individualDictionary,familyDictionary)):
+        individuals.add_row([individualDictionary.get(key).get('ID')
+                    ,individualDictionary.get(key).get('Name')
+                    ,individualDictionary.get(key).get('Gender')
+                    ,individualDictionary.get(key).get('Birthday')
+                    ,individualDictionary.get(key).get('Age')
+                    ,individualDictionary.get(key).get('Alive')
+                    ,individualDictionary.get(key).get('Death')
+                    ,individualDictionary.get(key).get('Child')
+                    ,individualDictionary.get(key).get('Spouse')])
 
+print(individuals)
+
+print("\n")
 
 print("\n")
 print("Families:")
 families.field_names=["ID","Married","Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
 for key in familyDictionary:
-    families.add_row([familyDictionary.get(key).get('ID')
-                ,familyDictionary.get(key).get('Marriage')
-                ,familyDictionary.get(key).get('Divorce')
-                ,familyDictionary.get(key).get('Husband_ID')
-                ,familyDictionary.get(key).get('Husband_Name')
-                ,familyDictionary.get(key).get('Wife_ID')
-                ,familyDictionary.get(key).get('Wife_Name')
-                ,familyDictionary.get(key).get('Children')])
+    if(marriageBeforeDivorce(key,familyDictionary)
+    and marriageBeforeDivorce(key,familyDictionary)):
+        families.add_row([familyDictionary.get(key).get('ID')
+                    ,familyDictionary.get(key).get('Marriage')
+                    ,familyDictionary.get(key).get('Divorce')
+                    ,familyDictionary.get(key).get('Husband_ID')
+                    ,familyDictionary.get(key).get('Husband_Name')
+                    ,familyDictionary.get(key).get('Wife_ID')
+                    ,familyDictionary.get(key).get('Wife_Name')
+                    ,familyDictionary.get(key).get('Children')])
 print(families)
+
