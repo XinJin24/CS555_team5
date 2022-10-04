@@ -71,43 +71,93 @@ def twoPrefix(value, cleanLine):
     print("--> " + cleanLine)
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
 
+# # US01 - Dates before current date - Dates (birth, marriage, divorce, death) should not be after the current date
+# def userStory1(ID_Number,individuals, families):
+#     curDate = str(date.today())
+#     if(individuals.get(ID_Number)!=None):
+#         if (individuals[key]['Birthday'] > curDate):
+#             print("ERROR US01: "+ ID_Number + ": Birthday is after the current date")
+#             return False
+#         if (individuals[key]['Death'] != 'NA'):
+#             if (individuals[key]['Death'] > curDate):
+#                 print("ERROR US01: "+ ID_Number + ": Death is after the current date")
+#                 return False
+#         return True
+#     else:
+#         if (families[key]['Marriage'] > curDate):
+#             print("ERROR US01: "+ ID_Number + ": Marriage is after the current date")
+#             return False
+#         if (families[key]['Divorce'] != 'NA'):
+#             if (families[key]['Divorce'] > curDate):
+#                 print("ERROR US01: "+ ID_Number + ": Divorce is after the current date")
+#                 return False
+#         return True
+
+# # US02 - Birth before marriage - Birth should occur before marriage of an individual
+# def userStory2(key, individuals, families):
+#     if (individuals[key]['Spouse'] != 'NA'):
+#             if (isinstance(individuals[key]['Spouse'], list)):
+#                 for fam in individuals[key]['Spouse']:
+#                     if (individuals[key]['Birthday'] > families[fam]['Marriage']):
+#                         print("ERROR US02: "+ key+ ", " + fam + ": Birth occur after marriage")
+#                         return False
+#                 return True
+#             else:
+#                 if (individuals[key]['Birthday'] > families[individuals[key]['Spouse']]['Marriage']):
+#                     print("ERROR US02: "+ key+ ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
+#                     return False
+#                 return True
+#     return True
+
 # US01 - Dates before current date - Dates (birth, marriage, divorce, death) should not be after the current date
-def userStory1(ID_Number,individuals, families):
+def userStory1(individuals, families):
     curDate = str(date.today())
-    if(individuals.get(ID_Number)!=None):
+    errorDateList = []
+    for key in individuals:
         if (individuals[key]['Birthday'] > curDate):
-            print("ERROR US01: "+ ID_Number + ": Birthday is after the current date")
-            return False
+            print(key + ": Birthday is after the current date")
+            errorDateList.append(individuals[key]['Birthday'])
         if (individuals[key]['Death'] != 'NA'):
             if (individuals[key]['Death'] > curDate):
-                print("ERROR US01: "+ ID_Number + ": Death is after the current date")
-                return False
-        return True
-    else:
+                print(key + ": Death is after the current date")
+                errorDateList.append(individuals[key]['Death'])
+    for key in families:
         if (families[key]['Marriage'] > curDate):
-            print("ERROR US01: "+ ID_Number + ": Marriage is after the current date")
-            return False
+            print(key + ": Marriage is after the current date")
+            errorDateList.append(families[key]['Marriage'])
         if (families[key]['Divorce'] != 'NA'):
             if (families[key]['Divorce'] > curDate):
-                print("ERROR US01: "+ ID_Number + ": Divorce is after the current date")
-                return False
-        return True
+                print(key + ": Divorce is after the current date")
+                errorDateList.append(families[key]['Divorce'])
+    if (len(errorDateList) == 0):
+        print("Dates (birth, marriage, divorce, death) are not after the current date\n")
+        return 1
+    else:
+        print(errorDateList)
+        print("Dates are after the current date\n")
+        return -1
 
 # US02 - Birth before marriage - Birth should occur before marriage of an individual
-def userStory2(key, individuals, families):
-    if (individuals[key]['Spouse'] != 'NA'):
+def userStory2(individuals, families):
+    errorList = []
+    for key in individuals:
+        if (individuals[key]['Spouse'] != 'NA'):
             if (isinstance(individuals[key]['Spouse'], list)):
                 for fam in individuals[key]['Spouse']:
                     if (individuals[key]['Birthday'] > families[fam]['Marriage']):
-                        print("ERROR US02: "+ key+ ", " + fam + ": Birth occur after marriage")
-                        return False
-                return True
+                        errorList.append((key, fam))
+                        print(key + ", " + fam + ": Birth occur after marriage")
             else:
                 if (individuals[key]['Birthday'] > families[individuals[key]['Spouse']]['Marriage']):
-                    print("ERROR US02: "+ key+ ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
-                    return False
-                return True
-    return True
+                    errorList.append((key, individuals[key]['Spouse']))
+                    print(key + ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
+    if (len(errorList) == 0):
+        print("Birth occur before marriage\n")
+        return 1
+    else:
+        print(errorList)
+        print("Birth occur after marriage\n")
+        return -1
 
 
 # US03 - Birth Before Death - Birth should occur before death of an individual
@@ -261,164 +311,162 @@ def birthBeforeMarriageOfParents(ID_Number, Dictionary,familyDictionary):
                                 marriageDay, " Bithday before the marriage date of parents")
         return False
 
+def getIndividualsAndFamilies(fileName):
+    with open(fileName) as file:
+        # Instantiate a dictionary to capture individual attributes
+        individualDictionary = {}
+        keyValue = ''
+        # Iterate through each line of file
+        for line in file:
+            # read line and remove new line character at end
+            cleanLine = line.rstrip()
+            # create a list of each line, splitting on space
+            lineList = cleanLine.split(' ')
+            # instantiate a blank string to be used below
+            remainderString = ""
+            # iterate through each line list captured above, range is start on third index
+            for item in lineList[2:]:
+                # build string from third index and beyond of list
+                remainderString = remainderString + " " + item
+            # for string created, remove leading or ending white space
+            remainderString = remainderString.strip()
+            # create final list to be used as input
+            finalList = lineList[0], lineList[1], remainderString
+            # conditions to determine which calls based on level number
+
+            if finalList[0] == '0':
+
+                if validZeroTag(finalList[2]) == 'Y' and finalList[2] == 'INDI':
+
+                    keyValue = re.sub('[^A-Za-z0-9]+', '', finalList[1])
+                    individualDictionary[keyValue] = {'ID': keyValue, 'Name': '', 'Gender': '',
+                                                      'Birthday': '', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': 'NA'}
+                else:
+                    continue
+            else:
+                if finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'NAME':
+                    individualDictionary[keyValue]['Name'] = finalList[2]
+                elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'SEX':
+                    individualDictionary[keyValue]['Gender'] = finalList[2]
+                elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'FAMS':
+                    spouse = re.sub('[^A-Za-z0-9]+', '', finalList[2])
+                    individualDictionary[keyValue]['Spouse'] = spouse
+                elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'FAMC':
+                    child = re.sub('[^A-Za-z0-9]+', '', finalList[2])
+                    individualDictionary[keyValue]['Child'] = child
+                elif finalList[0] == '2' and validTwoTag(finalList[1]) == 'Y' and finalList[1] == 'DATE':
+                    dateKeyValue = individualDictionary[keyValue]['Birthday']
+                    if dateKeyValue != '':
+                        deathDayUnformatted = finalList[2].split(' ')
+                        deathDayFormatted = deathDayUnformatted[2] + '-' + monthDictionary[
+                            deathDayUnformatted[1]] + '-' + \
+                                            deathDayUnformatted[0]
+                        individualDictionary[keyValue]['Death'] = deathDayFormatted
+                        individualDictionary[keyValue]['Alive'] = 'False'
+                    else:
+                        birthDayUnformatted = finalList[2].split(' ')
+                        birthDayFormatted = birthDayUnformatted[2] + '-' + monthDictionary[
+                            birthDayUnformatted[1]] + '-' + birthDayUnformatted[0]
+                        individualDictionary[keyValue]['Birthday'] = birthDayFormatted
+
+                        # populate birthdate
+                        year = int(birthDayUnformatted[2])
+                        month = int(monthDictionary[birthDayUnformatted[1]])
+                        day = int(birthDayUnformatted[0])
+                        currentAge = calculateAge(date(year, month, day))
+                        individualDictionary[keyValue]['Age'] = currentAge
+                else:
+                    continue
+    with open(fileName) as file:
+        # Instantiate a dictionary to capture individual attributes
+        familyDictionary = {}
+        familyKeyValue = ''
+        # Iterate through each line of file
+        for line in file:
+            # read line and remove new line character at end
+            cleanLine = line.rstrip()
+            # create a list of each line, splitting on space
+            lineList = cleanLine.split(' ')
+            # instantiate a blank string to be used below
+            remainderString = ""
+            # iterate through each line list captured above, range is start on third index
+            for item in lineList[2:]:
+                # build string from third index and beyond of list
+                remainderString = remainderString + " " + item
+            # for string created, remove leading or ending white space
+            remainderString = remainderString.strip()
+            # create final list to be used as input
+            finalList = lineList[0], lineList[1], remainderString
+            # conditions to determine which calls based on level number
+            # print(finalList)
+
+            if finalList[0] == '0' and finalList[2] == 'FAM':
+
+                familyKeyValue = re.sub('[^A-Za-z0-9]+', '', finalList[1])
+                familyDictionary[familyKeyValue] = {'ID': familyKeyValue, 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': []}
+
+            elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'HUSB':
+                husband_id = re.sub('[^A-Za-z0-9]+', '', finalList[2])
+                familyDictionary[familyKeyValue]['Husband_ID'] = husband_id
+                familyDictionary[familyKeyValue]['Husband_Name'] = individualDictionary[husband_id]['Name']
+            elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'WIFE':
+                wife_id = re.sub('[^A-Za-z0-9]+', '', finalList[2])
+                familyDictionary[familyKeyValue]['Wife_ID'] = wife_id
+                familyDictionary[familyKeyValue]['Wife_Name'] = individualDictionary[wife_id]['Name']
+            elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'CHIL':
+                childrenList = familyDictionary[familyKeyValue]['Children']
+                child = re.sub('[^A-Za-z0-9]+', '', finalList[2])
+                childrenList.append(child)
+                familyDictionary[familyKeyValue]['Children'] = childrenList
+            elif finalList[0] == '1' and finalList[1] == 'MARR':
+
+                # if married, move the cursor to the next line to fetch Married Date record
+                line1 = next(file)
+                cleanLine = line1.rstrip()
+                lineList = cleanLine.split(' ')
+                remainderString = ""
+                for item in lineList[2:]:
+                    remainderString = remainderString + " " + item
+                remainderString = remainderString.strip()
+                finalList2 = lineList[0], lineList[1], remainderString
+                married_date = finalList2[2]
+                marriedUnformatted = married_date.split(' ')
+                marriageFormatted = marriedUnformatted[2] + '-' + monthDictionary[marriedUnformatted[1]] + '-' + \
+                                    marriedUnformatted[0]
+                familyDictionary[familyKeyValue]['Marriage'] = marriageFormatted
+
+            elif finalList[0] == '1' and finalList[1] == 'DIV':
+                # move the cursor to the next line to check if there is divorce record
+                line2 = next(file)
+                cleanLine = line2.rstrip()
+                lineList = cleanLine.split(' ')
+                remainderString = ""
+                for item in lineList[2:]:
+                    remainderString = remainderString + " " + item
+                remainderString = remainderString.strip()
+                finalList2 = lineList[0], lineList[1], remainderString
+                divorceUnformatted = finalList2[2].split(' ')
+                divorceFormatted = divorceUnformatted[2] + '-' + monthDictionary[divorceUnformatted[1]] + '-' + \
+                                   divorceUnformatted[0]
+                familyDictionary[familyKeyValue]['Divorce'] = divorceFormatted
+
+            else:
+                continue
+    return individualDictionary, familyDictionary
 # Main method to open file - input file name below
 # print("What file would you like to process?")
 # inputFile = str(input())
 inputFile = "MarksFamily.ged"
-with open(inputFile, 'r') as input_file:
-    # Instantiate a dictionary to capture individual attributes
-    individualDictionary = {}
-    keyValue = ''
-    # Iterate through each line of file
-    for line in input_file:
-        # read line and remove new line character at end
-        cleanLine = line.rstrip()
-        # create a list of each line, splitting on space
-        lineList = cleanLine.split(' ')
-        # instantiate a blank string to be used below
-        remainderString = ""
-        # iterate through each line list captured above, range is start on third index
-        for item in lineList[2:]:
-            # build string from third index and beyond of list
-            remainderString = remainderString + " " + item
-        # for string created, remove leading or ending white space
-        remainderString = remainderString.strip()
-        # create final list to be used as input
-        finalList = lineList[0], lineList[1], remainderString
-        # conditions to determine which calls based on level number
-
-
-        if finalList[0] == '0':
-
-            if validZeroTag(finalList[2]) == 'Y' and finalList[2] == 'INDI':
-
-                keyValue = re.sub('[^A-Za-z0-9]+', '', finalList[1])
-                individualDictionary[keyValue] = {'ID': keyValue, 'Name': '', 'Gender': '',
-                                                            'Birthday': '', 'Age': '', 'Alive': 'True', 'Death': 'NA',
-                                                            'Child' : 'NA', 'Spouse': 'NA'}
-            else:
-                continue
-        else:
-            if finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'NAME':
-                individualDictionary[keyValue]['Name'] = finalList[2]
-            elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'SEX':
-                individualDictionary[keyValue]['Gender'] = finalList[2]
-            elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'FAMS':
-                spouse = re.sub('[^A-Za-z0-9]+', '', finalList[2])
-                individualDictionary[keyValue]['Spouse'] = spouse
-            elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'FAMC':
-                child = re.sub('[^A-Za-z0-9]+', '', finalList[2])
-                individualDictionary[keyValue]['Child'] = child
-            elif finalList[0] == '2' and validTwoTag(finalList[1]) == 'Y' and finalList[1] == 'DATE':
-                dateKeyValue = individualDictionary[keyValue]['Birthday']
-                if dateKeyValue != '':
-                    deathDayUnformatted = finalList[2].split(' ')
-                    deathDayFormatted = deathDayUnformatted[2] + '-' + monthDictionary[deathDayUnformatted[1]] + '-' + \
-                                        deathDayUnformatted[0]
-                    individualDictionary[keyValue]['Death'] = deathDayFormatted
-                    individualDictionary[keyValue]['Alive'] = 'False'
-                else:
-                    birthDayUnformatted = finalList[2].split(' ')
-                    birthDayFormatted = birthDayUnformatted[2] + '-' + monthDictionary[birthDayUnformatted[1]] + '-' + birthDayUnformatted[0]
-                    individualDictionary[keyValue]['Birthday'] = birthDayFormatted
-
-                    # populate birthdate
-                    year = int(birthDayUnformatted[2])
-                    month = int(monthDictionary[birthDayUnformatted[1]])
-                    day = int(birthDayUnformatted[0])
-                    currentAge = calculateAge(date(year, month, day))
-                    individualDictionary[keyValue]['Age'] = currentAge
-            else:
-                continue
-
-with open(inputFile, 'r') as input_file:
-    # Instantiate a dictionary to capture individual attributes
-    familyDictionary = {}
-    familyKeyValue = ''
-    # Iterate through each line of file
-    for line in input_file:
-        # read line and remove new line character at end
-        cleanLine = line.rstrip()
-        # create a list of each line, splitting on space
-        lineList = cleanLine.split(' ')
-        # instantiate a blank string to be used below
-        remainderString = ""
-        # iterate through each line list captured above, range is start on third index
-        for item in lineList[2:]:
-            # build string from third index and beyond of list
-            remainderString = remainderString + " " + item
-        # for string created, remove leading or ending white space
-        remainderString = remainderString.strip()
-        # create final list to be used as input
-        finalList = lineList[0], lineList[1], remainderString
-        # conditions to determine which calls based on level number
-        # print(finalList)
-
-        if finalList[0] == '0' and finalList[2] == 'FAM':
-
-            familyKeyValue = re.sub('[^A-Za-z0-9]+', '', finalList[1])
-            familyDictionary[familyKeyValue] = {'ID': familyKeyValue, 'Marriage': '', 'Divorce': 'NA',
-                                                        'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
-                                                        'Wife_Name': '', 'Children' : []}
-
-        elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'HUSB':
-            husband_id = re.sub('[^A-Za-z0-9]+', '', finalList[2])
-            familyDictionary[familyKeyValue]['Husband_ID'] = husband_id
-            familyDictionary[familyKeyValue]['Husband_Name'] = individualDictionary[husband_id]['Name']
-        elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'WIFE':
-            wife_id = re.sub('[^A-Za-z0-9]+', '', finalList[2])
-            familyDictionary[familyKeyValue]['Wife_ID'] = wife_id
-            familyDictionary[familyKeyValue]['Wife_Name'] = individualDictionary[wife_id]['Name']
-        elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'CHIL':
-            childrenList = familyDictionary[familyKeyValue]['Children']
-            child = re.sub('[^A-Za-z0-9]+', '', finalList[2])
-            childrenList.append(child)
-            familyDictionary[familyKeyValue]['Children'] = childrenList
-        elif finalList[0] == '1' and finalList[1] == 'MARR':
-
-            # if married, move the cursor to the next line to fetch Married Date record
-            line1 = next(input_file)
-            cleanLine = line1.rstrip()
-            lineList = cleanLine.split(' ')
-            remainderString = ""
-            for item in lineList[2:]:
-                remainderString = remainderString + " " + item
-            remainderString = remainderString.strip()
-            finalList2 = lineList[0], lineList[1], remainderString
-            married_date = finalList2[2]
-            marriedUnformatted = married_date.split(' ')
-            marriageFormatted = marriedUnformatted[2] + '-' + monthDictionary[marriedUnformatted[1]] + '-' + \
-                               marriedUnformatted[0]
-            familyDictionary[familyKeyValue]['Marriage'] = marriageFormatted
-
-        elif finalList[0] == '1' and finalList[1] == 'DIV':
-            # move the cursor to the next line to check if there is divorce record
-            line2 = next(input_file)
-            cleanLine = line2.rstrip()
-            lineList = cleanLine.split(' ')
-            remainderString = ""
-            for item in lineList[2:]:
-                remainderString = remainderString + " " + item
-            remainderString = remainderString.strip()
-            finalList2 = lineList[0], lineList[1], remainderString
-            divorceUnformatted = finalList2[2].split(' ')
-            divorceFormatted = divorceUnformatted[2] + '-' + monthDictionary[divorceUnformatted[1]] + '-' + \
-                                 divorceUnformatted[0]
-            familyDictionary[familyKeyValue]['Divorce'] = divorceFormatted
-
-        else:
-            continue
-
-print("\n")
-print("Test:")
+individualDictionary,familyDictionary=getIndividualsAndFamilies(inputFile)
 
 print("\n")
 print("Individuals:")
 individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 for key in individualDictionary:
-    if(userStory1(key,individualDictionary,familyDictionary)
-    and userStory2(key,individualDictionary,familyDictionary)
-    and birthBeforeDeath(key,individualDictionary)
+    if( birthBeforeDeath(key,individualDictionary)
     and us05_marriage_before_death(key,individualDictionary,familyDictionary)
     and us06_divorce_before_death(key,individualDictionary,familyDictionary)
     and ageLessThan150(key,individualDictionary)

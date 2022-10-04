@@ -1,7 +1,8 @@
 from contextlib import nullcontext
 import unittest
 import Sprint1_Team5
-
+from Sprint1_Team5 import getIndividualsAndFamilies, userStory1, birthBeforeMarriageOfParents
+import datetime
 
 
 Dictionary={}
@@ -35,6 +36,8 @@ Dictionary[8] = {'ID': 8, 'Name': '', 'Gender': '',
 Dictionary[9] = {'ID': 9, 'Name': '', 'Gender': '',
                                                             'Birthday': '', 'Age': '1985-05-13', 'Alive': 'True', 'Death': 'NA',
                                                             'Child' : 'NA', 'Spouse': 'NA'}        
+
+Dictionary={}                                                    
                                                                                                                              
 class userStories1to8Test(unittest.TestCase):
     
@@ -76,7 +79,61 @@ class userStories1to8Test(unittest.TestCase):
 
     def test_birthBeforeDeath(self):
         result=Sprint1_Team5.birthBeforeDeath(9,Dictionary)
-        self.assertTrue(result)
+        self.assertIsNone(result)
+     
+    def testBornToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        birthday = datetime.date.today()
+        individuals['I1']['Birthday'] = str(birthday)
+        self.assertEqual(userStory1(individuals, families), 1)
+
+    def testBornAfterToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        birthday = datetime.date.today() + datetime.timedelta(days=1)
+        individuals['I1']['Birthday'] = str(birthday)
+        self.assertEqual(userStory1(individuals, families), -1)
+
+    def testBornBeforeToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        birthday = datetime.date.today() - datetime.timedelta(days=1)
+        individuals['I1']['Birthday'] = str(birthday)
+        self.assertEqual(userStory1(individuals, families), 1)
+
+    def testMarriageAfterToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        marriage = datetime.date.today() + datetime.timedelta(days=1)
+        families['F1']['Marriage'] = str(marriage)
+        self.assertEqual(userStory1(individuals, families), -1)
+    
+    def testMarriageBeforeToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        marriage = datetime.date.today() - datetime.timedelta(days=1)
+        families['F2']['Marriage'] = str(marriage)
+        self.assertFalse(birthBeforeMarriageOfParents(str(families["F2"]),individuals, families))
+    
+    def testMarriageBeforeToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        marriage = datetime.date.today() + datetime.timedelta(days=1)
+        families['F2']['Marriage'] = str(marriage)
+        self.assertFalse(birthBeforeMarriageOfParents(str(families["F2"]),individuals, families))
+    
+    def testMarriageBeforeToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        marriage = "1979-12-24"
+        families['F2']['Marriage'] = str(marriage)
+        self.assertFalse(birthBeforeMarriageOfParents(str(families["F2"]),individuals, families))
+    
+    def testMarriageBeforeToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        marriage = "1989-12-24"
+        families['F2']['Marriage'] = str(marriage)
+        self.assertFalse(birthBeforeMarriageOfParents(str(families["F2"]),individuals, families))
+    
+    def testMarriageBeforeToday(self):
+        individuals, families = getIndividualsAndFamilies('MarksFamily.ged')
+        marriage = "1999-12-24"
+        families['F2']['Marriage'] = str(marriage)
+        self.assertFalse(birthBeforeMarriageOfParents(str(families["F2"]),individuals, families))
 
 if __name__ == '__main__':
     unittest.main()
