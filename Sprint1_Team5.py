@@ -117,8 +117,8 @@ def birthBeforeDeath(ID_Number, Dictionary):
         print("ERROR: INDIVIDUAL: US03: Individual does not exist in the dataset")
         return None
     if Dictionary[ID_Number]['Birthday'] == '':
-        print("ERROR: INDIVIDUAL: US03: Individual " + ID_Number + " does not have a birthdate")
-        return False
+        print("ERROR: INDIVIDUAL: US03: Individual " , ID_Number , " does not have a birthdate")
+        return True
     # If individual is alive, test not needed, therefore return true
     if Dictionary[ID_Number]['Alive'] == 'True':
         return True
@@ -221,14 +221,17 @@ def us06_divorce_before_death(key,ind, fam):
 # US07 - Less then 150 years old - Everyone's age should not be more than 150
 def ageLessThan150(ID_Number, Dictionary):
     # Check to ensure individual is in the dictionary
-    if Dictionary.get(ID_Number) == None:
+    if Dictionary.get(ID_Number)==None:
+        return False
+    elif Dictionary[ID_Number]['Age']=="":
+        print("Error US07: " , ID_Number , " , age is empty")
         return False
     else:
         #get the age
         age=Dictionary[ID_Number]['Age']
         #if the person's age is greater than 150 return false
         if(age>=150 or age<0 or age%1!=0):
-            print("Error US07: " + ID_Number + ", " + age + " , age more than 150 years old or age invalid")
+            print("Error US07: " , ID_Number , ", " , age , " , age more than 150 years old or age invalid")
             return False
         else:
             return True
@@ -259,8 +262,9 @@ def birthBeforeMarriageOfParents(ID_Number, Dictionary,familyDictionary):
         return False
 
 # Main method to open file - input file name below
-print("What file would you like to process?")
-inputFile = str(input())
+# print("What file would you like to process?")
+# inputFile = str(input())
+inputFile = "MarksFamily.ged"
 with open(inputFile, 'r') as input_file:
     # Instantiate a dictionary to capture individual attributes
     individualDictionary = {}
@@ -406,6 +410,9 @@ with open(inputFile, 'r') as input_file:
             continue
 
 print("\n")
+print("Test:")
+
+print("\n")
 print("Individuals:")
 individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 for key in individualDictionary:
@@ -428,7 +435,6 @@ for key in individualDictionary:
 
 print(individuals)
 
-print("\n")
 
 print("\n")
 print("Families:")
