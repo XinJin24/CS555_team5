@@ -24,6 +24,25 @@ monthDictionary = {'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '0
 individuals = PrettyTable()
 families= PrettyTable()
 
+# parse the date
+def yearsDifferenceChecker(date1, date2):
+    date1List = date1.split('-')
+    date2List = date2.split('-')
+    dateTime1 = datetime(int(date1List[0]), int(date1List[1]), int(date1List[2]))
+    dateTime2 = datetime(int(date2List[0]), int(date2List[1]), int(date2List[2]))
+    if dateTime2 > dateTime1:
+        variance = dateTime2 - dateTime1
+        return variance.days / 365.2425
+    else:
+        variance = dateTime1 - dateTime2
+        return variance.days / 365.2425
+
+
+
+
+
+
+
 # function to calculate age in years
 def calculateAge(birthDate):
     days_in_year = 365.2425
@@ -70,6 +89,10 @@ def twoPrefix(value, cleanLine):
     # Always will be format <level_number> <tag> <arguments>
     print("--> " + cleanLine)
     print("<-- " + value[0] + "|" + value[1] + "|" + validTwoTag(value[1]) + "|" + value[2])
+    
+#function to get the gedcom dictionaries storing the data
+def getFamInd(filename):
+    return individualDictionary, familyDictionary
 
 # # US01 - Dates before current date - Dates (birth, marriage, divorce, death) should not be after the current date
 # def userStory1(ID_Number,individuals, families):
@@ -213,9 +236,7 @@ def marriageBeforeDivorce(ID_Number, Dictionary):
             return False
 
 
-#function to get the gedcom dictionaries storing the data
-def getFamInd(filename):
-    return individualDictionary, familyDictionary
+
 
 #user story - 05 : Marriage before death -- recorded as error if not
 def us05_marriage_before_death(key, ind, fam):
@@ -307,9 +328,43 @@ def birthBeforeMarriageOfParents(ID_Number, Dictionary,familyDictionary):
     elif(marriageDay == birthDay):
         return True
     else:
-        print("Error US08: " + ID_Number + ", Birthday: " +birthDay  + ", Parents' marriage date: ,"+
+        print("Error US08: " , ID_Number , ", Birthday: " , birthDay  , ", Parents' marriage date: ,",
                                 marriageDay, " Bithday before the marriage date of parents")
         return False
+
+# US12 - Parents not too old -- Mother 60, Father 80
+def parentsNotTooOld(IndividualDictionary, FamilyDictionary):
+    for key, values in individualDictionary.items():
+        # child = list(individualDictionary.keys())[list(individualDictionary.values()).index(key)]
+        child = values['Child']
+        birthday = values['Birthday']
+        if child == 'NA':
+            continue
+        if familyDictionary[child] != 'NA':
+            husbandID = familyDictionary[child]['Husband_ID']
+            wifeID = familyDictionary[child]['Wife_ID']
+            husbandBirthday = individualDictionary[husbandID]['Birthday']
+            wifeBirthday = individualDictionary[wifeID]['Birthday']
+            if husbandBirthday == 'NA' and wifeBirthday == 'NA':
+                print("Parents dates are empty, return true")
+            if husbandBirthday != 'NA':
+                if yearsDifferenceChecker(husbandBirthday, birthday) >= 80:
+                    print(values['Name'] + "Persons dad is more than 80 years older than child")
+
+            if wifeBirthday != 'NA':
+                if yearsDifferenceChecker(wifeBirthday, birthday) >= 60:
+                    print(values['Name'] + "Persons mother is more than 60 years older than child")
+        else:
+            continue
+#US15 -There should be fewer than 15 siblings in a family
+def fewerThan15Siblings(individualDictionary, familyDictionary):
+    for key, values in familyDictionary.items():
+        headCount=len(values['Children'])
+        if(headCount>=15):
+            print("ERROR US15 Fmaily ID: ",key,", has more than 15 siblings")
+        continue
+
+
 
 def getIndividualsAndFamilies(fileName):
     with open(fileName) as file:
@@ -466,11 +521,6 @@ print("\n")
 print("Individuals:")
 individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 for key in individualDictionary:
-    if( birthBeforeDeath(key,individualDictionary)
-    and us05_marriage_before_death(key,individualDictionary,familyDictionary)
-    and us06_divorce_before_death(key,individualDictionary,familyDictionary)
-    and ageLessThan150(key,individualDictionary)
-    and birthBeforeMarriageOfParents(key,individualDictionary,familyDictionary)):
         individuals.add_row([individualDictionary.get(key).get('ID')
                     ,individualDictionary.get(key).get('Name')
                     ,individualDictionary.get(key).get('Gender')
@@ -488,8 +538,6 @@ print("\n")
 print("Families:")
 families.field_names=["ID","Married","Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
 for key in familyDictionary:
-    if(marriageBeforeDivorce(key,familyDictionary)
-    and marriageBeforeDivorce(key,familyDictionary)):
         families.add_row([familyDictionary.get(key).get('ID')
                     ,familyDictionary.get(key).get('Marriage')
                     ,familyDictionary.get(key).get('Divorce')
@@ -499,4 +547,9 @@ for key in familyDictionary:
                     ,familyDictionary.get(key).get('Wife_Name')
                     ,familyDictionary.get(key).get('Children')])
 print(families)
+
+
+# call user stories below
+parentsNotTooOld(individualDictionary, familyDictionary)
+fewerThan15Siblings(individualDictionary, familyDictionary)
 
