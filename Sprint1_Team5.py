@@ -37,12 +37,6 @@ def yearsDifferenceChecker(date1, date2):
         variance = dateTime1 - dateTime2
         return variance.days / 365.2425
 
-
-
-
-
-
-
 # function to calculate age in years
 def calculateAge(birthDate):
     days_in_year = 365.2425
@@ -332,6 +326,49 @@ def birthBeforeMarriageOfParents(ID_Number, Dictionary,familyDictionary):
                                 marriageDay, " Bithday before the marriage date of parents")
         return False
 
+# US11 - Marriage should not occur during marriage to another
+def noPolygamy(IndividualDictionary, FamilyDictionary):
+    for key, values in IndividualDictionary.items():
+        if len(values['Spouse']) > 1:
+            spouseTestList = values['Spouse']
+            individual = values['ID']
+            for item in range(1,len(spouseTestList)):
+                marriageDate = FamilyDictionary[spouseTestList[item]]['Marriage']
+                priorSeparation = FamilyDictionary[spouseTestList[item-1]]['Divorce']
+                if priorSeparation == 'NA':
+                    if FamilyDictionary[spouseTestList[item-1]]['Husband_ID'] == individual:
+                        spouseID = FamilyDictionary[spouseTestList[item-1]]['Wife_ID']
+                    else:
+                        spouseID = FamilyDictionary[spouseTestList[item-1]]['Husband_ID']
+
+                    deathDate = IndividualDictionary[spouseID]['Death']
+                    if deathDate == 'NA':
+                        print("This person married to two people at once")
+                        continue
+                    deathDateList = deathDate.split('-')
+                    deathDateCompare = datetime(int(deathDateList[0]), int(deathDateList[1]), int(deathDateList[2]))
+                    marriageDateList = marriageDate.split('-')
+                    marriageDateCompare = datetime(int(marriageDateList[0]), int(marriageDateList[1]), int(marriageDateList[2]))
+
+                    if marriageDateCompare > deathDateCompare:
+                        continue
+                    else:
+                        print("This person married to two people at once")
+                        continue
+                else:
+                    priorSeparationList = priorSeparation.split('-')
+                    priorSeparationDateCompare = datetime(int(priorSeparationList[0]), int(priorSeparationList[1]), int(priorSeparationList[2]))
+                    marriageDateList = marriageDate.split('-')
+                    marriageDateCompare = datetime(int(marriageDateList[0]), int(marriageDateList[1]), int(marriageDateList[2]))
+
+                    if marriageDateCompare > priorSeparationDateCompare:
+                        continue
+                    else:
+                        print("This person mairried to two people at once")
+                        continue
+        else:
+            continue
+
 # US12 - Parents not too old -- Mother 60, Father 80
 def parentsNotTooOld(IndividualDictionary, FamilyDictionary):
     for key, values in individualDictionary.items():
@@ -364,8 +401,6 @@ def fewerThan15Siblings(individualDictionary, familyDictionary):
             print("ERROR US15 Fmaily ID: ",key,", has more than 15 siblings")
         continue
 
-
-
 def getIndividualsAndFamilies(fileName):
     with open(fileName) as file:
         # Instantiate a dictionary to capture individual attributes
@@ -396,7 +431,7 @@ def getIndividualsAndFamilies(fileName):
                     keyValue = re.sub('[^A-Za-z0-9]+', '', finalList[1])
                     individualDictionary[keyValue] = {'ID': keyValue, 'Name': '', 'Gender': '',
                                                       'Birthday': '', 'Age': '', 'Alive': 'True', 'Death': 'NA',
-                                                      'Child': 'NA', 'Spouse': 'NA'}
+                                                      'Child': 'NA', 'Spouse': []}
                 else:
                     continue
             else:
@@ -405,8 +440,12 @@ def getIndividualsAndFamilies(fileName):
                 elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'SEX':
                     individualDictionary[keyValue]['Gender'] = finalList[2]
                 elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'FAMS':
+                    spouseList = individualDictionary[keyValue]['Spouse']
                     spouse = re.sub('[^A-Za-z0-9]+', '', finalList[2])
-                    individualDictionary[keyValue]['Spouse'] = spouse
+                    spouseList.append(spouse)
+                    individualDictionary[keyValue]['Spouse'] = spouseList
+                    # spouse = re.sub('[^A-Za-z0-9]+', '', finalList[2])
+                    # individualDictionary[keyValue]['Spouse'] = spouse
                 elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'FAMC':
                     child = re.sub('[^A-Za-z0-9]+', '', finalList[2])
                     individualDictionary[keyValue]['Child'] = child
@@ -521,6 +560,11 @@ print("\n")
 print("Individuals:")
 individuals.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 for key in individualDictionary:
+        spouseList = individualDictionary.get(key).get('Spouse')
+        if len(spouseList) != 0:
+            spouseValue = spouseList[-1]
+        else:
+            spouseValue = 'NA'
         individuals.add_row([individualDictionary.get(key).get('ID')
                     ,individualDictionary.get(key).get('Name')
                     ,individualDictionary.get(key).get('Gender')
@@ -529,7 +573,7 @@ for key in individualDictionary:
                     ,individualDictionary.get(key).get('Alive')
                     ,individualDictionary.get(key).get('Death')
                     ,individualDictionary.get(key).get('Child')
-                    ,individualDictionary.get(key).get('Spouse')])
+                    ,spouseValue])
 
 print(individuals)
 
@@ -550,6 +594,15 @@ print(families)
 
 
 # call user stories below
+#US12
 parentsNotTooOld(individualDictionary, familyDictionary)
+#US15
 fewerThan15Siblings(individualDictionary, familyDictionary)
+#US11
+noPolygamy(individualDictionary, familyDictionary)
+
+
+
+
+
 
