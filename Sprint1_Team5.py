@@ -393,6 +393,73 @@ def parentsNotTooOld(IndividualDictionary, FamilyDictionary):
                     print(values['Name'] + "Persons mother is more than 60 years older than child")
         else:
             continue
+
+#user story - 13 : Siblings spacing -- recorded as error if not
+'''Birth dates of siblings should be more than 8 months apart or 
+less than 2 days apart (twins may be born one day apart, e.g. 11:59 PM and 12:02 AM 
+the following calendar day) '''
+
+def us13_sibling_spacing(ind,fam):
+    flag = True
+    for key in fam:
+        if fam[key]['Children'] != []:
+            bd_list_of_siblings = []
+            for i in fam[key]['Children']:
+                d = datetime.datetime.strptime(ind[i]['Birthday'], "%Y-%m-%d")
+                bd_list_of_siblings.append(d)
+            count_of_siblings = len(bd_list_of_siblings)
+            if count_of_siblings ==1:
+                flag = True
+                msg = "OK:US13 " + str(key) + str(fam[key]['Husband_Name']) + " and " + str(fam[key]['Wife_Name']) + "Only one Child : OK"
+                # print(msg)
+            else:
+                i = 0
+                while i < count_of_siblings - 1:
+                    spacing = bd_list_of_siblings[i+1] - bd_list_of_siblings[i]
+                    if spacing > timedelta(days=2) and spacing < timedelta(days=243):
+                        i = i+1
+                        flag = False
+                        msg = "ERROR: US13 " + str(fam[key]['Husband_Name']) + " and " + str(fam[key]['Wife_Name']) + "Wrong spacing b/w siblings"
+                        # print(msg)
+                    else:
+                        i = i + 1
+                        flag = True
+                        msg = "OK:US13 " + str(key) + str(fam[key]['Husband_Name']) + " and " + str(fam[key]['Wife_Name']) + "No Error"
+                        # print(msg)
+
+        else:
+            flag = True
+            msg = "OK:US13 " + str(key) + str(fam[key]['Husband_Name']) + " and " + str(fam[key]['Wife_Name']) + "No Children : OK"
+            # print(msg)
+    return flag
+
+#user story - 14 : Multiple births <= 5 -- recorded as error if not
+'''No more than five siblings should be born at the same time '''
+
+def us14_multiple_births_less_5(ind,fam):
+    flag = True
+    for key in fam:
+        if fam[key]['Children'] != []:
+            bd_list_of_siblings=[]
+            for i in fam[key]['Children']:
+                bd_list_of_siblings.append(ind[i]['Birthday'])
+            frequency_of_bd = Counter(bd_list_of_siblings).most_common(1)
+            # print(frequency_of_bd)
+            for (x,y) in frequency_of_bd:
+                if y>5:
+                    msg= "ERROR US14: "+ str(key) + " Family has more than 5 siblings born at same time"
+                    flag = False
+                    # print(msg)
+                else:
+                    msg = "OK:US14 " + str(key) + str(fam[key]['Husband_Name']) + " and " + str(fam[key]['Wife_Name'])  +  " Family : No error. Less than 5 siblings"
+                    flag = True
+                    # print(msg)
+        else:
+            msg = "OK:US14 " + str(key) + str(fam[key]['Husband_Name']) + " and " + str(fam[key]['Wife_Name']) + " Family : No error. Have no children"
+            flag = True
+            # print(msg)
+    return flag
+            
 #US15 -There should be fewer than 15 siblings in a family
 def fewerThan15Siblings(individualDictionary, familyDictionary):
     for key, values in familyDictionary.items():
@@ -600,8 +667,10 @@ parentsNotTooOld(individualDictionary, familyDictionary)
 fewerThan15Siblings(individualDictionary, familyDictionary)
 #US11
 noPolygamy(individualDictionary, familyDictionary)
-
-
+#US13
+us13_sibling_spacing(individualDictionary,familyDictionary)
+#US14
+us14_multiple_births_less_5(individualDictionary,familyDictionary)
 
 
 
