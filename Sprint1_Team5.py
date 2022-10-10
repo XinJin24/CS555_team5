@@ -439,6 +439,24 @@ def fewerThan15Siblings(individualDictionary, familyDictionary):
             print("ERROR US15 Fmaily ID: ",key,", has more than 15 siblings")
         continue
 
+#US22 -Unique IDs
+def uniqueIDs(individualDictionary, familyDictionary):
+    if z in set_of_IDs:
+        return False
+
+def us22_unique_ids(ind,fam):
+    list_of_IDs = []
+    set_of_IDs = {}
+    for x in ind:
+        list_of_IDs.append(x)
+    for y in fam:
+        list_of_IDs.append(y)
+    for z in list_of_IDs:
+        if z in set_of_IDs:
+            print("IDs are not unique.")
+            return False
+    return True
+
 def getIndividualsAndFamilies(fileName):
     with open(fileName) as file:
         # Instantiate a dictionary to capture individual attributes
@@ -639,9 +657,9 @@ print(families)
 #US11
 #noPolygamy(individualDictionary, familyDictionary)
 #US09
-birthBeforeDeathOfParents(individualDictionary, familyDictionary)
+#birthBeforeDeathOfParents(individualDictionary, familyDictionary)
 #US10
-marriageAfter14(individualDictionary, familyDictionary)
-
+#marriageAfter14(individualDictionary, familyDictionary)
+us22_unique_ids(individualDictionary, familyDictionary)
 
 
