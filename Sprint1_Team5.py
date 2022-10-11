@@ -5,7 +5,7 @@ Stevens Institute of Technology
 Purpose: Sprint 1 Submission
 '''
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import re
 from prettytable import PrettyTable
 
@@ -326,6 +326,44 @@ def birthBeforeMarriageOfParents(ID_Number, Dictionary,familyDictionary):
                                 marriageDay, " Bithday before the marriage date of parents")
         return False
 
+# US09 - Birth before death of parents
+def birthBeforeDeathOfParents(individualDictionary, familyDictionary):
+    flag = True
+    for fami in familyDictionary:
+        if (familyDictionary[fami]["Children"] != []):
+            motherDeath = individualDictionary[familyDictionary[fami]["Wife_ID"]]["Death"]
+            fatherDeath = individualDictionary[familyDictionary[fami]["Husband_ID"]]["Death"]
+            for child in familyDictionary[fami]["Children"]:
+                childBirthday = individualDictionary[child]["Birthday"]
+                if (motherDeath != "NA"):
+                    if (childBirthday > motherDeath):
+                        print(child + " was born after death of mother.")
+                        flag = False
+                if (fatherDeath != "NA"):
+                    if (childBirthday > str(datetime.strptime(fatherDeath, '%Y-%m-%d') + timedelta(days=9*30))[:10]):
+                        print(child + " was born 9 months after death of father")
+                        flag = False
+    if flag:
+        print("Children are born before death of mother and before 9 months after death of father")
+    return flag
+
+# US10 - Marriage after 14
+def marriageAfter14(individualDictionary, familyDictionary):
+    flag = True
+    for fami in familyDictionary:
+        marriageDate = familyDictionary[fami]["Marriage"]
+        wifeBirthday = individualDictionary[familyDictionary[fami]["Wife_ID"]]["Birthday"]
+        husbandBirthday = individualDictionary[familyDictionary[fami]["Husband_ID"]]["Birthday"]
+        if(marriageDate < str(datetime.strptime(wifeBirthday, '%Y-%m-%d') + timedelta(days=14 * 365))[:10]):
+            print(fami + " wife got married before 14 years old.")
+            flag = False
+        if(marriageDate < str(datetime.strptime(husbandBirthday, '%Y-%m-%d') + timedelta(days=14 * 365))[:10]):
+            print(fami + " husband got married before 14 years old.")
+            flag = False
+    if flag:
+        print("Marriages are at least 14 years after birth of both spouses (parents are at least 14 years old)")
+    return flag
+
 # US11 - Marriage should not occur during marriage to another
 def noPolygamy(IndividualDictionary, FamilyDictionary):
     for key, values in IndividualDictionary.items():
@@ -467,6 +505,24 @@ def fewerThan15Siblings(individualDictionary, familyDictionary):
         if(headCount>=15):
             print("ERROR US15 Fmaily ID: ",key,", has more than 15 siblings")
         continue
+
+#US22 -Unique IDs
+def uniqueIDs(individualDictionary, familyDictionary):
+    if z in set_of_IDs:
+        return False
+
+def us22_unique_ids(ind,fam):
+    list_of_IDs = []
+    set_of_IDs = {}
+    for x in ind:
+        list_of_IDs.append(x)
+    for y in fam:
+        list_of_IDs.append(y)
+    for z in list_of_IDs:
+        if z in set_of_IDs:
+            print("IDs are not unique.")
+            return False
+    return True
 
 def getIndividualsAndFamilies(fileName):
     with open(fileName) as file:
@@ -662,16 +718,17 @@ print(families)
 
 # call user stories below
 #US12
-parentsNotTooOld(individualDictionary, familyDictionary)
+#parentsNotTooOld(individualDictionary, familyDictionary)
 #US15
-fewerThan15Siblings(individualDictionary, familyDictionary)
+#fewerThan15Siblings(individualDictionary, familyDictionary)
 #US11
-noPolygamy(individualDictionary, familyDictionary)
-#US13
-us13_sibling_spacing(individualDictionary,familyDictionary)
-#US14
-us14_multiple_births_less_5(individualDictionary,familyDictionary)
 
+#noPolygamy(individualDictionary, familyDictionary)
+#US09
+#birthBeforeDeathOfParents(individualDictionary, familyDictionary)
+#US10
+#marriageAfter14(individualDictionary, familyDictionary)
+us22_unique_ids(individualDictionary, familyDictionary)
 
 
 
