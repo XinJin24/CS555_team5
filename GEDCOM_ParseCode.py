@@ -88,247 +88,139 @@ def twoPrefix(value, cleanLine):
 def getFamInd(filename):
     return individualDictionary, familyDictionary
 
-# # US01 - Dates before current date - Dates (birth, marriage, divorce, death) should not be after the current date
-# def userStory1(ID_Number,individuals, families):
-#     curDate = str(date.today())
-#     if(individuals.get(ID_Number)!=None):
-#         if (individuals[key]['Birthday'] > curDate):
-#             print("ERROR US01: "+ ID_Number + ": Birthday is after the current date")
-#             return False
-#         if (individuals[key]['Death'] != 'NA'):
-#             if (individuals[key]['Death'] > curDate):
-#                 print("ERROR US01: "+ ID_Number + ": Death is after the current date")
-#                 return False
-#         return True
-#     else:
-#         if (families[key]['Marriage'] > curDate):
-#             print("ERROR US01: "+ ID_Number + ": Marriage is after the current date")
-#             return False
-#         if (families[key]['Divorce'] != 'NA'):
-#             if (families[key]['Divorce'] > curDate):
-#                 print("ERROR US01: "+ ID_Number + ": Divorce is after the current date")
-#                 return False
-#         return True
-
-# # US02 - Birth before marriage - Birth should occur before marriage of an individual
-# def userStory2(key, individuals, families):
-#     if (individuals[key]['Spouse'] != 'NA'):
-#             if (isinstance(individuals[key]['Spouse'], list)):
-#                 for fam in individuals[key]['Spouse']:
-#                     if (individuals[key]['Birthday'] > families[fam]['Marriage']):
-#                         print("ERROR US02: "+ key+ ", " + fam + ": Birth occur after marriage")
-#                         return False
-#                 return True
-#             else:
-#                 if (individuals[key]['Birthday'] > families[individuals[key]['Spouse']]['Marriage']):
-#                     print("ERROR US02: "+ key+ ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
-#                     return False
-#                 return True
-#     return True
-
-# US01 - Dates before current date - Dates (birth, marriage, divorce, death) should not be after the current date
+#user stories
 def userStory1(individuals, families):
     curDate = str(date.today())
-    errorDateList = []
     for key in individuals:
         if (individuals[key]['Birthday'] > curDate):
-            print(key + ": Birthday is after the current date")
-            errorDateList.append(individuals[key]['Birthday'])
+            print("ERROR: US01 ",key + ": Birthday is after the current date")
         if (individuals[key]['Death'] != 'NA'):
             if (individuals[key]['Death'] > curDate):
-                print(key + ": Death is after the current date")
-                errorDateList.append(individuals[key]['Death'])
+                print("ERROR: US01 ",key + ": Death is after the current date")
     for key in families:
         if (families[key]['Marriage'] > curDate):
-            print(key + ": Marriage is after the current date")
-            errorDateList.append(families[key]['Marriage'])
+            print("ERROR: US01 ",key + ": Marriage is after the current date")
         if (families[key]['Divorce'] != 'NA'):
             if (families[key]['Divorce'] > curDate):
-                print(key + ": Divorce is after the current date")
-                errorDateList.append(families[key]['Divorce'])
-    if (len(errorDateList) == 0):
-        print("Dates (birth, marriage, divorce, death) are not after the current date\n")
-        return 1
-    else:
-        print(errorDateList)
-        print("Dates are after the current date\n")
-        return -1
+                print("ERROR: US01 ",key + ": Divorce is after the current date")
 
 # US02 - Birth before marriage - Birth should occur before marriage of an individual
 def userStory2(individuals, families):
-    errorList = []
     for key in individuals:
         if (individuals[key]['Spouse'] != 'NA'):
             if (isinstance(individuals[key]['Spouse'], list)):
                 for fam in individuals[key]['Spouse']:
                     if (individuals[key]['Birthday'] > families[fam]['Marriage']):
-                        errorList.append((key, fam))
-                        print(key + ", " + fam + ": Birth occur after marriage")
+                        print("ERROR: US02 ",key + ", " + fam + ": Birth occur after marriage")
             else:
                 if (individuals[key]['Birthday'] > families[individuals[key]['Spouse']]['Marriage']):
-                    errorList.append((key, individuals[key]['Spouse']))
-                    print(key + ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
-    if (len(errorList) == 0):
-        print("Birth occur before marriage\n")
-        return 1
-    else:
-        print(errorList)
-        print("Birth occur after marriage\n")
-        return -1
+                    print("ERROR: US02 ", key + ", " + individuals[key]['Spouse'] + ": Birth occur after marriage")
+    
 
 
 # US03 - Birth Before Death - Birth should occur before death of an individual
-def birthBeforeDeath(ID_Number, Dictionary):
-    # Check to ensure individual is in the dicationy
-    if Dictionary.get(ID_Number) == None:
-        print("ERROR: INDIVIDUAL: US03: Individual does not exist in the dataset")
-        return None
-    if Dictionary[ID_Number]['Birthday'] == '':
-        print("ERROR: INDIVIDUAL: US03: Individual " , ID_Number , " does not have a birthdate")
-        return True
-    # If individual is alive, test not needed, therefore return true
-    if Dictionary[ID_Number]['Alive'] == 'True':
-        return True
-    else:
+def birthBeforeDeath(individualDictionary, familyDictionary):
+    for personID, personInfo in individualDictionary.items():
+        # Check to ensure individual is in the dicationy
+        if(personID==None):
+            print("ERROR: INDIVIDUAL: US03: Individual does not exist in the dataset")
+            continue
+        if(personInfo['Birthday'] == ''):      
+            print("ERROR: INDIVIDUAL: US03: Individual " , personID , " does not have a birthdate")
+            continue
+        # If individual is alive, test not needed, therefore return true
+        if(personInfo['Alive'] == 'True'):
+            continue
         # Capture birth and death from dictionary, use datetime function and compare dates
-        birthdayList = Dictionary[ID_Number]['Birthday'].split('-')
-        deathDayList = Dictionary[ID_Number]['Death'].split('-')
+        birthdayList = personInfo['Birthday'].split('-')
+        deathDayList = personInfo['Death'].split('-')
         birthDay = datetime(int(birthdayList[0]), int(birthdayList[1]), int(birthdayList[2]))
         deathDay = datetime(int(deathDayList[0]), int(deathDayList[1]), int(deathDayList[2]))
         if deathDay > birthDay:
-            return True
+            continue
         # This scenario could potentially occur if baby is born on day of birth, so return true
         elif deathDay == birthDay:
-            return True
+            continue
         # All else should return false as birth would be later than death
         else:
-            print("ERROR: INDIVIDUAL: US03: Individual " + ID_Number + " " + "Birthday of " \
-                   + Dictionary[ID_Number]['Birthday'] + " is before their death of " + \
-                   Dictionary[ID_Number]['Death'] + ".")
-            return False
+            print("ERROR: INDIVIDUAL: US03: Individual " + personID + " " + "Birthday of " \
+                   + personInfo['Birthday'] + " is before their death of " + \
+                   personInfo['Death'] + ".")
+            continue
 
 # US04 - marriage before divorce - couple must be married before divorce can occur          
-def marriageBeforeDivorce(ID_Number, Dictionary):
+def marriageBeforeDivorce(individualDictionary, familyDictionary):
     # Check to ensure family is present in the dictionary
-    if Dictionary.get(ID_Number) == None:
-        return False
-    # If there is no divorce, there is nothing to check, and will return true
-    if Dictionary[ID_Number]['Divorce'] == 'NA':
-        return True
-    else:
-        marriageDayList = Dictionary[ID_Number]['Marriage'].split('-')
-        divorceDayList = Dictionary[ID_Number]['Divorce'].split('-')
+    for familyID, familyInfo in familyDictionary.items():
+        if(familyID==None):
+            continue
+        # If there is no divorce, there is nothing to check, and will return true
+        if(familyInfo['Divorce'] == 'NA'):
+            continue
+        marriageDayList = familyInfo['Marriage'].split('-')
+        divorceDayList = familyInfo['Divorce'].split('-')
         marriageDay = datetime(int(marriageDayList[0]), int(marriageDayList[1]), int(marriageDayList[2]))
         divorceDay = datetime(int(divorceDayList[0]), int(divorceDayList[1]), int(divorceDayList[2]))
-        if divorceDay > marriageDay:
-            return True
-        # This scenario could potentially occur if divorced on wedding day :)
-        elif divorceDay == marriageDay:
-            return True
-        # All else should return false as marriage would be later than divorce
-        else:
-            return False
-
+        if divorceDay < marriageDay:
+            print("ERROR US04 family ID: ",familyID, "Divorce hanppened before the date of marriage")
 
 
 
 #user story - 05 : Marriage before death -- recorded as error if not
-def us05_marriage_before_death(key, ind, fam):
-    if ind.get(key) == None:
-        return False #no person found
-    if (ind[key]['Spouse'] != 'NA'):
-        if (ind[key]['Death'] != 'NA'):
-            deathDate = ind[key]['Death']
-            famkey = ind[key]['Spouse']
-            marriageDate = fam[famkey]['Marriage']
-            if(marriageDate > deathDate):
-                print("Error US05: " + str(key) + ": Marriage of " + str(ind[key]['Name']) + "occur after death")
-                return False
-            else:
-                # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Marriage occurs before death  ")
-                return True
+def us05_marriage_before_death(ind, fam):
+    for key,value in ind.items():
+        if (value['Spouse'] != 'NA'):
+            if (value['Death'] != 'NA'):
+                deathDate = value['Death']
+                if(len(value['Spouse'])!=0):
+                    famkey = value['Spouse'][0]
+                    marriageDate = fam[famkey]['Marriage']
+                    if(marriageDate > deathDate):
+                        print("Error US05: Person: " + key + ", "  + ": Marriage date on " , marriageDate + " occur after death date: "+deathDate)
+                        continue
+                continue
 
-        else:
-            # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
-            return True
-    else:
-        # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
-        return True
 
 
 #user story - 06 : Divorce before death -- recorded as error if not
-def us06_divorce_before_death(key,ind, fam):
-    if ind.get(key) == None:
-        return False #no person found
-    if (ind[key]['Spouse'] != 'NA'):
-        if (ind[key]['Death'] != 'NA'):
-            deathDate = ind[key]['Death']
-            famkey = ind[key]['Spouse']
-            if(fam[famkey]['Divorce'] != 'NA'):
-                divorceDate = fam[famkey]['Divorce']
-                if(divorceDate > deathDate):
-                    print("Error US06: " + str(key) +  ": Divorce of " + ind[key]['Name'] + "occur after death")
-                    return False
-                else:
-                    # print("OK: " + str(key) + ": " + str(ind[key]['Name']) +  " Divorce occurs before death  ")
-                    return True
-            else:
-                # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Divorced ")
-                return True
-        else:
-            # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Alive ")
-            return True
-    else:
-        # print("OK: " + str(key) + ": " + str(ind[key]['Name']) + " Not Married ")
-        return True
-
+def us06_divorce_before_death(ind, fam):
+    for key,value in ind.items():
+        if(value['Alive']=='False'):
+            continue
+        if(value['Spouse']=='NA'):
+            continue
+        deathDate = value['Death']
+        if(len(value['Spouse'])!=0):
+            divorceDate = fam[value['Spouse'][0]]['Divorce']
+            if(divorceDate > deathDate):
+                print("Error US06: Person: " , key , ", " , ": Divorce of " , divorceDate, "occur after death ",deathDate)
+                continue
+        continue
 
 # US07 - Less then 150 years old - Everyone's age should not be more than 150
-def ageLessThan150(ID_Number, Dictionary):
-    # Check to ensure individual is in the dictionary
-    if Dictionary.get(ID_Number)==None:
-        return False
-    elif Dictionary[ID_Number]['Age']=="":
-        print("Error US07: " , ID_Number , " , age is empty")
-        return False
-    else:
-        #get the age
-        age=Dictionary[ID_Number]['Age']
-        #if the person's age is greater than 150 return false
-        if(age>=150 or age<0 or age%1!=0):
-            print("Error US07: " , ID_Number , ", " , age , " , age more than 150 years old or age invalid")
-            return False
-        else:
-            return True
+def ageLessThan150(individualDictionary, familyDictionary):
+    for key, values in individualDictionary.items():
+        if values['Age']<0 or values['Age']>=150:
+            print("Error US07: person" , key , ", age " , values['Age'], " , more than 150 years old or age invalid")
+        continue
 
 # US08 - Birth before marriage of parents - 
-def birthBeforeMarriageOfParents(ID_Number, Dictionary,familyDictionary):
-    if Dictionary.get(ID_Number) == None:
-        return False
-    if Dictionary[ID_Number]['Child']== 'NA':
-        return True
-    # get the person's birthday
-    birthdayList = Dictionary[ID_Number]['Birthday'].split('-')
-    # get the person's parent's family ID
-    parentFamilyID=Dictionary[ID_Number]['Child']
-    # get the person's parents' marriage date
-    parentMarriageDateList=familyDictionary[parentFamilyID]['Marriage'].split('-')
-    # parse the dates to python readable dates in order to make comparsion
-    marriageDay = datetime(int(parentMarriageDateList[0]), int(parentMarriageDateList[1]), int(parentMarriageDateList[2]))
-    birthDay = datetime(int(birthdayList[0]), int(birthdayList[1]), int(birthdayList[2]))
-    # if the person's birthday comes later or equals to his/her parents's marriage date, return true, otherwise, return false
-    if(marriageDay < birthDay):
-        return True
-    elif(marriageDay == birthDay):
-        return True
-    else:
-        print("Error US08: " , ID_Number , ", Birthday: " , birthDay  , ", Parents' marriage date: ,",
-                                marriageDay, " Bithday before the marriage date of parents")
-        return False
+def birthBeforeMarriageOfParents(individualDictionary, familyDictionary):
+    for familyID, familyInfo in familyDictionary.items():
+        if(familyInfo['Children']=='NA'):
+            continue
+        marriage_date=familyInfo['Marriage'].split('-')
+        marriage_date=datetime(int(marriage_date[0]), int(marriage_date[1]), int(marriage_date[2]))
+        for child in familyInfo['Children']:
+            child_birthday=individualDictionary[child]['Birthday'].split('-')
+            child_birthday=datetime(int(child_birthday[0]), int(child_birthday[1]), int(child_birthday[2]))
+            if(child_birthday<=marriage_date):
+                print("ERROR US 08, child", individualDictionary[child]['Name'], "is born before the marraige of his/her parents")
+            continue
+        continue
 
 # US09 - Birth before death of parents
 def birthBeforeDeathOfParents(individualDictionary, familyDictionary):
-    flag = True
     for fami in familyDictionary:
         if (familyDictionary[fami]["Children"] != []):
             motherDeath = individualDictionary[familyDictionary[fami]["Wife_ID"]]["Death"]
@@ -337,32 +229,21 @@ def birthBeforeDeathOfParents(individualDictionary, familyDictionary):
                 childBirthday = individualDictionary[child]["Birthday"]
                 if (motherDeath != "NA"):
                     if (childBirthday > motherDeath):
-                        print(child + " was born after death of mother.")
-                        flag = False
+                        print("ERROR 09 ",child + " was born after death of mother.")
                 if (fatherDeath != "NA"):
                     if (childBirthday > str(datetime.strptime(fatherDeath, '%Y-%m-%d') + timedelta(days=9*30))[:10]):
-                        print(child + " was born 9 months after death of father")
-                        flag = False
-    if flag:
-        print("Children are born before death of mother and before 9 months after death of father")
-    return flag
+                        print("ERROR 09 ", child + " was born 9 months after death of father")
 
 # US10 - Marriage after 14
 def marriageAfter14(individualDictionary, familyDictionary):
-    flag = True
     for fami in familyDictionary:
         marriageDate = familyDictionary[fami]["Marriage"]
         wifeBirthday = individualDictionary[familyDictionary[fami]["Wife_ID"]]["Birthday"]
         husbandBirthday = individualDictionary[familyDictionary[fami]["Husband_ID"]]["Birthday"]
         if(marriageDate < str(datetime.strptime(wifeBirthday, '%Y-%m-%d') + timedelta(days=14 * 365))[:10]):
-            print(fami + " wife got married before 14 years old.")
-            flag = False
+            print("ERROR US10"+ fami + " wife got married before 14 years old.")
         if(marriageDate < str(datetime.strptime(husbandBirthday, '%Y-%m-%d') + timedelta(days=14 * 365))[:10]):
-            print(fami + " husband got married before 14 years old.")
-            flag = False
-    if flag:
-        print("Marriages are at least 14 years after birth of both spouses (parents are at least 14 years old)")
-    return flag
+            print("ERROR US10"+ fami + " husband got married before 14 years old.")
 
 # US11 - Marriage should not occur during marriage to another
 def noPolygamy(IndividualDictionary, FamilyDictionary):
@@ -381,7 +262,7 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
 
                     deathDate = IndividualDictionary[spouseID]['Death']
                     if deathDate == 'NA':
-                        print("This person married to two people at once")
+                        print("ERROR: US11 Person",key, "married to two people at once")
                         continue
                     deathDateList = deathDate.split('-')
                     deathDateCompare = datetime(int(deathDateList[0]), int(deathDateList[1]), int(deathDateList[2]))
@@ -391,7 +272,7 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
                     if marriageDateCompare > deathDateCompare:
                         continue
                     else:
-                        print("This person married to two people at once")
+                        print("ERROR: US11 Person",key, "married to two people at once")
                         continue
                 else:
                     priorSeparationList = priorSeparation.split('-')
@@ -505,6 +386,24 @@ def fewerThan15Siblings(individualDictionary, familyDictionary):
         if(headCount>=15):
             print("ERROR US15 Fmaily ID: ",key,", has more than 15 siblings")
         continue
+# US16 - All male members of a family should have the same last name
+def maleLastName(individualDictionary, familyDictionary):
+    for key, values in familyDictionary.items():
+        husband_lastName=values["Husband_Name"].split('/')[1]
+        lastNameList=[husband_lastName]
+        if values["Children"]=='NA':
+            continue
+        for child in values["Children"]:
+            if(individualDictionary[child]['Gender']=='F'):
+                continue
+            lastNameList.append(individualDictionary[child]['Name'].split('/')[1])
+        if len(lastNameList)==1:
+            continue
+        for lastname in lastNameList:
+            if lastname!=husband_lastName:
+                print("ERROR US 16 Family ",key,", some males in the family has differnet last name." )
+        continue
+
 
 #US22 -Unique IDs
 def uniqueIDs(individualDictionary, familyDictionary):
@@ -714,21 +613,6 @@ for key in familyDictionary:
                     ,familyDictionary.get(key).get('Wife_Name')
                     ,familyDictionary.get(key).get('Children')])
 print(families)
-
-
-# call user stories below
-#US12
-#parentsNotTooOld(individualDictionary, familyDictionary)
-#US15
-#fewerThan15Siblings(individualDictionary, familyDictionary)
-#US11
-
-#noPolygamy(individualDictionary, familyDictionary)
-#US09
-#birthBeforeDeathOfParents(individualDictionary, familyDictionary)
-#US10
-#marriageAfter14(individualDictionary, familyDictionary)
-us22_unique_ids(individualDictionary, familyDictionary)
 
 
 

@@ -1,7 +1,7 @@
 from contextlib import nullcontext
 import unittest
 import Sprint1_Team5
-from Sprint1_Team5 import getIndividualsAndFamilies, userStory1, birthBeforeMarriageOfParents
+from Sprint1.sprint1_userStories import *
 import datetime
 
 
@@ -36,8 +36,7 @@ Dictionary[8] = {'ID': 8, 'Name': '', 'Gender': '',
 Dictionary[9] = {'ID': 9, 'Name': '', 'Gender': '',
                                                             'Birthday': '', 'Age': '1985-05-13', 'Alive': 'True', 'Death': 'NA',
                                                             'Child' : 'NA', 'Spouse': 'NA'}        
-
-Dictionary={}                                                    
+                                            
                                                                                                                              
 class userStories1to8Test(unittest.TestCase):
     
@@ -137,3 +136,6 @@ class userStories1to8Test(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+    
