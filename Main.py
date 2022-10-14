@@ -1,4 +1,5 @@
 from Sprint1.sprint1_userStories import *
+from Sprint2.sprint2_userStories import *
 from GEDCOM_ParseCode import *
 
 individualDictionary, familyDictionary= getIndividualsAndFamilies("MarksFamily.ged")
