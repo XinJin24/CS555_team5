@@ -1,5 +1,19 @@
 from datetime import date, datetime, timedelta
-from GEDCOM_ParseCode import *
+
+# parse the date
+def yearsDifferenceChecker(date1, date2):
+    date1List = date1.split('-')
+    date2List = date2.split('-')
+    dateTime1 = datetime(int(date1List[0]), int(date1List[1]), int(date1List[2]))
+    dateTime2 = datetime(int(date2List[0]), int(date2List[1]), int(date2List[2]))
+    if dateTime2 > dateTime1:
+        variance = dateTime2 - dateTime1
+        return variance.days / 365.2425
+    else:
+        variance = dateTime1 - dateTime2
+        return variance.days / 365.2425
+
+
 
 # US09 - Birth before death of parents
 def birthBeforeDeathOfParents(individualDictionary, familyDictionary):
@@ -71,7 +85,7 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
             continue
 
 # US12 - Parents not too old -- Mother 60, Father 80
-def parentsNotTooOld(IndividualDictionary, FamilyDictionary):
+def parentsNotTooOld(individualDictionary, familyDictionary):
     for key, values in individualDictionary.items():
         # child = list(individualDictionary.keys())[list(individualDictionary.values()).index(key)]
         child = values['Child']
@@ -163,19 +177,27 @@ def us14_multiple_births_less_5(ind,fam):
             
 #US15 -There should be fewer than 15 siblings in a family
 def fewerThan15Siblings(individualDictionary, familyDictionary):
+    flag = True
     for key, values in familyDictionary.items():
         headCount=len(values['Children'])
         if(headCount>=15):
             print("ERROR US15 Fmaily ID: ",key,", has more than 15 siblings")
+            flag= False
         continue
+    return flag
 # US16 - All male members of a family should have the same last name
 def maleLastName(individualDictionary, familyDictionary):
+    flag= True
     for key, values in familyDictionary.items():
+        if(values["Husband_Name"]=='NA'):
+            continue
         husband_lastName=values["Husband_Name"].split('/')[1]
         lastNameList=[husband_lastName]
-        if values["Children"]=='NA':
+        if values["Children"]=='.':
             continue
         for child in values["Children"]:
+            if(individualDictionary[child]=='NA'):
+                continue
             if(individualDictionary[child]['Gender']=='F'):
                 continue
             lastNameList.append(individualDictionary[child]['Name'].split('/')[1])
@@ -184,7 +206,10 @@ def maleLastName(individualDictionary, familyDictionary):
         for lastname in lastNameList:
             if lastname!=husband_lastName:
                 print("ERROR US 16 Family ",key,", some males in the family has differnet last name." )
+                flag=False
         continue
+    return flag
+
 #US22 -Unique IDs
 def uniqueIDs(individualDictionary, familyDictionary):
     if z in set_of_IDs:

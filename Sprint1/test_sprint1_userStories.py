@@ -1,6 +1,6 @@
 from contextlib import nullcontext
 import unittest
-import Sprint1_Team5
+from sprint1_userStories import *
 from Sprint1.sprint1_userStories import *
 import datetime
 

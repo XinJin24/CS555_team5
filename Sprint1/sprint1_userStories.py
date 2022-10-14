@@ -1,5 +1,4 @@
 from datetime import date, datetime, timedelta
-from GEDCOM_ParseCode import *
 
 def userStory1(individuals, families):
     curDate = str(date.today())
