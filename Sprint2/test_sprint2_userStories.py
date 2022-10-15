@@ -6,14 +6,14 @@ import datetime
 individualDictionary = {}
 familyDictionary = {}
 
-#test case for US09 and US10
+# manually create two dictionaries for US09 and US10
 individualDictionary["I13"] = {'ID': 'I13', 'Name': 'Jack /Marks/', 'Gender': 'M', 'Birthday': '1922-09-21', 'Age': 100, 'Alive': 'False', 'Death': '2004-05-9', 'Child': 'NA', 'Spouse': ['F3', 'F6']}
 individualDictionary["I28"] = {'ID': 'I28', 'Name': 'Ella /Pavlishchev/', 'Gender': 'F', 'Birthday': '1930-07-29', 'Age': 92, 'Alive': 'False', 'Death': '2019-05-14', 'Child': 'NA', 'Spouse': ['F6']}
 individualDictionary['I29'] = {'ID': 'I29', 'Name': 'Ivan /Marks/', 'Gender': 'M', 'Birthday': '1966-11-16', 'Age': 55, 'Alive': 'True', 'Death': 'NA', 'Child': 'F6', 'Spouse': []}
 
 familyDictionary['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'Jack /Marks/', 'Wife_ID': 'I28', 'Wife_Name': 'Ella /Pavlishchev/', 'Children': ['I29']}
 
-#test case for US15 and US16
+# manually create two dictionaries for US15 and US16
 individualDictionary[0] = {'ID': 0, 'Name': 'dsdsds /jin/', 'Gender': 'F',
                                                             'Birthday': '', 'Age': 'NA', 'Alive': 'True', 'Death': 'NA',
                                                             'Child' : 'NA', 'Spouse': 'NA'}

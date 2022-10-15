@@ -13,6 +13,8 @@ def yearsDifferenceChecker(date1, date2):
         variance = dateTime1 - dateTime2
         return variance.days / 365.2425
 
+
+
 def modifiedDate(date, days):
     if days >= 0:
         return str(datetime.strptime(date, '%Y-%m-%d') + timedelta(days=days))[:10]
@@ -55,7 +57,6 @@ def marriageAfter14(individualDictionary, familyDictionary):
             flag = False
             printError("10", fami, "husband got married before 14 years old.")
     return flag
-
 # US11 - Marriage should not occur during marriage to another
 def noPolygamy(IndividualDictionary, FamilyDictionary):
     for key, values in IndividualDictionary.items():
@@ -208,7 +209,7 @@ def maleLastName(individualDictionary, familyDictionary):
             continue
         husband_lastName=values["Husband_Name"].split('/')[1]
         lastNameList=[husband_lastName]
-        if values["Children"]=='.':
+        if values["Children"]=='NA':
             continue
         for child in values["Children"]:
             if(individualDictionary[child]=='NA'):
