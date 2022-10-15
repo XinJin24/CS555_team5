@@ -3,6 +3,8 @@ from Sprint2.sprint2_userStories import *
 from GEDCOM_ParseCode import *
 
 individualDictionary, familyDictionary= getIndividualsAndFamilies("MarksFamily.ged")
+print(individualDictionary)
+print(familyDictionary)
 # call user stories below
 # US01
 userStory1(individualDictionary, familyDictionary)

@@ -3,8 +3,17 @@ import unittest
 from sprint2_userStories import *
 import datetime
 
+individualDictionary = {}
+familyDictionary = {}
+
+#test case for US09 and US10
+individualDictionary["I13"] = {'ID': 'I13', 'Name': 'Jack /Marks/', 'Gender': 'M', 'Birthday': '1922-09-21', 'Age': 100, 'Alive': 'False', 'Death': '2004-05-9', 'Child': 'NA', 'Spouse': ['F3', 'F6']}
+individualDictionary["I28"] = {'ID': 'I28', 'Name': 'Ella /Pavlishchev/', 'Gender': 'F', 'Birthday': '1930-07-29', 'Age': 92, 'Alive': 'False', 'Death': '2019-05-14', 'Child': 'NA', 'Spouse': ['F6']}
+individualDictionary['I29'] = {'ID': 'I29', 'Name': 'Ivan /Marks/', 'Gender': 'M', 'Birthday': '1966-11-16', 'Age': 55, 'Alive': 'True', 'Death': 'NA', 'Child': 'F6', 'Spouse': []}
+
+familyDictionary['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'Jack /Marks/', 'Wife_ID': 'I28', 'Wife_Name': 'Ella /Pavlishchev/', 'Children': ['I29']}
+
 #test case for US15 and US16
-individualDictionary={}
 individualDictionary[0] = {'ID': 0, 'Name': 'dsdsds /jin/', 'Gender': 'F',
                                                             'Birthday': '', 'Age': 'NA', 'Alive': 'True', 'Death': 'NA',
                                                             'Child' : 'NA', 'Spouse': 'NA'}
@@ -19,7 +28,7 @@ individualDictionary[3] = {'ID': 3, 'Name': 'sdasds /sas/', 'Gender': 'F',
                                                             'Child' : 'NA', 'Spouse': 'NA'}  
 individualDictionary[4] = {'ID': 4, 'Name': 'dsdsw213 /sdaa/', 'Gender': '',
                                                             'Birthday': 'M', 'Age': 'NA', 'Alive': 'True', 'Death': 'NA',
-                                                            'Child' : 'NA', 'Spouse': 'NA'} 
+                                                            'Child' : 'NA', 'Spouse': 'NA'}
 
 familyDictionary1={}
 familyDictionary1[0]={'ID': 0, 'Marriage': '', 'Divorce': 'NA',
@@ -42,8 +51,58 @@ familyDictionary5[0]={'ID': 4, 'Marriage': '', 'Divorce': 'NA',
                                                     'Husband_ID': '', 'Husband_Name': 'dsds /sa/', 'Wife_ID': '',
                                                     'Wife_Name': '', 'Children': [1]}
 
+
 class userStories9toTest(unittest.TestCase):
-    
+    #test US09, Birth before death of parents
+    def test_birthBeforeDeathOfParents_1(self):
+        result=birthBeforeDeathOfParents(individualDictionary, familyDictionary)
+        self.assertTrue(result)
+
+    def test_birthBeforeDeathOfParents_2(self):
+        individualDictionary["I29"]['Birthday'] = '2004-05-9'
+        result=birthBeforeDeathOfParents(individualDictionary, familyDictionary)
+        self.assertTrue(result)
+
+    def test_birthBeforeDeathOfParents_3(self):
+        individualDictionary["I29"]['Birthday'] = '2019-03-11'
+        result=birthBeforeDeathOfParents(individualDictionary, familyDictionary)
+        self.assertFalse(result)
+
+    def test_birthBeforeDeathOfParents_4(self):
+        individualDictionary["I29"]['Birthday'] = '2019-05-15'
+        result=birthBeforeDeathOfParents(individualDictionary, familyDictionary)
+        self.assertFalse(result)
+
+    def test_birthBeforeDeathOfParents_5(self):
+        individualDictionary["I29"]['Birthday'] = '2004-08-15'
+        result=birthBeforeDeathOfParents(individualDictionary, familyDictionary)
+        self.assertTrue(result)
+
+    #test US10, Marriage after 14
+    def test_marriageAfter14_1(self):
+        result=marriageAfter14(individualDictionary, familyDictionary)
+        self.assertTrue(result)
+
+    def test_marriageAfter14_2(self):
+        familyDictionary["F6"]['Marriage'] = '1922-09-21'
+        result=marriageAfter14(individualDictionary, familyDictionary)
+        self.assertFalse(result)
+
+    def test_marriageAfter14_3(self):
+        familyDictionary["F6"]['Marriage'] = '1930-07-29'
+        result=marriageAfter14(individualDictionary, familyDictionary)
+        self.assertFalse(result)
+
+    def test_marriageAfter14_4(self):
+        familyDictionary["F6"]['Marriage'] = '1940-07-29'
+        result=marriageAfter14(individualDictionary, familyDictionary)
+        self.assertFalse(result)
+
+    def test_marriageAfter14_5(self):
+        familyDictionary["F6"]['Marriage'] = '1950-07-29'
+        result=marriageAfter14(individualDictionary, familyDictionary)
+        self.assertTrue(result)
+
     #test US15, There should be fewer than 15 siblings in a family
     def test_fewerThan15Siblings_1(self):
         result=fewerThan15Siblings(individualDictionary, familyDictionary1)
@@ -87,7 +146,5 @@ class userStories9toTest(unittest.TestCase):
         self.assertFalse(result)
 
 
-
-    
 if __name__ == '__main__':
     unittest.main()
