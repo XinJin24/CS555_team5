@@ -13,10 +13,18 @@ def yearsDifferenceChecker(date1, date2):
         variance = dateTime1 - dateTime2
         return variance.days / 365.2425
 
+def modifiedDate(date, days):
+    if days >= 0:
+        return str(datetime.strptime(date, '%Y-%m-%d') + timedelta(days=days))[:10]
+    else:
+        return str(datetime.strptime(date, '%Y-%m-%d') - timedelta(days=days))[:10]
 
+def printError(us, id, message):
+    print("ERROR US"+ us + " " + id + " " + message)
 
 # US09 - Birth before death of parents
 def birthBeforeDeathOfParents(individualDictionary, familyDictionary):
+    flag = True
     for fami in familyDictionary:
         if (familyDictionary[fami]["Children"] != []):
             motherDeath = individualDictionary[familyDictionary[fami]["Wife_ID"]]["Death"]
@@ -25,21 +33,28 @@ def birthBeforeDeathOfParents(individualDictionary, familyDictionary):
                 childBirthday = individualDictionary[child]["Birthday"]
                 if (motherDeath != "NA"):
                     if (childBirthday > motherDeath):
-                        print("ERROR 09 ",child + " was born after death of mother.")
+                        flag = False
+                        printError("09", child, "was born after death of mother.")
                 if (fatherDeath != "NA"):
-                    if (childBirthday > str(datetime.strptime(fatherDeath, '%Y-%m-%d') + timedelta(days=9*30))[:10]):
-                        print("ERROR 09 ", child + " was born 9 months after death of father")
+                    if (childBirthday > modifiedDate(fatherDeath, 9*30)):
+                        flag = False
+                        printError("09", child, "was born 9 months after death of father")
+    return flag
 
 # US10 - Marriage after 14
 def marriageAfter14(individualDictionary, familyDictionary):
+    flag = True
     for fami in familyDictionary:
         marriageDate = familyDictionary[fami]["Marriage"]
         wifeBirthday = individualDictionary[familyDictionary[fami]["Wife_ID"]]["Birthday"]
         husbandBirthday = individualDictionary[familyDictionary[fami]["Husband_ID"]]["Birthday"]
-        if(marriageDate < str(datetime.strptime(wifeBirthday, '%Y-%m-%d') + timedelta(days=14 * 365))[:10]):
-            print("ERROR US10"+ fami + " wife got married before 14 years old.")
-        if(marriageDate < str(datetime.strptime(husbandBirthday, '%Y-%m-%d') + timedelta(days=14 * 365))[:10]):
-            print("ERROR US10"+ fami + " husband got married before 14 years old.")
+        if(marriageDate < modifiedDate(wifeBirthday, 14 * 365)):
+            flag = False
+            printError("10", fami, "wife got married before 14 years old.")
+        if(marriageDate < modifiedDate(husbandBirthday, 14 * 365)):
+            flag = False
+            printError("10", fami, "husband got married before 14 years old.")
+    return flag
 
 # US11 - Marriage should not occur during marriage to another
 def noPolygamy(IndividualDictionary, FamilyDictionary):
