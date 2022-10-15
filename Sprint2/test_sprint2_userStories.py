@@ -29,6 +29,9 @@ individualDictionary[3] = {'ID': 3, 'Name': 'sdasds /sas/', 'Gender': 'F',
 individualDictionary[4] = {'ID': 4, 'Name': 'dsdsw213 /sdaa/', 'Gender': '',
                                                             'Birthday': 'M', 'Age': 'NA', 'Alive': 'True', 'Death': 'NA',
                                                             'Child' : 'NA', 'Spouse': 'NA'}
+individualDictionary[5] = {'ID': 5, 'Name': 'dsdsw213 jin', 'Gender': '',
+                                                            'Birthday': 'M', 'Age': 'NA', 'Alive': 'True', 'Death': 'NA',
+                                                            'Child' : 'NA', 'Spouse': 'NA'}
 
 familyDictionary1={}
 familyDictionary1[0]={'ID': 0, 'Marriage': '', 'Divorce': 'NA',
@@ -48,10 +51,18 @@ familyDictionary4[0]={'ID': 3, 'Marriage': '', 'Divorce': 'NA',
                                                     'Wife_Name': '', 'Children': [1,2,3,4]}
 familyDictionary5={}
 familyDictionary5[0]={'ID': 4, 'Marriage': '', 'Divorce': 'NA',
-                                                    'Husband_ID': '', 'Husband_Name': 'dsds /sa/', 'Wife_ID': '',
-                                                    'Wife_Name': '', 'Children': [1]}
+                                                    'Husband_ID': '', 'Husband_Name': 'dsds jin', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': [5]}
 
+familyDictionary6={}
+familyDictionary6[0]={'ID': 4, 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': 'dsds /jin/', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': [5]}
 
+familyDictionary7={}
+familyDictionary7[0]={'ID': 4, 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': 'dsds /jin/', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': [2]}
 class userStories9toTest(unittest.TestCase):
     #test US09, Birth before death of parents
     def test_birthBeforeDeathOfParents_1(self):
@@ -141,9 +152,21 @@ class userStories9toTest(unittest.TestCase):
         result=maleLastName(individualDictionary, familyDictionary4)
         self.assertFalse(result)
 
+    # dad's lastname and children' name are not surrounding by // 
     def test_maleLastName_5(self):
         result=maleLastName(individualDictionary, familyDictionary5)
-        self.assertFalse(result)
+        self.assertTrue(result)
+
+    # dad's lastname is surrounding by //, but children' name is not surrounding by // 
+    def test_maleLastName_6(self):
+        result=maleLastName(individualDictionary, familyDictionary6)
+        self.assertTrue(result)
+
+    # dad's lastname is not surrounding by //, children' name is surrounding by // 
+    def test_maleLastName_7(self):
+        result=maleLastName(individualDictionary, familyDictionary7)
+        self.assertTrue(result)
+
 
 
 if __name__ == '__main__':

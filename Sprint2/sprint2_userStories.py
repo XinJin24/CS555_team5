@@ -207,8 +207,13 @@ def maleLastName(individualDictionary, familyDictionary):
     for key, values in familyDictionary.items():
         if(values["Husband_Name"]=='NA'):
             continue
-        husband_lastName=values["Husband_Name"].split('/')[1]
-        lastNameList=[husband_lastName]
+        # if the last name is not in first /lastname/ format, skip
+        if "/" not in values["Husband_Name"]:
+            husband_lastName=values["Husband_Name"].split(' ')[1]
+        else:
+            husband_lastName=values["Husband_Name"].split('/')[1]
+        # create a empty list to store children's last name
+        lastNameList=[]
         if values["Children"]=='NA':
             continue
         for child in values["Children"]:
@@ -216,7 +221,11 @@ def maleLastName(individualDictionary, familyDictionary):
                 continue
             if(individualDictionary[child]['Gender']=='F'):
                 continue
-            lastNameList.append(individualDictionary[child]['Name'].split('/')[1])
+
+            if "/" not in individualDictionary[child]['Name']:
+                lastNameList.append(individualDictionary[child]['Name'].split(' ')[1])
+            else:
+                lastNameList.append(individualDictionary[child]['Name'].split('/')[1])
         if len(lastNameList)==1:
             continue
         for lastname in lastNameList:
