@@ -179,7 +179,6 @@ class test_no_polygamy(unittest.TestCase):
         individualDictionary_US12['I4'] = {'ID': 'I4', 'Name': 'Kaitlyn /Schweibinz/', 'Gender': 'F', 'Birthday': '1965-06-5', 'Age': 57, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F2']}
         individualDictionary_US12['I5'] = {'ID': 'I4', 'Name': 'Leonie /Schmidt/', 'Gender': 'F', 'Birthday': '1976-08-15', 'Age': 46, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F3']}
 
-
         return individualDictionary_US12
 
     # Function used to generate family dictionary for testing purposes
@@ -226,7 +225,59 @@ class test_no_polygamy(unittest.TestCase):
         familyDictionary['F3']['Marriage'] = '1945-07-8'
         self.assertFalse(noPolygamy(individualDictionary, familyDictionary))
 
+# US 12 Testing class
+class test_parents_not_too_old(unittest.TestCase):
 
+    # Function used to generate individual dictionary for testing purposes
+    def generate_Individual_Dictionary(self):
+        individualDictionary_US12 = {}
+        individualDictionary_US12['I1'] = {'ID': 'I1', 'Name': 'Joseph /Marks/', 'Gender': 'M', 'Birthday': '1985-05-13', 'Age': 37, 'Alive': 'True', 'Death': 'NA', 'Child': 'F1', 'Spouse': []}
+        individualDictionary_US12['I2'] = {'ID': 'I2', 'Name': 'Donald /Marks/', 'Gender': 'M', 'Birthday': '1949-08-15', 'Age': 173, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F1']}
+        individualDictionary_US12['I3'] = {'ID': 'I3', 'Name': 'Joyce /Earnhardt/', 'Gender': 'F', 'Birthday': '1951-10-24', 'Age': 170, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F1']}
+
+        return individualDictionary_US12
+
+    # Function used to generate family dictionary for testing purposes
+    def generate_Family_Dictionary(self):
+        familyDictionary_US12 = {}
+        familyDictionary_US12['F1'] = {'ID': 'F1', 'Marriage': '1975-12-24', 'Divorce': 'NA', 'Husband_ID': 'I2', 'Husband_Name': 'Donald /Marks/', 'Wife_ID': 'I3', 'Wife_Name': 'Joyce /Earnhardt/', 'Children': ['I1']}
+
+        return familyDictionary_US12
+
+    # Dictionaries set up so parents well below old age threshold, asserting true, will return true
+    def test_parents_not_too_old_1(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        self.assertTrue(parentsNotTooOld(individualDictionary, familyDictionary))
+
+    # Make father very old, asserting false as threshold is exceeded
+    def test_parents_not_too_old_2(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        individualDictionary['I2']['Birthday'] = '1849-08-15'
+        self.assertFalse(parentsNotTooOld(individualDictionary, familyDictionary))
+
+ # Make mother very old, asserting false as threshold is exceeded
+    def test_parents_not_too_old_3(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        individualDictionary['I3']['Birthday'] = '1851-08-15'
+        self.assertFalse(parentsNotTooOld(individualDictionary, familyDictionary))
+
+# Make both parents older, asserting false as threshold is exceeded
+    def test_parents_not_too_old_4(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        individualDictionary['I3']['Birthday'] = '1851-08-15'
+        individualDictionary['I2']['Birthday'] = '1849-08-15'
+        self.assertFalse(parentsNotTooOld(individualDictionary, familyDictionary))
+
+# Make son older than parents, asserting false as threshold is exceeded
+    def test_parents_not_too_old_5(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        individualDictionary['I1']['Birthday'] = '1832-08-15'
+        self.assertFalse(parentsNotTooOld(individualDictionary, familyDictionary))
 
 if __name__ == '__main__':
     unittest.main()

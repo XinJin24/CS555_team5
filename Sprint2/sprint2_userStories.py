@@ -84,7 +84,6 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
                     marriageDateCompare = datetime(int(marriageDateList[0]), int(marriageDateList[1]), int(marriageDateList[2]))
 
                     if marriageDateCompare > deathDateCompare:
-                        flag = True
                         continue
                     else:
                         print("ERROR: US11 Person",key, "is married to two people at once")
@@ -97,7 +96,6 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
                     marriageDateCompare = datetime(int(marriageDateList[0]), int(marriageDateList[1]), int(marriageDateList[2]))
 
                     if marriageDateCompare > priorSeparationDateCompare:
-                        flag = True
                         continue
                     else:
                         print("ERROR: US11 person ", key, " is married to two people at once")
@@ -114,7 +112,6 @@ def parentsNotTooOld(individualDictionary, familyDictionary):
         child = values['Child']
         birthday = values['Birthday']
         if child == 'NA':
-            flag = True
             continue
         if familyDictionary[child] != 'NA':
             husbandID = familyDictionary[child]['Husband_ID']
@@ -122,19 +119,17 @@ def parentsNotTooOld(individualDictionary, familyDictionary):
             husbandBirthday = individualDictionary[husbandID]['Birthday']
             wifeBirthday = individualDictionary[wifeID]['Birthday']
             if husbandBirthday == 'NA' and wifeBirthday == 'NA':
-                flag = True
                 print("Parents dates are empty, return true")
             if husbandBirthday != 'NA':
                 if yearsDifferenceChecker(husbandBirthday, birthday) >= 80:
                     flag = False
-                    print(values['Name'] + "Persons dad is more than 80 years older than child")
+                    print("ERROR US12 ", values['Name'] + "Persons dad is more than 80 years older than child")
 
             if wifeBirthday != 'NA':
                 if yearsDifferenceChecker(wifeBirthday, birthday) >= 60:
                     flag = False
-                    print(values['Name'] + "Persons mother is more than 60 years older than child")
+                    print("ERROR US12 ", values['Name'] + "Persons mother is more than 60 years older than child")
         else:
-            flag = True
             continue
     return flag
 
