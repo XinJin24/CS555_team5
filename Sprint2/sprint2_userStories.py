@@ -59,6 +59,7 @@ def marriageAfter14(individualDictionary, familyDictionary):
     return flag
 # US11 - Marriage should not occur during marriage to another
 def noPolygamy(IndividualDictionary, FamilyDictionary):
+    flag = True
     for key, values in IndividualDictionary.items():
         if len(values['Spouse']) > 1:
             spouseTestList = values['Spouse']
@@ -74,7 +75,8 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
 
                     deathDate = IndividualDictionary[spouseID]['Death']
                     if deathDate == 'NA':
-                        print("ERROR: US11 Person",key, "married to two people at once")
+                        flag = False
+                        print("ERROR: US11 Person",key, "is married to two people at once")
                         continue
                     deathDateList = deathDate.split('-')
                     deathDateCompare = datetime(int(deathDateList[0]), int(deathDateList[1]), int(deathDateList[2]))
@@ -82,9 +84,11 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
                     marriageDateCompare = datetime(int(marriageDateList[0]), int(marriageDateList[1]), int(marriageDateList[2]))
 
                     if marriageDateCompare > deathDateCompare:
+                        flag = True
                         continue
                     else:
-                        print("ERROR: US11 Person",key, "married to two people at once")
+                        print("ERROR: US11 Person",key, "is married to two people at once")
+                        flag = False
                         continue
                 else:
                     priorSeparationList = priorSeparation.split('-')
@@ -93,20 +97,24 @@ def noPolygamy(IndividualDictionary, FamilyDictionary):
                     marriageDateCompare = datetime(int(marriageDateList[0]), int(marriageDateList[1]), int(marriageDateList[2]))
 
                     if marriageDateCompare > priorSeparationDateCompare:
+                        flag = True
                         continue
                     else:
-                        print("This person mairried to two people at once")
+                        print("ERROR: US11 person ", key, " is married to two people at once")
+                        flag = False
                         continue
         else:
             continue
+    return flag
 
 # US12 - Parents not too old -- Mother 60, Father 80
 def parentsNotTooOld(individualDictionary, familyDictionary):
+    flag = True
     for key, values in individualDictionary.items():
-        # child = list(individualDictionary.keys())[list(individualDictionary.values()).index(key)]
         child = values['Child']
         birthday = values['Birthday']
         if child == 'NA':
+            flag = True
             continue
         if familyDictionary[child] != 'NA':
             husbandID = familyDictionary[child]['Husband_ID']
@@ -114,16 +122,21 @@ def parentsNotTooOld(individualDictionary, familyDictionary):
             husbandBirthday = individualDictionary[husbandID]['Birthday']
             wifeBirthday = individualDictionary[wifeID]['Birthday']
             if husbandBirthday == 'NA' and wifeBirthday == 'NA':
+                flag = True
                 print("Parents dates are empty, return true")
             if husbandBirthday != 'NA':
                 if yearsDifferenceChecker(husbandBirthday, birthday) >= 80:
+                    flag = False
                     print(values['Name'] + "Persons dad is more than 80 years older than child")
 
             if wifeBirthday != 'NA':
                 if yearsDifferenceChecker(wifeBirthday, birthday) >= 60:
+                    flag = False
                     print(values['Name'] + "Persons mother is more than 60 years older than child")
         else:
+            flag = True
             continue
+    return flag
 
 #user story - 13 : Siblings spacing -- recorded as error if not
 '''Birth dates of siblings should be more than 8 months apart or 

@@ -266,5 +266,10 @@ for key in familyDictionary:
                     ,familyDictionary.get(key).get('Children')])
 print(families)
 
+# for testing - to delete
+print(individualDictionary)
+print("\n")
+print(familyDictionary)
+
 
 

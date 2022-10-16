@@ -167,6 +167,65 @@ class userStories9toTest(unittest.TestCase):
         result=maleLastName(individualDictionary, familyDictionary7)
         self.assertTrue(result)
 
+# US 11 Testing class
+class test_no_polygamy(unittest.TestCase):
+
+    # Function used to generate individual dictionary for testing purposes
+    def generate_Individual_Dictionary(self):
+        individualDictionary_US12 = {}
+        individualDictionary_US12['I1'] = {'ID': 'I1', 'Name': 'Joseph /Marks/', 'Gender': 'M', 'Birthday': '1985-05-4', 'Age': 37, 'Alive': 'True', 'Death': 'NA', 'Child': 'F1', 'Spouse': []}
+        individualDictionary_US12['I2'] = {'ID': 'I2', 'Name': 'Donald /Marks/', 'Gender': 'M', 'Birthday': '1949-07-6', 'Age': 73, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F1', 'F2', 'F3']}
+        individualDictionary_US12['I3'] = {'ID': 'I3', 'Name': 'Joyce /Earnhardt/', 'Gender': 'F', 'Birthday': '1951-03-6', 'Age': 71, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F1']}
+        individualDictionary_US12['I4'] = {'ID': 'I4', 'Name': 'Kaitlyn /Schweibinz/', 'Gender': 'F', 'Birthday': '1965-06-5', 'Age': 57, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F2']}
+        individualDictionary_US12['I5'] = {'ID': 'I4', 'Name': 'Leonie /Schmidt/', 'Gender': 'F', 'Birthday': '1976-08-15', 'Age': 46, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': ['F3']}
+
+
+        return individualDictionary_US12
+
+    # Function used to generate family dictionary for testing purposes
+    def generate_Family_Dictionary(self):
+        familyDictionary_US12 = {}
+        familyDictionary_US12['F1'] = {'ID': 'F1', 'Marriage': '1979-04-5', 'Divorce': '1989-07-8', 'Husband_ID': 'I2', 'Husband_Name': 'Donald /Marks/', 'Wife_ID': 'I3', 'Wife_Name': 'Joyce /Earnhardt/', 'Children': ['I1']}
+        familyDictionary_US12['F2'] = {'ID': 'F2', 'Marriage': '1993-07-8', 'Divorce': '1999-07-8', 'Husband_ID': 'I2', 'Husband_Name': 'Donald /Marks/', 'Wife_ID': 'I4', 'Wife_Name': 'Kaitlyn /Schweibinz/', 'Children': []}
+        familyDictionary_US12['F3'] = {'ID': 'F3', 'Marriage': '1999-12-8', 'Divorce': 'NA', 'Husband_ID': 'I2', 'Husband_Name': 'Donald /Marks/', 'Wife_ID': 'I5', 'Wife_Name': 'Leonie /Schmidt/', 'Children': []}
+
+        return familyDictionary_US12
+
+    # One marriage, however never divorced - should violate, and return false
+    def test_no_polygamy_1(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        familyDictionary['F2']['Divorce'] = 'NA'
+        self.assertFalse(noPolygamy(individualDictionary, familyDictionary))
+
+    # One marraige, and now divorce occurrs before new marraige, should not violate, and return true
+    def test_no_polygamy_2(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        familyDictionary['F1']['Divorce'] = '1991-07-8'
+        self.assertTrue(noPolygamy(individualDictionary, familyDictionary))
+
+    # One marraige, and now death occurs before new marriage, should not violate, and return true
+    def test_no_polygamy_3(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        familyDictionary['F2']['Divorce'] = 'NA'
+        self.assertFalse(noPolygamy(individualDictionary, familyDictionary))
+
+    # Divorce occurs after new marriage, should violate, asserting false
+    def test_no_polygamy_4(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        familyDictionary['F2']['Divorce'] = '2005-07-8'
+        self.assertFalse(noPolygamy(individualDictionary, familyDictionary))
+
+    # Marriage occurs much earlier than other marriages, should violate, asserting false
+    def test_no_polygamy_5(self):
+        individualDictionary = self.generate_Individual_Dictionary()
+        familyDictionary = self.generate_Family_Dictionary()
+        familyDictionary['F3']['Marriage'] = '1945-07-8'
+        self.assertFalse(noPolygamy(individualDictionary, familyDictionary))
+
 
 
 if __name__ == '__main__':
