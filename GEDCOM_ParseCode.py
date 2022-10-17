@@ -175,6 +175,7 @@ def getIndividualsAndFamilies(fileName):
                     deathDayFormatted = deathDayUnformatted[2] + '-' + monthDictionary[
                         deathDayUnformatted[1]] + '-' + deathDayUnformatted[0]
                     individualDictionary[keyValue]['Death'] = deathDayFormatted
+                    individualDictionary[keyValue]['Alive'] = 'False'
 
                 else:
                     continue
