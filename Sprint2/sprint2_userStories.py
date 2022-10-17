@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta
+from collections import Counter
 
 # parse the date
 def yearsDifferenceChecker(date1, date2):
@@ -144,7 +145,7 @@ def us13_sibling_spacing(ind,fam):
         if fam[key]['Children'] != []:
             bd_list_of_siblings = []
             for i in fam[key]['Children']:
-                d = datetime.datetime.strptime(ind[i]['Birthday'], "%Y-%m-%d")
+                d = datetime.strptime(ind[i]['Birthday'], "%Y-%m-%d")
                 bd_list_of_siblings.append(d)
             count_of_siblings = len(bd_list_of_siblings)
             if count_of_siblings ==1:
