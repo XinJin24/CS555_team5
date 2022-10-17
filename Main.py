@@ -28,6 +28,10 @@ marriageAfter14(individualDictionary, familyDictionary)
 noPolygamy(individualDictionary, familyDictionary)
 # US12
 parentsNotTooOld(individualDictionary, familyDictionary)
+#US13
+us13_sibling_spacing(individualDictionary,familyDictionary)
+#US14
+us14_multiple_births_less_5(individualDictionary,familyDictionary)
 # US15
 fewerThan15Siblings(individualDictionary, familyDictionary)
 # US16
