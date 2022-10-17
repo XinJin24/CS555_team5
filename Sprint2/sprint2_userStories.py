@@ -189,6 +189,7 @@ def us14_multiple_births_less_5(ind,fam):
                 if y>5:
                     msg= "ERROR US14: "+ str(key) + " Family has more than 5 siblings born at same time"
                     flag = False
+                    break
                     # print(msg)
                 else:
                     msg = "OK:US14 " + str(key) + str(fam[key]['Husband_Name']) + " and " + str(fam[key]['Wife_Name'])  +  " Family : No error. Less than 5 siblings"
