@@ -63,6 +63,25 @@ familyDictionary7={}
 familyDictionary7[0]={'ID': 4, 'Marriage': '', 'Divorce': 'NA',
                                                     'Husband_ID': '', 'Husband_Name': 'dsds /jin/', 'Wife_ID': '',
                                                     'Wife_Name': '', 'Children': [2]}
+
+#dictionaries for US13 and US14
+familyDictionary13={}
+familyDictionary13['F1'] = {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': []}
+individualDictionary13={}
+individualDictionary13["I5"] = {'ID': 'I5', 'Name': 'Fin /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary13["I6"] = {'ID': 'I6', 'Name': 'Marlin /Potter/', 'Gender': 'M', 'Birthday': '1984-10-05', 'Age': 23, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary13["I7"] = {'ID': 'I7', 'Name': 'Albus /Potter/', 'Gender': 'M', 'Birthday': '1982-10-08', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary13["I8"] = {'ID': 'I8', 'Name': 'James /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary13["I9"] = {'ID': 'I9', 'Name': 'Ron /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary13["I10"] = {'ID': 'I10', 'Name': 'Fred /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary13["I11"] = {'ID': 'I11', 'Name': 'George /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary13["I12"] = {'ID': 'I12', 'Name': 'Dean /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+
+
+
+
+
+
 class userStories9toTest(unittest.TestCase):
     #test US09, Birth before death of parents
     def test_birthBeforeDeathOfParents_1(self):
@@ -114,6 +133,49 @@ class userStories9toTest(unittest.TestCase):
         result=marriageAfter14(individualDictionary, familyDictionary)
         self.assertTrue(result)
 
+        
+   #test US13 - Siblings spacing -- recorded as error if not
+    def test_siblingSpacing_1(self):
+        result = us13_sibling_spacing(individualDictionary13,familyDictionary13)
+        self.assertTrue(result)
+
+    def test_siblingSpacing_2(self):
+        familyDictionary13['F1']['Children'] = ['I5']
+        result = us13_sibling_spacing(individualDictionary13,familyDictionary13)
+        self.assertTrue(result)
+
+    def test_siblingSpacing_3(self):
+        familyDictionary13['F1']['Children'] = ['I5', 'I6']
+        result = us13_sibling_spacing(individualDictionary13,familyDictionary13)
+        self.assertTrue(result)
+
+    def test_siblingSpacing_4(self):
+        familyDictionary13['F1']['Children'] = ['I5', 'I7']
+        result = us13_sibling_spacing(individualDictionary13,familyDictionary13)
+        self.assertFalse(result)
+
+    # test US14 - Multiple births <= 5
+
+    def test_us14_multiple_births_less_5_1(self):
+        result = us14_multiple_births_less_5(individualDictionary13,familyDictionary13)
+        self.assertTrue(result)
+
+    def test_us14_multiple_births_less_5_2(self):
+        familyDictionary13['F1']['Children'] = ['I5']
+        result = us14_multiple_births_less_5(individualDictionary13,familyDictionary13)
+        self.assertTrue(result)
+
+    def test_us14_multiple_births_less_5_3(self):
+        familyDictionary13['F1']['Children'] = ['I5', 'I6']
+        result = us14_multiple_births_less_5(individualDictionary13,familyDictionary13)
+        self.assertTrue(result)
+
+    def test_us14_multiple_births_less_5_4(self):
+        familyDictionary13['F1']['Children'] = ['I5', 'I8', 'I9', 'I10', 'I11', 'I12']
+        result = us14_multiple_births_less_5(individualDictionary13,familyDictionary13)
+        self.assertFalse(result)
+        
+        
     #test US15, There should be fewer than 15 siblings in a family
     def test_fewerThan15Siblings_1(self):
         result=fewerThan15Siblings(individualDictionary, familyDictionary1)
