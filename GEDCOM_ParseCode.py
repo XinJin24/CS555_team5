@@ -123,27 +123,60 @@ def getIndividualsAndFamilies(fileName):
                 elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'FAMC':
                     child = re.sub('[^A-Za-z0-9]+', '', finalList[2])
                     individualDictionary[keyValue]['Child'] = child
-                elif finalList[0] == '2' and validTwoTag(finalList[1]) == 'Y' and finalList[1] == 'DATE':
-                    dateKeyValue = individualDictionary[keyValue]['Birthday']
-                    if dateKeyValue != '':
-                        deathDayUnformatted = finalList[2].split(' ')
-                        deathDayFormatted = deathDayUnformatted[2] + '-' + monthDictionary[
-                            deathDayUnformatted[1]] + '-' + \
-                                            deathDayUnformatted[0]
-                        individualDictionary[keyValue]['Death'] = deathDayFormatted
-                        individualDictionary[keyValue]['Alive'] = 'False'
-                    else:
-                        birthDayUnformatted = finalList[2].split(' ')
-                        birthDayFormatted = birthDayUnformatted[2] + '-' + monthDictionary[
-                            birthDayUnformatted[1]] + '-' + birthDayUnformatted[0]
-                        individualDictionary[keyValue]['Birthday'] = birthDayFormatted
+                elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'BIRT':
+                    line1 = next(file)
 
-                        # populate birthdate
-                        year = int(birthDayUnformatted[2])
-                        month = int(monthDictionary[birthDayUnformatted[1]])
-                        day = int(birthDayUnformatted[0])
-                        currentAge = calculateAge(date(year, month, day))
-                        individualDictionary[keyValue]['Age'] = currentAge
+                    cleanLine = line1.rstrip()
+                    # create a list of each line, splitting on space
+                    lineList = cleanLine.split(' ')
+                    # instantiate a blank string to be used below
+                    remainderString = ""
+                    # iterate through each line list captured above, range is start on third index
+                    for item in lineList[2:]:
+                        # build string from third index and beyond of list
+                        remainderString = remainderString + " " + item
+                    # for string created, remove leading or ending white space
+                    remainderString = remainderString.strip()
+                    # create final list to be used as input
+                    finalList = lineList[0], lineList[1], remainderString
+                    # conditions to determine which calls based on level number
+
+                    birthDayUnformatted = finalList[2].split(' ')
+                    birthDayFormatted = birthDayUnformatted[2] + '-' + monthDictionary[
+                        birthDayUnformatted[1]] + '-' + \
+                                        birthDayUnformatted[0]
+                    individualDictionary[keyValue]['Birthday'] = birthDayFormatted
+
+                    # populate age
+                    year = int(birthDayUnformatted[2])
+                    month = int(monthDictionary[birthDayUnformatted[1]])
+                    day = int(birthDayUnformatted[0])
+                    currentAge = calculateAge(date(year, month, day))
+                    individualDictionary[keyValue]['Age'] = currentAge
+
+                elif finalList[0] == '1' and validOneTag(finalList[1]) == 'Y' and finalList[1] == 'DEAT':
+                    line1 = next(file)
+
+                    cleanLine = line1.rstrip()
+                    # create a list of each line, splitting on space
+                    lineList = cleanLine.split(' ')
+                    # instantiate a blank string to be used below
+                    remainderString = ""
+                    # iterate through each line list captured above, range is start on third index
+                    for item in lineList[2:]:
+                        # build string from third index and beyond of list
+                        remainderString = remainderString + " " + item
+                    # for string created, remove leading or ending white space
+                    remainderString = remainderString.strip()
+                    # create final list to be used as input
+                    finalList = lineList[0], lineList[1], remainderString
+                    # conditions to determine which calls based on level number
+                    deathDayUnformatted = finalList[2].split(' ')
+                    deathDayFormatted = deathDayUnformatted[2] + '-' + monthDictionary[
+                        deathDayUnformatted[1]] + '-' + deathDayUnformatted[0]
+                    individualDictionary[keyValue]['Death'] = deathDayFormatted
+                    individualDictionary[keyValue]['Alive'] = 'False'
+
                 else:
                     continue
     with open(fileName) as file:
