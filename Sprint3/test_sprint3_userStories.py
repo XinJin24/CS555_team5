@@ -19,6 +19,29 @@ familyDictionary['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 
 familyDictionary['F3'] = {'ID': 'F3', 'Marriage': '1993-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'Jack /Marks/',
                           'Wife_ID': 'I99', 'Wife_Name': 'Anna /Marks/', 'Children': []}
 
+#dictionaries for testing user stories US21 and US23
+familyDictionary211={}
+individualDictionary211={}
+familyDictionary211['F1'] = {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I21', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': []}
+individualDictionary211["I21"] = {'ID': 'I21', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary211["I3"] = {'ID': 'I3', 'Name': 'Ginny /Weasely/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary212={}
+individualDictionary212={}
+familyDictionary212['F1'] = {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I21', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': []}
+individualDictionary212["I21"] = {'ID': 'I21', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary212["I3"] = {'ID': 'I3', 'Name': 'Ginny /Weasely/', 'Gender': 'F', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary213={}
+individualDictionary213={}
+familyDictionary213['F1'] = {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I21', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': []}
+individualDictionary213["I21"] = {'ID': 'I21', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary213["I3"] = {'ID': 'I3', 'Name': 'Ginny /Weasely/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary214={}
+individualDictionary214={}
+familyDictionary214['F1'] = {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I21', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': []}
+individualDictionary214["I21"] = {'ID': 'I21', 'Name': 'Harry /Potter/', 'Gender': ' ', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary214["I3"] = {'ID': 'I3', 'Name': 'Ginny /Weasely/', 'Gender': ' ', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+
+
 class userStories17And18Test(unittest.TestCase):
     #test US17, No marriages to descendants
     def test_noMarriagesToDescendants_1(self):
@@ -42,6 +65,26 @@ class userStories17And18Test(unittest.TestCase):
         familyDictionary['F3'] = {'ID': 'F3', 'Marriage': '1993-10-9', 'Divorce': 'NA', 'Husband_ID': 'I29', 'Husband_Name': 'Ivan /Marks/',
                           'Wife_ID': 'I99', 'Wife_Name': 'Anna /Marks/', 'Children': []}
         result = siblingsShouldNotMarry(individualDictionary, familyDictionary)
+        self.assertFalse(result)
+ 
+ class userStories21and23Test(unittest.TestCase):
+  
+  #test US21, Correct gender for role
+  
+    def test_us21GenderRoles_1(self): #both husband and wife gender wrong
+        result = us21GenderRoles(individualDictionary211, familyDictionary211)
+        self.assertFalse(result)
+
+    def test_us21GenderRoles_2(self): #only husband gender wrong
+        result = us21GenderRoles(individualDictionary212, familyDictionary212)
+        self.assertFalse(result)
+
+    def test_us21GenderRoles_3(self): #only wife gender wrong
+        result = us21GenderRoles(individualDictionary213, familyDictionary213)
+        self.assertFalse(result)
+
+    def test_us21GenderRoles_4(self): #No gender given
+        result = us21GenderRoles(individualDictionary214, familyDictionary214)
         self.assertFalse(result)
 
 
