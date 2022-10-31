@@ -82,6 +82,25 @@ def us21GenderRoles(ind, fam):
 
      return flag
 
+#User story - 23 : Unique name and birth date
+'''No more than one individual with the same name and birth date should appear in a GEDCOM file'''
+def us23UniqueNameandbirth(ind,fam):
+    flag = True
+    name_and_bd_dict = {}
+    for indkey, value in ind.items():
+        name1 = value['Name']
+        bd1 = value['Birthday']
+        if name1 not in name_and_bd_dict:
+            name_and_bd_dict[name1] = (indkey, bd1)
+        else:
+            comparekey, comparebd = name_and_bd_dict[name1]
+            if comparebd == bd1:
+                flag = False
+                print("ERROR US21: Individuals "+ indkey +" and " + comparekey + " has same name and birthdays")
+
+    return flag
+
+
 # US24 - Unique families by spouses
 # No more than one family with the same spouses by name and the same marriage date should appear in a GEDCOM file
 def uniqueFamiliesBySpouses(individualDictionary, familyDictionary):
