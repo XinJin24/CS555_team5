@@ -1,5 +1,6 @@
 from datetime import date, datetime, timedelta
 from collections import Counter
+from re import L
 
 # parse the date
 def yearsDifferenceChecker(date1, date2):
@@ -227,7 +228,7 @@ def maleLastName(individualDictionary, familyDictionary):
         if values["Children"]=='NA':
             continue
         for child in values["Children"]:
-            if(individualDictionary[child]=='NA'):
+            if(len(individualDictionary[child])==0):
                 continue
             if(individualDictionary[child]['Gender']=='F'):
                 continue
@@ -262,4 +263,42 @@ def us22_unique_ids(ind,fam):
             print("IDs are not unique.")
             return False
     return True
+
+
+# US24	Unique families by spouses	No more than one family with the same spouses by name and the same marriage date should appear in a GEDCOM file
+def uniqueFamiliesBySpouses(individualDictionary, familyDictionary):
+    couplePair={}
+    for key, value in familyDictionary.items():
+        couplePair[key]={'Husband_ID': value['Husband_ID'],
+        'Wife_ID': value['Wife_ID'],
+        'Married': value['Marriage'],
+        'Divorce': value['Divorce']}
+    for key, value in couplePair.items():
+        husbandID=value['Husband_ID']
+        wifeID=value['Wife_ID']
+        
+
+        
+
+        
+        
+
+
+
+# US25	Unique first names in families	No more than one child with the same name and birth date should appear in a family
+def uniqueFirstName(individualDictionary, familyDictionary):
+    flag=True
+    for key, value in familyDictionary.items():
+        firstNameMap=[]
+        if value['Children']=='NA' or len(value['Children'])==1:
+            continue
+        for child in value['Children']:
+            lastName=individualDictionary[child]['Name'].split('/')[0]
+            if lastName in firstNameMap:
+                print("ERROR US25 , Family ", key," has children whose first name are same." )
+                flag=False
+            firstNameMap.append(lastName)
+    if flag == False:
+        return False
+
 

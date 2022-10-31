@@ -39,3 +39,12 @@ maleLastName(individualDictionary,familyDictionary)
 # US22
 us22_unique_ids(individualDictionary, familyDictionary)
 
+
+# US24
+uniqueFamiliesBySpouses(individualDictionary, familyDictionary)
+
+# US25
+uniqueFirstName(individualDictionary, familyDictionary)
+
+
+

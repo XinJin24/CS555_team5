@@ -1,4 +1,5 @@
 from contextlib import nullcontext
+from re import I
 import unittest
 from sprint2_userStories import *
 import datetime
@@ -78,8 +79,12 @@ individualDictionary13["I11"] = {'ID': 'I11', 'Name': 'George /Potter/', 'Gender
 individualDictionary13["I12"] = {'ID': 'I12', 'Name': 'Dean /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 
 
+familyDictionary25={}
+familyDictionary25['1']= {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': []}
+familyDictionary25['2']= {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': ['C1']}
 
 
+individualDictionary={}
 
 
 class userStories9toTest(unittest.TestCase):
@@ -340,6 +345,9 @@ class test_parents_not_too_old(unittest.TestCase):
         familyDictionary = self.generate_Family_Dictionary()
         individualDictionary['I1']['Birthday'] = '1832-08-15'
         self.assertFalse(parentsNotTooOld(individualDictionary, familyDictionary))
+
+    def test_uniqueFirstName_notChild(self):
+        self.assertIsNone(uniqueFirstName(individualDictionary13,familyDictionary25))
 
 if __name__ == '__main__':
     unittest.main()
