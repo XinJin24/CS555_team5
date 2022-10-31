@@ -41,7 +41,8 @@ maleLastName(individualDictionary,familyDictionary)
 us21GenderRoles(individualDictionary, familyDictionary)
 # US22
 us22_unique_ids(individualDictionary, familyDictionary)
-
+#US23
+us23UniqueNameandbirth(individualDictionary, familyDictionary)
 # US24
 uniqueFamiliesBySpouses(individualDictionary,familyDictionary)
 # US25
