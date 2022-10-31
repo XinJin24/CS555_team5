@@ -41,7 +41,100 @@ familyDictionary214['F1'] = {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA
 individualDictionary214["I21"] = {'ID': 'I21', 'Name': 'Harry /Potter/', 'Gender': ' ', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 individualDictionary214["I3"] = {'ID': 'I3', 'Name': 'Ginny /Weasely/', 'Gender': ' ', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 
+familyDictionary324_1={}
+familyDictionary324_1['1']={'ID': '1', 'Marriage': '1962-04-7', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '1', 'Wife_ID': '',
+                                                    'Wife_Name': '11', 'Children': []}
+familyDictionary324_1['2']={'ID': '2', 'Marriage': '1962-04-7', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '2', 'Wife_ID': '',
+                                                    'Wife_Name': '11', 'Children': []}    
+familyDictionary324_2={}     
+familyDictionary324_2['2']={'ID': '2', 'Marriage': '1962-04-7', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '2', 'Wife_ID': '11',
+                                                    'Wife_Name': '', 'Children': []}                                                            
+familyDictionary324_2['3']={'ID': '3', 'Marriage': '1962-04-7', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '2', 'Wife_ID': '',
+                                                    'Wife_Name': '33', 'Children': []}
+familyDictionary324_3={}    
+familyDictionary324_3['3']={'ID': '3', 'Marriage': '1962-04-7', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '2', 'Wife_ID': '',
+                                                    'Wife_Name': '33', 'Children': []}                                                 
+familyDictionary324_3['4']={'ID': '4', 'Marriage': '1962-04-7', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '121', 'Wife_ID': '',
+                                                    'Wife_Name': '21212', 'Children': []}   
+familyDictionary324_4={} 
+familyDictionary324_4['4']={'ID': '4', 'Marriage': '1962-04-7', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '121', 'Wife_ID': '21212',
+                                                    'Wife_Name': '', 'Children': []}                                                         
+familyDictionary324_4['5']={'ID': '5', 'Marriage': '1962-04-8', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '3dd32', 'Wife_ID': '',
+                                                    'Wife_Name': 'dsdwedewewdw434', 'Children': []}
+familyDictionary324_5={} 
+familyDictionary324_5['5']={'ID': '5', 'Marriage': '1962-04-8', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '3dd32', 'Wife_ID': '',
+                                                    'Wife_Name': 'dsdsd', 'Children': []}
 
+familyDictionary324_5['6']={'ID': '6', 'Marriage': '1962-04-1', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '3dd32', 'Wife_ID': '',
+                                                    'Wife_Name': 'dsdsd', 'Children': []}     
+
+
+individualDictionary325_1={}
+familyDictionary325_1={}
+individualDictionary325_1['1'] = {'ID': '1', 'Name': '', 'Gender': '',
+                                                      'Birthday': '', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}
+familyDictionary325_1['1']={'ID': '1', 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': []}                                                  
+
+individualDictionary325_2={}
+familyDictionary325_2={}
+individualDictionary325_2['1'] = {'ID': '1', 'Name': 'abc', 'Gender': '',
+                                                      'Birthday': '1962-04-1', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}
+individualDictionary325_2['2'] = {'ID': '2', 'Name': 'abc', 'Gender': '',
+                                                      'Birthday': '1962-04-2', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}                                                     
+familyDictionary325_2['1']={'ID': '1', 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': ['1','2']}  
+
+individualDictionary325_3={}
+familyDictionary325_3={}
+individualDictionary325_3['1'] = {'ID': '1', 'Name': 'abcd', 'Gender': '',
+                                                      'Birthday': '1962-04-1', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}
+individualDictionary325_3['2'] = {'ID': '2', 'Name': 'abc', 'Gender': '',
+                                                      'Birthday': '1962-04-1', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}                                                     
+familyDictionary325_3['1']={'ID': '1', 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': ['1','2']}     
+
+individualDictionary325_4={}
+familyDictionary325_4={}
+individualDictionary325_4['1'] = {'ID': '1', 'Name': 'abcde', 'Gender': '',
+                                                      'Birthday': '1962-04-2', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}
+individualDictionary325_4['2'] = {'ID': '2', 'Name': 'abc', 'Gender': '',
+                                                      'Birthday': '1962-04-1', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}                                                     
+familyDictionary325_4['1']={'ID': '1', 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': ['1','2']}     
+
+individualDictionary325_5={}
+familyDictionary325_5={}
+individualDictionary325_5['1'] = {'ID': '1', 'Name': 'abc', 'Gender': '',
+                                                      'Birthday': '1962-04-1', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}
+individualDictionary325_5['2'] = {'ID': '2', 'Name': 'abc', 'Gender': '',
+                                                      'Birthday': '1962-04-1', 'Age': '', 'Alive': 'True', 'Death': 'NA',
+                                                      'Child': 'NA', 'Spouse': []}                                                     
+familyDictionary325_5['1']={'ID': '1', 'Marriage': '', 'Divorce': 'NA',
+                                                    'Husband_ID': '', 'Husband_Name': '', 'Wife_ID': '',
+                                                    'Wife_Name': '', 'Children': ['1','2']}  
 
 class userStories17And18Test(unittest.TestCase):
      #test US17, No marriages to descendants
@@ -88,6 +181,75 @@ class userStories21and23Test(unittest.TestCase):
         result = us21GenderRoles(individualDictionary214, familyDictionary214)
         self.assertFalse(result)
 
+
+class userStories17And18Test(unittest.TestCase):
+     #test US17, No marriages to descendants
+     def test_noMarriagesToDescendants_1(self):
+         result = noMarriagesToDescendants(individualDictionary, familyDictionary)
+         self.assertFalse(result)
+
+     def test_noMarriagesToDescendants_2(self):
+         individualDictionary['I99']['Spouse'] = []
+         individualDictionary["I13"]['Spouse'] = ['F6']
+         result = noMarriagesToDescendants(individualDictionary, familyDictionary)
+         self.assertTrue(result)
+
+     # test US18, Siblings should not marry
+     def test_siblingsShouldNotMarry_3(self):
+         result = siblingsShouldNotMarry(individualDictionary, familyDictionary)
+         self.assertTrue(result)
+
+     def test_siblingsShouldNotMarry_4(self):
+         individualDictionary['I29']['Spouse'] = ['F3']
+         individualDictionary['I99']['Spouse'] = ['F3']
+         familyDictionary['F3'] = {'ID': 'F3', 'Marriage': '1993-10-9', 'Divorce': 'NA', 'Husband_ID': 'I29', 'Husband_Name': 'Ivan /Marks/',
+                           'Wife_ID': 'I99', 'Wife_Name': 'Anna /Marks/', 'Children': []}
+         result = siblingsShouldNotMarry(individualDictionary, familyDictionary)
+         self.assertFalse(result)
+ 
+class userStories24and25Test(unittest.TestCase):
+    
+    # US24
+    def test_uniqueFamiliesBySpouses_1(self): #same wife name and marriage date
+        result = uniqueFamiliesBySpouses(individualDictionary211, familyDictionary324_1)
+        self.assertFalse(result)
+
+    def test_uniqueFamiliesBySpouses_2(self): #same husband name and marriage date
+        result = uniqueFamiliesBySpouses(individualDictionary212, familyDictionary324_2)
+        self.assertFalse(result)
+
+    def test_uniqueFamiliesBySpouses_3(self): #same marriage date and different spouse names
+        result = uniqueFamiliesBySpouses(individualDictionary213, familyDictionary324_3)
+        self.assertTrue(result)
+
+    def test_uniqueFamiliesBySpouses_4(self): #different marriage date and different spouse names
+        result = uniqueFamiliesBySpouses(individualDictionary214, familyDictionary324_4)
+        self.assertTrue(result)
+
+    def test_uniqueFamiliesBySpouses_5(self): #No gender given
+        result = uniqueFamiliesBySpouses(individualDictionary214, familyDictionary324_5)
+        self.assertTrue(result)
+
+    # US25
+    def test_uniqueFirstNamesinFamilies_1(self): # empty name and empty birthday
+        result = uniqueFirstNamesinFamilies(individualDictionary325_1, familyDictionary325_1)
+        self.assertTrue(result)
+
+    def test_uniqueFirstNamesinFamilies_2(self): # same name different birthday
+        result = uniqueFirstNamesinFamilies(individualDictionary325_2, familyDictionary325_2)
+        self.assertTrue(result)
+
+    def test_uniqueFirstNamesinFamilies_3(self): # differernt name same birthday
+        result = uniqueFirstNamesinFamilies(individualDictionary325_3, familyDictionary325_3)
+        self.assertTrue(result)
+
+    def test_uniqueFirstNamesinFamilies_4(self): # different name different birthday
+        result = uniqueFirstNamesinFamilies(individualDictionary325_4, familyDictionary325_4)
+        self.assertTrue(result)
+
+    def test_uniqueFirstNamesinFamilies_5(self): # same name same birthday
+        result = uniqueFirstNamesinFamilies(individualDictionary325_5, familyDictionary325_5)
+        self.assertFalse(result)
 
 if __name__ == '__main__':
     unittest.main()

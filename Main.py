@@ -1,5 +1,6 @@
 from Sprint1.sprint1_userStories import *
 from Sprint2.sprint2_userStories import *
+from Sprint3.sprint3_userStories import *
 from GEDCOM_ParseCode import *
 
 individualDictionary, familyDictionary= getIndividualsAndFamilies("MarksFamily.ged")
@@ -36,7 +37,12 @@ us14_multiple_births_less_5(individualDictionary,familyDictionary)
 fewerThan15Siblings(individualDictionary, familyDictionary)
 # US16
 maleLastName(individualDictionary,familyDictionary)
+# US21
+us21GenderRoles(individualDictionary, familyDictionary)
 # US22
 us22_unique_ids(individualDictionary, familyDictionary)
-#US21
-us21GenderRoles(individualDictionary, familyDictionary)
+
+# US24
+uniqueFamiliesBySpouses(individualDictionary,familyDictionary)
+# US25
+uniqueFirstNamesinFamilies(individualDictionary,familyDictionary)

@@ -81,3 +81,36 @@ def us21GenderRoles(ind, fam):
                  print("ERROR US21: Individual "+wife['ID']+" Wife is not Female")
 
      return flag
+
+# US24 - Unique families by spouses
+# No more than one family with the same spouses by name and the same marriage date should appear in a GEDCOM file
+def uniqueFamiliesBySpouses(individualDictionary, familyDictionary):
+    flag=True
+    for key,value in familyDictionary.items():
+        for key2,value2 in familyDictionary.items():
+            if(key!=key2 and (value['Husband_Name']==value2['Husband_Name'] or value['Wife_Name']==value2['Wife_Name'])
+            and value['Marriage']==value2['Marriage']):
+                flag=False
+                print("ERROR US24: Family ID : " , key , " has a same spouse and a same marriage date in other family")
+    return flag
+
+
+# US25 - Unique first names in families
+# No more than one child with the same name and birth date should appear in a family
+def uniqueFirstNamesinFamilies(individualDictionary, familyDictionary):
+    flag =True
+    for key, value in familyDictionary.items():
+        childrenDictionary={}
+        if(value['Children']=='NA'):
+            continue
+        if(len(value['Children'])==1):
+            continue
+        for child in value['Children']:
+            childrenDictionary[child]={'ID':child,'Name':individualDictionary[child]['Name'],'Birthday':individualDictionary[child]['Birthday']}
+        
+        for key1,value1 in childrenDictionary.items():
+            for key2,value2 in childrenDictionary.items():
+                if(key1!=key2 and value1['Name']==value2['Name'] and value1['Birthday']==value2['Birthday']):
+                    flag=False
+                    print("ERROR US25: Family ID : " , key , ", Child ID :", key1, " has another child with the same name and birth date")
+    return flag
