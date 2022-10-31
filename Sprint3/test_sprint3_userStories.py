@@ -42,32 +42,33 @@ individualDictionary214["I21"] = {'ID': 'I21', 'Name': 'Harry /Potter/', 'Gender
 individualDictionary214["I3"] = {'ID': 'I3', 'Name': 'Ginny /Weasely/', 'Gender': ' ', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 
 
+
 class userStories17And18Test(unittest.TestCase):
-    #test US17, No marriages to descendants
-    def test_noMarriagesToDescendants_1(self):
-        result = noMarriagesToDescendants(individualDictionary, familyDictionary)
-        self.assertFalse(result)
+     #test US17, No marriages to descendants
+     def test_noMarriagesToDescendants_1(self):
+         result = noMarriagesToDescendants(individualDictionary, familyDictionary)
+         self.assertFalse(result)
 
-    def test_noMarriagesToDescendants_2(self):
-        individualDictionary['I99']['Spouse'] = []
-        individualDictionary["I13"]['Spouse'] = ['F6']
-        result = noMarriagesToDescendants(individualDictionary, familyDictionary)
-        self.assertTrue(result)
+     def test_noMarriagesToDescendants_2(self):
+         individualDictionary['I99']['Spouse'] = []
+         individualDictionary["I13"]['Spouse'] = ['F6']
+         result = noMarriagesToDescendants(individualDictionary, familyDictionary)
+         self.assertTrue(result)
 
-    # test US18, Siblings should not marry
-    def test_siblingsShouldNotMarry_3(self):
-        result = siblingsShouldNotMarry(individualDictionary, familyDictionary)
-        self.assertTrue(result)
+     # test US18, Siblings should not marry
+     def test_siblingsShouldNotMarry_3(self):
+         result = siblingsShouldNotMarry(individualDictionary, familyDictionary)
+         self.assertTrue(result)
 
-    def test_siblingsShouldNotMarry_4(self):
-        individualDictionary['I29']['Spouse'] = ['F3']
-        individualDictionary['I99']['Spouse'] = ['F3']
-        familyDictionary['F3'] = {'ID': 'F3', 'Marriage': '1993-10-9', 'Divorce': 'NA', 'Husband_ID': 'I29', 'Husband_Name': 'Ivan /Marks/',
-                          'Wife_ID': 'I99', 'Wife_Name': 'Anna /Marks/', 'Children': []}
-        result = siblingsShouldNotMarry(individualDictionary, familyDictionary)
-        self.assertFalse(result)
+     def test_siblingsShouldNotMarry_4(self):
+         individualDictionary['I29']['Spouse'] = ['F3']
+         individualDictionary['I99']['Spouse'] = ['F3']
+         familyDictionary['F3'] = {'ID': 'F3', 'Marriage': '1993-10-9', 'Divorce': 'NA', 'Husband_ID': 'I29', 'Husband_Name': 'Ivan /Marks/',
+                           'Wife_ID': 'I99', 'Wife_Name': 'Anna /Marks/', 'Children': []}
+         result = siblingsShouldNotMarry(individualDictionary, familyDictionary)
+         self.assertFalse(result)
  
- class userStories21and23Test(unittest.TestCase):
+class userStories21and23Test(unittest.TestCase):
   
   #test US21, Correct gender for role
   
