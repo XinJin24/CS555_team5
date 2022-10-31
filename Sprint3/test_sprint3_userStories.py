@@ -40,6 +40,17 @@ individualDictionary214={}
 familyDictionary214['F1'] = {'ID': 'F1', 'Marriage': '1981-01-8', 'Divorce': 'NA', 'Husband_ID': 'I21', 'Husband_Name': 'Harry /Potter/', 'Wife_ID': 'I3', 'Wife_Name': 'Ginny /Weasely/', 'Children': []}
 individualDictionary214["I21"] = {'ID': 'I21', 'Name': 'Harry /Potter/', 'Gender': ' ', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 individualDictionary214["I3"] = {'ID': 'I3', 'Name': 'Ginny /Weasely/', 'Gender': ' ', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary231={}
+individualDictionary231={}
+individualDictionary231["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary231["I3"] = {'ID': 'I3', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary232={}
+individualDictionary232["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary232["I3"] = {'ID': 'I3', 'Name': 'Ginny /Potter/', 'Gender': 'F', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary233={}
+individualDictionary233["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary233["I3"] = {'ID': 'I3', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+
 
 familyDictionary324_1={}
 familyDictionary324_1['1']={'ID': '1', 'Marriage': '1962-04-7', 'Divorce': 'NA',
@@ -180,6 +191,20 @@ class userStories21and23Test(unittest.TestCase):
     def test_us21GenderRoles_4(self): #No gender given
         result = us21GenderRoles(individualDictionary214, familyDictionary214)
         self.assertFalse(result)
+    
+    #test US23 - Unique name and birth date
+
+    def test_us23UniqueNameandbirth_1(self): #same name and same birthday
+        result = us23UniqueNameandbirth(individualDictionary231, familyDictionary231)
+        self.assertFalse(result)
+
+    def test_us23UniqueNameandbirth_2(self): #same birthday but different name
+        result = us23UniqueNameandbirth(individualDictionary232, familyDictionary231)
+        self.assertTrue(result)
+
+    def test_us23UniqueNameandbirth_2(self): #same name but different birthday
+        result = us23UniqueNameandbirth(individualDictionary233, familyDictionary231)
+        self.assertTrue(result)
 
 
 class userStories17And18Test(unittest.TestCase):
