@@ -52,6 +52,115 @@ def siblingsShouldNotMarry(individualDictionary, familyDictionary):
                 printError("18", fami, "Siblings marry one another.")
     return flag
 
+# User Story 19 - Individual should not marry their first cousins
+def us19_no_marriage_to_first_cousin(individualDictionary, familyDictionary):
+    flag = True
+
+    for ind_key, ind_values in individualDictionary.items():
+        cousinList = []
+        individualsFamily = ind_values['Child']
+        if individualsFamily != 'NA':
+            # Capture the parents ID numbers
+            motherID = familyDictionary[individualsFamily]['Wife_ID']
+            fatherID = familyDictionary[individualsFamily]['Husband_ID']
+            # Capture the families they were born into
+            motherFamily = individualDictionary[motherID].get('Child')
+            fatherFamily = individualDictionary[fatherID].get('Child')
+
+            if motherFamily != 'NA':
+                motherSiblings = familyDictionary[motherFamily].get('Children')
+                for sibling in motherSiblings:
+                    if sibling != motherID:
+                        motherSiblingFamily = individualDictionary[sibling].get('Spouse')
+                        if motherSiblingFamily != 'NA':
+                            for family in motherSiblingFamily:
+                                motherSiblingFamilyValue = familyDictionary[family]
+                                cousins_to_add = motherSiblingFamilyValue['Children']
+                                for cousin in cousins_to_add:
+                                    if cousin not in cousinList:
+                                        cousinList.append(cousin)
+
+            if fatherFamily != 'NA':
+                fatherSiblings = familyDictionary[fatherFamily].get('Children')
+                for sibling in fatherSiblings:
+                    if sibling != fatherID:
+                        fatherSiblingFamily = individualDictionary[sibling].get('Spouse')
+                        if fatherSiblingFamily != 'NA':
+                            for family in fatherSiblingFamily:
+                                fatherSiblingFamilyValue = familyDictionary[family]
+                                cousins_to_add = fatherSiblingFamilyValue['Children']
+                                for cousin in cousins_to_add:
+                                    if cousin not in cousinList:
+                                        cousinList.append(cousin)
+
+            spouseFamilyList = ind_values['Spouse']
+            for spouseFamily in spouseFamilyList:
+                familyData = familyDictionary[spouseFamily]
+                husbandID, wifeID = familyData['Husband_ID'], familyData['Wife_ID']
+                if ind_key == husbandID:
+                    spouse = wifeID
+                else:
+                    spouse = husbandID
+                if spouse in cousinList:
+                    flag = False
+                    print("ERROR US19 ", ind_values['Name'] + "Person has violated and married a cousin:",
+                          individualDictionary[spouse]['Name'])
+                else:
+                    continue
+
+        else:
+            continue
+
+    return flag
+
+# User Story 20 - Individual should not marry nieces and nephews
+def us20_aunts_uncles_dont_marry_nieces_nephews(individualDictionary, familyDictionary):
+    flag = True
+    for ind_key, ind_values in individualDictionary.items():
+        nieces_nephews_list = []
+        aunt_uncle_list = []
+        individualFamily = individualDictionary[ind_key].get('Child')
+        if individualFamily != 'NA':
+            familyDetails = familyDictionary[individualFamily]
+            childrenList = familyDetails['Children']
+            momID, dadID = familyDetails['Wife_ID'], familyDetails['Husband_ID']
+            momFamily = individualDictionary[momID].get('Child')
+            dadFamily = individualDictionary[dadID].get('Child')
+            if momFamily != 'NA':
+                momUncleList = familyDictionary[momFamily].get('Children')
+                for uncle in momUncleList:
+                    aunt_uncle_list.append(uncle)
+            if dadFamily != 'NA':
+                dadUncleList = familyDictionary[dadFamily].get('Children')
+                for uncle in dadUncleList:
+                    aunt_uncle_list.append(uncle)
+
+            for child in childrenList:
+                if child != ind_key:
+                    siblingFamily = individualDictionary[child]['Spouse']
+                    for spouse in siblingFamily:
+                        siblingFamilyDetails = familyDictionary[spouse]
+                        siblingFamilyChildren = siblingFamilyDetails['Children']
+                        for child in siblingFamilyChildren:
+                            nieces_nephews_list.append(child)
+
+            # Capture spouse of the individual
+            individualSpouseList = individualDictionary[ind_key]['Spouse']
+            for spouse in individualSpouseList:
+                Husband_ID, Wife_ID = familyDictionary[spouse]['Husband_ID'], familyDictionary[spouse]['Wife_ID']
+                if ind_key == Husband_ID:
+                    yourSpouse = Wife_ID
+                else:
+                    yourSpouse = Husband_ID
+                if yourSpouse in nieces_nephews_list or yourSpouse in aunt_uncle_list:
+                    flag = False
+                    print("ERROR US20 ", ind_values['Name'] + "Person has violated and married family member:",
+                          individualDictionary[yourSpouse]['Name'])
+                else:
+                    continue
+
+    return flag
+
 #User story - 21 : Correct gender for role
 '''Husband in family should be male and wife in family should be female'''
 
