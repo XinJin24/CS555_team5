@@ -1,7 +1,5 @@
 import calendar
 from datetime import datetime, timedelta, date
-import datetime
-
 
 # parse the date
 def yearsDifferenceChecker(date1, date2):
@@ -24,6 +22,14 @@ def modifiedDate(date, days):
 
 def printError(us, id, message):
     print("ERROR US" + us + " " + id + " " + message)
+
+def preciseAge(birthDate):
+    bdList = birthDate.split('-')
+    dateTime1 = datetime(int(bdList[0]), int(bdList[1]), int(bdList[2]))
+    timeDifference = datetime.now() - dateTime1
+    return timeDifference.days
+
+
 
 
 # US26 Corresponding entries
@@ -62,13 +68,15 @@ def correspondingEntries(individualDictionary, familyDictionary):
 
 # US 28 -  List siblings in families by decreasing age, i.e. oldest siblings first
 def list_siblings_decreasing_age(individualDictionary, familyDictionary):
+    returnSiblingList = []
     for key, values in familyDictionary.items():
         childrenList = []
         sortedChildrenList = []
         children = values['Children']
         # print(children)
         for child in children:
-            age = individualDictionary[child]['Age']
+            birthDate = individualDictionary[child]['Birthday']
+            age = preciseAge(birthDate)
             childTuple = (child, age)
             childrenList.append(childTuple)
             # print(childrenList)
@@ -79,7 +87,9 @@ def list_siblings_decreasing_age(individualDictionary, familyDictionary):
                 sortedChildrenList.append(i[0])
 
         if len(sortedChildrenList) != 0:
-            print(sortedChildrenList)
+            returnSiblingList.append(sortedChildrenList)
+
+    return returnSiblingList
 
 # US 29 -  List all deceased individuals in a GEDCOM file
 def list_all_deceased_individuals(individualDictionary, familyDictionary):
@@ -166,5 +176,4 @@ def listOrphans(individualDictionary, familyDictionary):
         print(printMessage, "are orphans.")
     return flag
 
-    
     
