@@ -79,7 +79,7 @@ def list_siblings_decreasing_age(individualDictionary, familyDictionary):
         if len(sortedChildrenList) != 0:
             print(sortedChildrenList)
 
-# US 28 -  List all deceased individuals in a GEDCOM file
+# US 29 -  List all deceased individuals in a GEDCOM file
 def list_all_deceased_individuals(individualDictionary, familyDictionary):
     deceasedList = []
     for keys, values in individualDictionary.items():
