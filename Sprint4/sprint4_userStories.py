@@ -79,6 +79,19 @@ def list_siblings_decreasing_age(individualDictionary, familyDictionary):
         if len(sortedChildrenList) != 0:
             print(sortedChildrenList)
 
+# US 28 -  List all deceased individuals in a GEDCOM file
+def list_all_deceased_individuals(individualDictionary, familyDictionary):
+    deceasedList = []
+    for keys, values in individualDictionary.items():
+        if values['Alive'] == 'False':
+            deceasedTuple = (values['ID'], values['Name'], values['Death'])
+            deceasedList.append(deceasedTuple)
+        else:
+            continue
+    return deceasedList
+
+
+
 
 # US34 List large age differences
 def listLargeAgeDifferences(individualDictionary, familyDictionary):

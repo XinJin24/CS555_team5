@@ -300,10 +300,6 @@ for key in familyDictionary:
 print(families)
 
 
-print("\n")
-print(individualDictionary)
-print("\n")
-print(familyDictionary)
 
 
 
