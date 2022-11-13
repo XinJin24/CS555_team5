@@ -60,6 +60,40 @@ def correspondingEntries(individualDictionary, familyDictionary):
                     printError("26", child, "has no corresponding entry.")
     return flag
 
+# US 28 -  List siblings in families by decreasing age, i.e. oldest siblings first
+def list_siblings_decreasing_age(individualDictionary, familyDictionary):
+    for key, values in familyDictionary.items():
+        childrenList = []
+        sortedChildrenList = []
+        children = values['Children']
+        # print(children)
+        for child in children:
+            age = individualDictionary[child]['Age']
+            childTuple = (child, age)
+            childrenList.append(childTuple)
+            # print(childrenList)
+        childrenList.sort(reverse=True, key=lambda x: x[1])
+        # print(childrenList)
+        if len(childrenList) != 0:
+            for i in childrenList:
+                sortedChildrenList.append(i[0])
+
+        if len(sortedChildrenList) != 0:
+            print(sortedChildrenList)
+
+# US 29 -  List all deceased individuals in a GEDCOM file
+def list_all_deceased_individuals(individualDictionary, familyDictionary):
+    deceasedList = []
+    for keys, values in individualDictionary.items():
+        if values['Alive'] == 'False':
+            deceasedTuple = (values['ID'], values['Name'], values['Death'])
+            deceasedList.append(deceasedTuple)
+        else:
+            continue
+    return deceasedList
+
+
+
 
 # US34 List large age differences
 def listLargeAgeDifferences(individualDictionary, familyDictionary):
