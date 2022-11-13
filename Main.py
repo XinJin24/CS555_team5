@@ -1,6 +1,7 @@
 from Sprint1.sprint1_userStories import *
 from Sprint2.sprint2_userStories import *
 from Sprint3.sprint3_userStories import *
+from Sprint4.sprint4_userStories import *
 from GEDCOM_ParseCode import *
 
 individualDictionary, familyDictionary= getIndividualsAndFamilies("MarksFamily.ged")
@@ -47,3 +48,7 @@ us23UniqueNameandbirth(individualDictionary, familyDictionary)
 uniqueFamiliesBySpouses(individualDictionary,familyDictionary)
 # US25
 uniqueFirstNamesinFamilies(individualDictionary,familyDictionary)
+# US32
+listMultipleBirths(individualDictionary,familyDictionary)
+# US33
+listOrphans(individualDictionary,familyDictionary)
