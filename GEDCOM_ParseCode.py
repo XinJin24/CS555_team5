@@ -30,6 +30,11 @@ def calculateAge(birthDate):
     age = int((date.today() - birthDate).days / days_in_year)
     return age
 
+def calculateDeathAge(deathDate, birthDate):
+    days_in_year = 365.2425
+    age = int((deathDate - birthDate).days / days_in_year)
+    return age
+
 # Function to determine if tag is valid for level number 0
 def validZeroTag(value):
     if value in zeroTagTuple:
@@ -177,6 +182,16 @@ def getIndividualsAndFamilies(fileName):
                     individualDictionary[keyValue]['Death'] = deathDayFormatted
                     individualDictionary[keyValue]['Alive'] = 'False'
 
+                    # Update Age for the age at time of death
+                    deathYear = int(deathDayUnformatted[2])
+                    print(deathYear)
+                    deathMonth = int(monthDictionary[deathDayUnformatted[1]])
+                    print(deathMonth)
+                    deathDay = int(deathDayUnformatted[0])
+                    print(deathDay)
+                    deathAge = calculateDeathAge(date(deathYear, deathMonth, deathDay), date(year, month, day))
+                    individualDictionary[keyValue]['Age'] = deathAge
+
                 else:
                     continue
     with open(fileName) as file:
@@ -298,6 +313,7 @@ for key in familyDictionary:
                     ,familyDictionary.get(key).get('Wife_Name')
                     ,familyDictionary.get(key).get('Children')])
 print(families)
+
 
 
 
