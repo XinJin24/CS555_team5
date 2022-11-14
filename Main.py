@@ -48,6 +48,10 @@ us23UniqueNameandbirth(individualDictionary, familyDictionary)
 uniqueFamiliesBySpouses(individualDictionary,familyDictionary)
 # US25
 uniqueFirstNamesinFamilies(individualDictionary,familyDictionary)
+#US30
+us30LivingMarried(individualDictionary, familyDictionary)
+#US31
+us31LivingSingle(individualDictionary, familyDictionary)
 # US32
 listMultipleBirths(individualDictionary,familyDictionary)
 # US33
