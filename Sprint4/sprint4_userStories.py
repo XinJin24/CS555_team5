@@ -92,7 +92,35 @@ def list_all_deceased_individuals(individualDictionary, familyDictionary):
             continue
     return deceasedList
 
+#User story 30 - List living married
+'''List all living married people in a GEDCOM file'''
+def us30LivingMarried(ind,fam):
+    list_of_living_married=[]
+    flag = True
+    for indkey, value in ind.items():
+        if value['Alive'] !='NA' and value['Spouse'] != 'NA':
+            list_of_living_married.append(value['Name'])
+    print(list_of_living_married)
+    return list_of_living_married
 
+
+
+
+#User story 31 - List living single
+'''List all living people over 30 who have never been married in a GEDCOM file'''
+def us31LivingSingle(ind,fam):
+    list_of_living_single=[]
+    flag = True
+    t = str(date.today())
+    today = datetime.strptime(t, "%Y-%m-%d")
+    for indkey, value in ind.items():
+        bd = datetime.strptime(value['Birthday'], "%Y-%m-%d")
+        age = today - bd
+        if age > timedelta(days=10950) :
+            if value['Alive'] !='NA' and value['Spouse'] == 'NA':
+                list_of_living_single.append(value['Name'])
+    print(list_of_living_single)
+    return list_of_living_single
 
 
 # US34 List large age differences
