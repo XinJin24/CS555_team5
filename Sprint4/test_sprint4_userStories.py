@@ -40,6 +40,61 @@ familyDictionary_32_3 = {}
 individualDictionary_32_3["I7"] = {'ID': 'I7', 'Name': 'lly /Potter/', 'Gender': 'F', 'Birthday': 'NA', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 individualDictionary_32_3["I8"] = {'ID': 'I8', 'Name': 'ben /Potter/', 'Gender': 'F', 'Birthday': 'NA', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 
+individualDictionary_32_4 = {}
+
+individualDictionary_32_5 = {}
+familyDictionary_32_5 = {}
+individualDictionary_32_1["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_32_1["I2"] = {'ID': 'I2', 'Name': 'jack /Potter/', 'Gender': 'F', 'Birthday': '1983-11-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_32_1["I3"] = {'ID': 'I3', 'Name': 'jelly /Potter/', 'Gender': 'F', 'Birthday': '1983-12-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+
+
+
+
+individualDictionary_33_1 = {}
+familyDictionary_33_1 = {}
+individualDictionary_33_1["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1963-9-9', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_1["I13"] = {'ID': 'I4', 'Name': 'jason /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': '1963-10-9', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_1["I28"] = {'ID': 'I5', 'Name': 'luis /Potter/', 'Gender': 'F', 'Birthday': '1983-1-05', 'Age': 22, 'Alive': 'True', 'Death': '1963-10-9', 'Child': 'NA', 'Spouse': 'NA'}
+
+familyDictionary_33_1['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'abc /abc/',
+                          'Wife_ID': 'I28', 'Wife_Name': 'eff /as/', 'Children': ['I1']}
+
+individualDictionary_33_2 = {}
+familyDictionary_33_2 = {}
+individualDictionary_33_2["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1963-9-9', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_2["I13"] = {'ID': 'I4', 'Name': 'jason /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_2["I28"] = {'ID': 'I5', 'Name': 'luis /Potter/', 'Gender': 'F', 'Birthday': '1983-1-05', 'Age': 22, 'Alive': 'True', 'Death': '1963-10-9', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary_33_2['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'abc /abc/',
+                          'Wife_ID': 'I28', 'Wife_Name': 'eff /as/', 'Children': ['I1']}
+
+individualDictionary_33_3 = {}
+familyDictionary_33_3 = {}
+individualDictionary_33_3["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1963-9-9', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_3["I13"] = {'ID': 'I4', 'Name': 'jason /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': '2020-10-10', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_3["I28"] = {'ID': 'I5', 'Name': 'luis /Potter/', 'Gender': 'F', 'Birthday': '1983-1-05', 'Age': 22, 'Alive': 'True', 'Death': '2020-10-10', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary_33_3['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'abc /abc/',
+                          'Wife_ID': 'I28', 'Wife_Name': 'eff /as/', 'Children': ['I1']}
+
+individualDictionary_33_4 = {}
+familyDictionary_33_4 = {}
+individualDictionary_33_4["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1963-9-9', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_4["I13"] = {'ID': 'I4', 'Name': 'jason /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': '2020-10-10', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_4["I28"] = {'ID': 'I5', 'Name': 'luis /Potter/', 'Gender': 'F', 'Birthday': '1983-1-05', 'Age': 22, 'Alive': 'True', 'Death': '2020-10-10', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary_33_4['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'abc /abc/',
+                          'Wife_ID': 'I28', 'Wife_Name': 'eff /as/', 'Children': []}
+
+individualDictionary_33_5 = {}
+familyDictionary_33_5 = {}
+individualDictionary_33_5["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1963-9-9', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_5["I13"] = {'ID': 'I4', 'Name': 'jason /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': '2020-10-10', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_33_5["I28"] = {'ID': 'I5', 'Name': 'luis /Potter/', 'Gender': 'F', 'Birthday': '1983-1-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+familyDictionary_33_5['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'abc /abc/',
+                          'Wife_ID': 'I28', 'Wife_Name': 'eff /as/', 'Children': ['I1']}
+
+
+
+
 class userStories26And34Test(unittest.TestCase):
      # test US26 Corresponding entries
      def test_correspondingEntries_1(self):
@@ -250,15 +305,34 @@ class userStories32And33Test(unittest.TestCase):
      def test_listMultipleBirths_3(self):
          result = listMultipleBirths(individualDictionary_32_3, familyDictionary_32_3)
          self.assertTrue(result)
+     
+     def test_listMultipleBirths_4(self):
+         result = listMultipleBirths(individualDictionary_32_4, familyDictionary_32_3)
+         self.assertTrue(result)
+    
+     def test_listMultipleBirths_5(self):
+         result = listMultipleBirths(individualDictionary_32_5, familyDictionary_32_5)
+         self.assertTrue(result)
 
      # test US33 List orphans
      def test_listOrphans_1(self):
-         result = listOrphans(individualDictionary, familyDictionary)
+         result = listOrphans(individualDictionary_33_1, familyDictionary_33_1)
          self.assertFalse(result)
 
      def test_listOrphans_2(self):
-         individualDictionary["I13"]['Birthday'] = '1965-09-21'
-         result = listOrphans(individualDictionary, familyDictionary)
+         result = listOrphans(individualDictionary_33_2, familyDictionary_33_2)
+         self.assertTrue(result)
+    
+     def test_listOrphans_3(self):
+         result = listOrphans(individualDictionary_33_3, familyDictionary_33_3)
+         self.assertTrue(result)
+
+     def test_listOrphans_4(self):
+         result = listOrphans(individualDictionary_33_4, familyDictionary_33_4)
+         self.assertTrue(result)
+
+     def test_listOrphans_5(self):
+         result = listOrphans(individualDictionary_33_5, familyDictionary_33_5)
          self.assertTrue(result)
 
 

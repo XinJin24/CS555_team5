@@ -109,9 +109,17 @@ def us30LivingMarried(ind,fam):
     flag = True
     for indkey, value in ind.items():
         if value['Alive'] !='NA' and value['Spouse'] != 'NA':
-            list_of_living_married.append(value['Name'])
-    print(list_of_living_married)
-    return list_of_living_married
+            list_of_living_married.append(value['Name'].split('/')[0]+value['Name'].split('/')[1])
+            flag=False
+    String=""
+    for index, person in enumerate(list_of_living_married):
+        if index != len(list_of_living_married) - 1:
+            String+= person+", "
+        else:
+            String+= person+" "
+    if(String!=""):
+        print("US30: ",String, "are married")
+    return flag
 
 
 
@@ -128,9 +136,17 @@ def us31LivingSingle(ind,fam):
         age = today - bd
         if age > timedelta(days=10950) :
             if value['Alive'] !='NA' and value['Spouse'] == 'NA':
-                list_of_living_single.append(value['Name'])
-    print(list_of_living_single)
-    return list_of_living_single
+                list_of_living_single.append(value['Name'].split('/')[0]+value['Name'].split('/')[1])
+                flag=False
+    String=""
+    for index, person in enumerate(list_of_living_single):
+        if index != len(list_of_living_single) - 1:
+            String+= person+", "
+        else:
+            String+= person+" "
+    if(String!=""):
+        print(String, "are over 30 and they have never been married")
+    return flag
 
 
 # US34 List large age differences
@@ -155,7 +171,7 @@ def listMultipleBirths(individualDictionary, familyDictionary):
     for key, value in individualDictionary.items():
         if(value['Birthday']=='NA'):
             continue
-        birthday=datetime.datetime.strptime(value['Birthday'], "%Y-%m-%d")
+        birthday=datetime.strptime(value['Birthday'], "%Y-%m-%d")
         birthday.month
         day=birthday.month,birthday.day
         if(day in birthMap):
@@ -175,7 +191,7 @@ def listMultipleBirths(individualDictionary, familyDictionary):
                     namesString+=individualDictionary[person]['Name'].split('/')[0]+individualDictionary[person]['Name'].split('/')[1]+", "
                 else: 
                     namesString+=individualDictionary[person]['Name'].split('/')[0]+individualDictionary[person]['Name'].split('/')[1]+", "
-            print(namesString," has the same birthday on ",calendar.month_name[key[0]]," ",key[1],".")
+            print("US32: ",namesString," has the same birthday on ",calendar.month_name[key[0]]," ",key[1],".")
     return flag
     
 
@@ -185,12 +201,12 @@ def listOrphans(individualDictionary, familyDictionary):
     flag=True
     for key, value in familyDictionary.items():
         if(individualDictionary[value['Husband_ID']]['Death']!='NA' and individualDictionary[value['Wife_ID']]['Death']!='NA' and len(value['Children'])>=1):
-            husbandDeathDate=datetime.date(int(individualDictionary[value['Husband_ID']]['Death'].split('-')[0]),int(individualDictionary[value['Husband_ID']]['Death'].split('-')[1]),int(individualDictionary[value['Husband_ID']]['Death'].split('-')[2]))
-            wifeDeathDate=datetime.date(int(individualDictionary[value['Wife_ID']]['Death'].split('-')[0]),int(individualDictionary[value['Wife_ID']]['Death'].split('-')[1]),int(individualDictionary[value['Wife_ID']]['Death'].split('-')[2]))
+            husbandDeathDate=date(int(individualDictionary[value['Husband_ID']]['Death'].split('-')[0]),int(individualDictionary[value['Husband_ID']]['Death'].split('-')[1]),int(individualDictionary[value['Husband_ID']]['Death'].split('-')[2]))
+            wifeDeathDate=date(int(individualDictionary[value['Wife_ID']]['Death'].split('-')[0]),int(individualDictionary[value['Wife_ID']]['Death'].split('-')[1]),int(individualDictionary[value['Wife_ID']]['Death'].split('-')[2]))
             for child in value['Children']:
                 childBirthday=individualDictionary[child]['Birthday']
-                childBirthday=datetime.datetime.strptime(childBirthday, "%Y-%m-%d")
-                dateTurnTo18=datetime.date(childBirthday.year+18, childBirthday.month, childBirthday.day)
+                childBirthday=datetime.strptime(childBirthday, "%Y-%m-%d")
+                dateTurnTo18=date(childBirthday.year+18, childBirthday.month, childBirthday.day)
                 if(husbandDeathDate<dateTurnTo18 and wifeDeathDate<dateTurnTo18):
                     orphansList.append(child)
                     flag=False
@@ -200,7 +216,9 @@ def listOrphans(individualDictionary, familyDictionary):
         printMessage=""
         for index, orphan in enumerate(orphansList):
             if index != len(orphansList) - 1:
-                printMessage+=orphan," ",individualDictionary[orphan]['Name'].split('/')[0]," ",individualDictionary[orphan]['Name'].split('/')[1],", "
+                printMessage+=orphan+" "+individualDictionary[orphan]['Name'].split('/')[0]+" "+individualDictionary[orphan]['Name'].split('/')[1]+", "
+            else:
+                printMessage+=orphan+" "+individualDictionary[orphan]['Name'].split('/')[0]+" "+individualDictionary[orphan]['Name'].split('/')[1]+""
         print(printMessage, "are orphans.")
     return flag
 

@@ -184,11 +184,8 @@ def getIndividualsAndFamilies(fileName):
 
                     # Update Age for the age at time of death
                     deathYear = int(deathDayUnformatted[2])
-                    print(deathYear)
                     deathMonth = int(monthDictionary[deathDayUnformatted[1]])
-                    print(deathMonth)
                     deathDay = int(deathDayUnformatted[0])
-                    print(deathDay)
                     deathAge = calculateDeathAge(date(deathYear, deathMonth, deathDay), date(year, month, day))
                     individualDictionary[keyValue]['Age'] = deathAge
 
