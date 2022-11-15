@@ -118,7 +118,7 @@ def us30LivingMarried(ind,fam):
         else:
             String+= person+" "
     if(String!=""):
-        print("US30: ",String, "are married")
+        print("US30: ",String, "are married and living")
     return flag
 
 

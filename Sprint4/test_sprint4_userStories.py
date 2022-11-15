@@ -19,6 +19,34 @@ familyDictionary['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 
 familyDictionary['F3'] = {'ID': 'F3', 'Marriage': '1993-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'Jack /Marks/',
                           'Wife_ID': 'I99', 'Wife_Name': 'Anna /Marks/', 'Children': []}
 
+# manually create two dictionaries for US30 and US31
+individualDictionary_30_1 = {}
+individualDictionary_30_1["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': '12'}
+individualDictionary_30_1["I2"] = {'ID': 'I2', 'Name': 'jack /Potter/', 'Gender': 'F', 'Birthday': '1983-11-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_30_1["I3"] = {'ID': 'I3', 'Name': 'jelly /Potter/', 'Gender': 'F', 'Birthday': '1983-12-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+
+
+individualDictionary_30_2 = {}
+individualDictionary_30_2["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_30_2["I2"] = {'ID': 'I2', 'Name': 'jack /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_30_2["I3"] = {'ID': 'I3', 'Name': 'jelly /Potter/', 'Gender': 'F', 'Birthday': '1983-12-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+
+individualDictionary_30_3 = {}
+individualDictionary_30_3["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': '', 'Death': 'NA', 'Child': 'NA', 'Spouse': ''}
+individualDictionary_30_3["I2"] = {'ID': 'I2', 'Name': 'jack /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': '', 'Death': 'NA', 'Child': 'NA', 'Spouse': ''}
+individualDictionary_30_3["I3"] = {'ID': 'I3', 'Name': 'jelly /Potter/', 'Gender': 'F', 'Birthday': '1983-12-05', 'Age': 22, 'Alive': '', 'Death': 'NA', 'Child': 'NA', 'Spouse': ''}
+
+
+
+individualDictionary_31_1 = {}
+individualDictionary_31_1["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_31_1["I2"] = {'ID': 'I2', 'Name': 'jack /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary_31_1["I3"] = {'ID': 'I3', 'Name': 'jelly /Potter/', 'Gender': 'F', 'Birthday': '1983-12-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+
+
+individualDictionary_31_2= {}
+individualDictionary_31_2["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': '13'}
+
 # manually create two dictionaries for US32 and US33
 individualDictionary_32_1 = {}
 familyDictionary_32_1 = {}
@@ -47,9 +75,6 @@ familyDictionary_32_5 = {}
 individualDictionary_32_1["I1"] = {'ID': 'I1', 'Name': 'Harry /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 individualDictionary_32_1["I2"] = {'ID': 'I2', 'Name': 'jack /Potter/', 'Gender': 'F', 'Birthday': '1983-11-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
 individualDictionary_32_1["I3"] = {'ID': 'I3', 'Name': 'jelly /Potter/', 'Gender': 'F', 'Birthday': '1983-12-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
-
-
-
 
 individualDictionary_33_1 = {}
 familyDictionary_33_1 = {}
@@ -290,8 +315,31 @@ class test_list_all_deceased_individuals(unittest.TestCase):
         self.assertEqual(masterTestList, [['I2', 'I6']])
 
 
+class userStories30And31Test(unittest.TestCase):
+    # test US30 List living married
+     def test_us30LivingMarried_1(self):
+         result = us30LivingMarried(individualDictionary_30_1, familyDictionary_32_1)
+         self.assertFalse(result)
+
+     def test_us30LivingMarried_2(self):
+         result = us30LivingMarried(individualDictionary_30_2, familyDictionary_32_1)
+         self.assertTrue(result)
+
+     def test_us30LivingMarried_3(self):
+         result = us30LivingMarried(individualDictionary_30_3, familyDictionary_32_1)
+         self.assertFalse(result)
 
 
+     # test US31 List living single
+     def test_us31LivingSingle_1(self):
+         result = us31LivingSingle(individualDictionary_31_1, familyDictionary_33_1)
+         self.assertFalse(result)
+
+     def test_us31LivingSingle_1(self):
+         result = us31LivingSingle(individualDictionary_31_2, familyDictionary_33_1)
+         self.assertTrue(result)
+     
+     
 class userStories32And33Test(unittest.TestCase):
      # test US32 List multiple births
      def test_listMultipleBirths_1(self):
