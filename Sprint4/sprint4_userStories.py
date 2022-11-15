@@ -106,11 +106,11 @@ def list_all_deceased_individuals(individualDictionary, familyDictionary):
 '''List all living married people in a GEDCOM file'''
 def us30LivingMarried(ind,fam):
     list_of_living_married=[]
-    flag = True
+    flag = False
     for indkey, value in ind.items():
         if value['Alive'] !='NA' and value['Spouse'] != 'NA':
             list_of_living_married.append(value['Name'].split('/')[0]+value['Name'].split('/')[1])
-            flag=False
+            flag=True
     String=""
     for index, person in enumerate(list_of_living_married):
         if index != len(list_of_living_married) - 1:
@@ -128,7 +128,7 @@ def us30LivingMarried(ind,fam):
 '''List all living people over 30 who have never been married in a GEDCOM file'''
 def us31LivingSingle(ind,fam):
     list_of_living_single=[]
-    flag = True
+    flag = False
     t = str(date.today())
     today = datetime.strptime(t, "%Y-%m-%d")
     for indkey, value in ind.items():
@@ -137,7 +137,7 @@ def us31LivingSingle(ind,fam):
         if age > timedelta(days=10950) :
             if value['Alive'] !='NA' and value['Spouse'] == 'NA':
                 list_of_living_single.append(value['Name'].split('/')[0]+value['Name'].split('/')[1])
-                flag=False
+                flag=True
     String=""
     for index, person in enumerate(list_of_living_single):
         if index != len(list_of_living_single) - 1:
