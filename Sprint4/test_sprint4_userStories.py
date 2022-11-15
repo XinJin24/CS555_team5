@@ -117,6 +117,26 @@ individualDictionary_33_5["I28"] = {'ID': 'I5', 'Name': 'luis /Potter/', 'Gender
 familyDictionary_33_5['F6'] = {'ID': 'F6', 'Marriage': '1963-10-9', 'Divorce': 'NA', 'Husband_ID': 'I13', 'Husband_Name': 'abc /abc/',
                           'Wife_ID': 'I28', 'Wife_Name': 'eff /as/', 'Children': ['I1']}
 
+#dictionaries for us30 and us31
+individualDictionary330={}
+individualDictionary330["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary330["I3"] = {'ID': 'I3', 'Name': 'James /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary3301={}
+individualDictionary3301["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'I3'}
+individualDictionary3301["I3"] = {'ID': 'I3', 'Name': 'Ginny /Potter/', 'Gender': 'F', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'I4'}
+individualDictionary3302={}
+individualDictionary3302["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'NA', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'I7'}
+individualDictionary3302["I3"] = {'ID': 'I3', 'Name': 'James /Potter/', 'Gender': 'F', 'Birthday': '1983-10-05', 'Age': 22, 'Alive': 'NA', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'I8'}
+
+individualDictionary331={}
+individualDictionary331["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary331["I3"] = {'ID': 'I3', 'Name': 'James /Potter/', 'Gender': 'M', 'Birthday': '1982-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary3311={}
+individualDictionary3311["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1996-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary3311["I3"] = {'ID': 'I3', 'Name': 'Ginny /Potter/', 'Gender': 'F', 'Birthday': '1996-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'NA'}
+individualDictionary3312={}
+individualDictionary3312["I23"] = {'ID': 'I23', 'Name': 'Harry /Potter/', 'Gender': 'M', 'Birthday': '1996-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'I7'}
+individualDictionary3312["I3"] = {'ID': 'I3', 'Name': 'James /Potter/', 'Gender': 'F', 'Birthday': '1996-10-05', 'Age': 22, 'Alive': 'True', 'Death': 'NA', 'Child': 'NA', 'Spouse': 'I8'}
 
 
 
@@ -382,7 +402,33 @@ class userStories32And33Test(unittest.TestCase):
      def test_listOrphans_5(self):
          result = listOrphans(individualDictionary_33_5, familyDictionary_33_5)
          self.assertTrue(result)
+        
+ class userStories30And31Test(unittest.TestCase):
+    #tests for us30
+    def test_us30LivingMarried_1(self): #alive and not married
+        result = us30LivingMarried(individualDictionary330, familyDictionary231)
+        self.assertFalse(result)
 
+    def test_us30LivingMarried_2(self): #alive and married
+        result = us30LivingMarried(individualDictionary3301, familyDictionary231)
+        self.assertTrue(result)
+
+    def test_us30LivingMarried_3(self): #dead and married
+        result = us30LivingMarried(individualDictionary3302, familyDictionary231)
+        self.assertFalse(result)
+
+    # tests for us31
+    def test_us31LivingSingle_1(self): #alive more than 30 and not married
+        result = us31LivingSingle(individualDictionary331, familyDictionary231)
+        self.assertTrue(result)
+
+    def test_us31LivingSingle_2(self): #alive less than 30 and not married
+        result = us31LivingSingle(individualDictionary3311, familyDictionary231)
+        self.assertFalse(result)
+
+    def test_us31LivingSingle_2(self): #alive less than 30 and  married
+        result = us31LivingSingle(individualDictionary3312, familyDictionary231)
+        self.assertFalse(result)
 
 if __name__ == '__main__':
     unittest.main()
