@@ -339,15 +339,15 @@ class userStories30And31Test(unittest.TestCase):
     # test US30 List living married
      def test_us30LivingMarried_1(self):
          result = us30LivingMarried(individualDictionary_30_1, familyDictionary_32_1)
-         self.assertFalse(result)
+         self.assertTrue(result)
 
      def test_us30LivingMarried_2(self):
          result = us30LivingMarried(individualDictionary_30_2, familyDictionary_32_1)
-         self.assertTrue(result)
+         self.assertFalse(result)
 
      def test_us30LivingMarried_3(self):
          result = us30LivingMarried(individualDictionary_30_3, familyDictionary_32_1)
-         self.assertFalse(result)
+         self.assertTrue(result)
 
 
      # test US31 List living single
@@ -357,7 +357,7 @@ class userStories30And31Test(unittest.TestCase):
 
      def test_us31LivingSingle_1(self):
          result = us31LivingSingle(individualDictionary_31_2, familyDictionary_33_1)
-         self.assertTrue(result)
+         self.assertFalse(result)
      
      
 class userStories32And33Test(unittest.TestCase):
@@ -403,31 +403,31 @@ class userStories32And33Test(unittest.TestCase):
          result = listOrphans(individualDictionary_33_5, familyDictionary_33_5)
          self.assertTrue(result)
         
- class userStories30And31Test(unittest.TestCase):
+class userStories30And31TestVersion2(unittest.TestCase):
     #tests for us30
     def test_us30LivingMarried_1(self): #alive and not married
-        result = us30LivingMarried(individualDictionary330, familyDictionary231)
+        result = us30LivingMarried(individualDictionary330, familyDictionary_32_1)
         self.assertFalse(result)
 
     def test_us30LivingMarried_2(self): #alive and married
-        result = us30LivingMarried(individualDictionary3301, familyDictionary231)
+        result = us30LivingMarried(individualDictionary3301, familyDictionary_32_1)
         self.assertTrue(result)
 
     def test_us30LivingMarried_3(self): #dead and married
-        result = us30LivingMarried(individualDictionary3302, familyDictionary231)
+        result = us30LivingMarried(individualDictionary3302, familyDictionary_32_1)
         self.assertFalse(result)
 
     # tests for us31
     def test_us31LivingSingle_1(self): #alive more than 30 and not married
-        result = us31LivingSingle(individualDictionary331, familyDictionary231)
+        result = us31LivingSingle(individualDictionary331, familyDictionary_32_1)
         self.assertTrue(result)
 
     def test_us31LivingSingle_2(self): #alive less than 30 and not married
-        result = us31LivingSingle(individualDictionary3311, familyDictionary231)
+        result = us31LivingSingle(individualDictionary3311, familyDictionary_32_1)
         self.assertFalse(result)
 
     def test_us31LivingSingle_2(self): #alive less than 30 and  married
-        result = us31LivingSingle(individualDictionary3312, familyDictionary231)
+        result = us31LivingSingle(individualDictionary3312, familyDictionary_32_1)
         self.assertFalse(result)
 
 if __name__ == '__main__':
